@@ -35,10 +35,10 @@ export default function Command() {
   );
 
   useEffect(() => {
-    if (type !== 'issue') {
-      setIsShowingDetail(false)
+    if (type !== "issue") {
+      setIsShowingDetail(false);
     }
-  }, [type])
+  }, [type]);
 
   return (
     <WithCredentials>

@@ -20,6 +20,21 @@
       "subtitle": "Backlog",
       "description": "",
       "mode": "view"
+    },
+    {
+      "name": "unread-count",
+      "title": "Unread Count",
+      "subtitle": "Backlog",
+      "description": "",
+      "mode": "menu-bar"
+    },
+    {
+      "name": "unread-count-fetcher",
+      "title": "Unread Count Fetcher",
+      "subtitle": "Backlog",
+      "description": "",
+      "mode": "no-view",
+      "interval": "3m"
     }
   ],
   "dependencies": {
