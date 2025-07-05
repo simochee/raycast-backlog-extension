@@ -20,13 +20,18 @@ export const SpaceForm = ({ initialValues, onSubmit, onDelete }: Props) => {
       const backlogDomains = ["backlog.com", "backlog.jp"] as const;
 
       for (const domain of backlogDomains) {
+        console.log('trying', domain);
+        
         try {
-          await getSpaceWithCache(values.spaceKey, domain, values.apiKey);
+          const space = await getSpaceWithCache(values.spaceKey, domain, values.apiKey);
+
+          console.log(domain, space);
 
           onSubmit({ ...values, domain });
 
           return;
-        } catch {
+        } catch (error) {
+          console.log(error)
           // try next domain
         }
       }

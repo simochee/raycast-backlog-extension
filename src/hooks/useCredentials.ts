@@ -4,16 +4,16 @@ import { SpaceCredentials } from "../types/space";
 export const useCredentials = () => {
   const { value: credentials = [], setValue: setCredentials } = useLocalStorage<SpaceCredentials[]>("credentials", []);
 
-  const addCredential = (credential: SpaceCredentials) => {
-    setCredentials([...credentials, credential]);
+  const addCredential = async (credential: SpaceCredentials) => {
+    await setCredentials([...credentials, credential]);
   };
 
-  const updateCredential = (credential: SpaceCredentials) => {
-    setCredentials(credentials.map((c) => (c.spaceKey === credential.spaceKey ? credential : c)));
+  const updateCredential = async (credential: SpaceCredentials) => {
+    await setCredentials(credentials.map((c) => (c.spaceKey === credential.spaceKey ? credential : c)));
   };
 
-  const removeCredential = (spaceKey: string) => {
-    setCredentials(credentials.filter((credential) => credential.spaceKey !== spaceKey));
+  const removeCredential = async (spaceKey: string) => {
+    await setCredentials(credentials.filter((credential) => credential.spaceKey !== spaceKey));
   };
 
   return { credentials, addCredential, updateCredential, removeCredential };

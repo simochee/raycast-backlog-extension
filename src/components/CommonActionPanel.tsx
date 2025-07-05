@@ -17,19 +17,19 @@ export const CommonActionPanel = ({ children }: Props) => {
   const [spaces] = useSpaces();
   const sortedSpaces = spaces?.slice().sort((a) => (a.space.spaceKey === currentSpace.spaceKey ? -1 : 1));
 
-  const handleAddSpace = (values: SpaceCredentials) => {
-    addCredential(values);
+  const handleAddSpace = async (values: SpaceCredentials) => {
+    await addCredential(values);
     currentSpace.setSpaceKey(values.spaceKey);
     pop();
   };
 
-  const handleUpdateSpace = (values: SpaceCredentials) => {
-    updateCredential(values);
+  const handleUpdateSpace = async (values: SpaceCredentials) => {
+    await updateCredential(values);
     pop();
   };
 
-  const handleDeleteSpace = (spaceKey: string) => {
-    removeCredential(spaceKey);
+  const handleDeleteSpace = async (spaceKey: string) => {
+    await removeCredential(spaceKey);
     if (currentSpace.spaceKey === spaceKey) {
       currentSpace.setSpaceKey(sortedSpaces?.[0]?.space.spaceKey ?? "");
     }

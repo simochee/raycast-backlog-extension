@@ -33,10 +33,6 @@ export const useCurrentSpace = () => {
   );
 
   const setSpaceKey = (spaceKey: string) => {
-    if (!credentials.some((credential) => credential.spaceKey === spaceKey)) {
-      throw new Error("Space not found");
-    }
-
     setCurrentSpaceId(spaceKey);
   };
 
