@@ -1,19 +1,61 @@
-import { ActionPanel, Detail, List, Action, Icon } from "@raycast/api";
+import { ActionPanel, Detail, List, Action, Icon, Color, Image } from "@raycast/api";
 import { WithCredentials } from "./components/WithCredentials";
+import { useCurrentSpace } from "./hooks/useCurrentSpace";
+import { usePromise } from "@raycast/utils";
+import type { Backlog, Option } from "backlog-js";
+import { useState } from "react";
+import { SpaceList } from "./components/SpaceList";
+import { IssueItem } from "./components/IssueItem";
 
 export default function Command() {
+  const [type, setType] = useState<string>('issue');
+  const [isShowingDetail, setIsShowingDetail] = useState(false);
+  const currentSpace = useCurrentSpace()
+
+  const { data, isLoading } = usePromise(
+    async (type: string, api: Backlog | undefined) => {
+      if (!api) return [];
+
+      const params: Option.User.GetRecentlyViewedParams = {
+        count: 100,
+      };
+
+      switch (type) {
+        case 'wiki':
+          return api.getRecentlyViewedWikis(params)
+        default:
+          return api.getRecentlyViewedIssues(params)
+      }
+    }, 
+    [type, currentSpace.api],
+  )
+  
   return (
     <WithCredentials>
-      <List>
-        <List.Item
-          icon={Icon.Bird}
-          title="Greeting"
-          actions={
-            <ActionPanel>
-              <Action.Push title="Show Details" target={<Detail markdown="# Hey! 👋" />} />
-            </ActionPanel>
+      <List isLoading={isLoading} isShowingDetail={isShowingDetail} navigationTitle={currentSpace.space?.name} searchBarAccessory={
+        <List.Dropdown tooltip="Recent Viewed Type" storeValue={true} onChange={setType}>
+          <List.Dropdown.Item value="issue" title="Issues" />
+          <List.Dropdown.Item value="wiki" title="Wikis" />
+        </List.Dropdown>
+      } actions={
+        <ActionPanel>
+          <Action.Push title="Switch Space" target={<SpaceList />} />
+        </ActionPanel>
+      }>
+        {data?.map((item) => {
+          // Wikis
+          if ('page' in item) {
+            return (
+              <List.Item
+                title={item.page.name}
+              />
+            )
           }
-        />
+          if ('issue' in item) {
+            return <IssueItem issue={item.issue} onToggleShowingDetail={() => setIsShowingDetail((v) => !v)} />
+          }
+          return null;
+        })}
       </List>
     </WithCredentials>
   );

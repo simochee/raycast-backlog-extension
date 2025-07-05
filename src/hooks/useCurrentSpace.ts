@@ -2,6 +2,7 @@ import { useLocalStorage, usePromise } from "@raycast/utils";
 import { useCredentials } from "./useCredentials";
 import { Backlog } from "backlog-js";
 import { getSpaceWithCache } from "../utils/space";
+import { useMemo } from "react";
 
 export const useCurrentSpace = () => {
   const { credentials } = useCredentials();
@@ -12,8 +13,15 @@ export const useCurrentSpace = () => {
   const spaceKey = credential?.spaceKey;
   const apiKey = credential?.apiKey;
   const domain = credential?.domain;
+  const host = `${spaceKey}.${domain}`;
 
-  const api = spaceKey && apiKey && domain && new Backlog({ host: `${spaceKey}.${domain}`, apiKey });
+  const api = useMemo(() => {
+    console.log({ host: `${spaceKey}.${domain}`, apiKey })
+    
+    if (!spaceKey || !apiKey || !domain) return
+
+    return new Backlog({ host: `${spaceKey}.${domain}`, apiKey })
+  }, [spaceKey, apiKey, domain])
 
   const { data: space } = usePromise(
     async (spaceKey: string | undefined, domain: string | undefined, apiKey: string | undefined) => {
@@ -34,5 +42,5 @@ export const useCurrentSpace = () => {
     setCurrentSpaceId(spaceKey);
   };
 
-  return { spaceKey, apiKey, api, space, setSpaceKey };
+  return { spaceKey, host, apiKey, api, space, setSpaceKey };
 };
