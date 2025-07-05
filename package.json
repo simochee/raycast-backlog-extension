@@ -15,13 +15,6 @@
       "mode": "view"
     },
     {
-      "name": "projects",
-      "title": "Projects",
-      "subtitle": "Backlog",
-      "description": "",
-      "mode": "view"
-    },
-    {
       "name": "notifications",
       "title": "Notifications",
       "subtitle": "Backlog",
