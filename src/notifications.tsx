@@ -1,7 +1,9 @@
 import { ActionPanel, Detail, List, Action, Icon } from "@raycast/api";
+import { SpaceProvider } from "./components/SpaceProvider";
 
 export default function Command() {
   return (
+    <SpaceProvider>
     <List>
       <List.Item
         icon={Icon.Bird}
@@ -10,8 +12,9 @@ export default function Command() {
           <ActionPanel>
             <Action.Push title="Show Details" target={<Detail markdown="# Hey! 👋" />} />
           </ActionPanel>
-        }
-      />
-    </List>
+            }
+        />
+      </List>
+    </SpaceProvider>
   );
 }
