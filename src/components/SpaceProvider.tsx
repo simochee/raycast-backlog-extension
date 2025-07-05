@@ -1,15 +1,13 @@
-import { SpaceList } from "./SpaceList"
+import { SpaceList } from "./SpaceList";
 
 type Props = {
-  children: React.ReactNode | Promise<React.ReactNode>
-}
+  children: React.ReactNode | Promise<React.ReactNode>;
+};
 
 export const SpaceProvider = ({ children }: Props) => {
   if (true) {
-    return <SpaceList />
+    return <SpaceList />;
   }
-  
-  return <>
-  {children}
-  </>
-}
+
+  return <>{children}</>;
+};

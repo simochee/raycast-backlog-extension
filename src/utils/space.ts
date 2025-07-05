@@ -1,6 +1,6 @@
-import { Backlog, type Entity } from 'backlog-js';
-import { createCache } from './cache';
-import * as v from 'valibot';
+import { Backlog } from "backlog-js";
+import { createCache } from "./cache";
+import * as v from "valibot";
 
 const schema = v.object({
   spaceKey: v.string(),
@@ -12,10 +12,10 @@ const schema = v.object({
   textFormattingRule: v.string(),
   created: v.string(),
   updated: v.string(),
-})
+});
 
 export const getSpaceWithCache = async (spaceKey: string, domain: string, apiKey: string) => {
-  const cache = createCache([spaceKey, 'space'], schema)
+  const cache = createCache([spaceKey, "space"], schema);
 
   const host = `${spaceKey}.${domain}`;
   const cached = await cache.get();
@@ -30,4 +30,4 @@ export const getSpaceWithCache = async (spaceKey: string, domain: string, apiKey
   cache.set(space);
 
   return space;
-}
+};

@@ -1,5 +1,5 @@
 import { Cache } from "@raycast/api";
-import * as v from 'valibot';
+import * as v from "valibot";
 
 const cache = new Cache();
 
@@ -11,13 +11,13 @@ export const createCache = <const T extends v.BaseSchema<unknown, unknown, v.Bas
   schema: T,
   expiresIn = 60 * 60 * 24 * 30, // 30 days
 ) => {
-  const key = Array.isArray(keyOrArray) ? keyOrArray.join('-') : keyOrArray;
-  
+  const key = Array.isArray(keyOrArray) ? keyOrArray.join("-") : keyOrArray;
+
   const schemaWithTimestamp = v.object({
     value: schema,
     timestamp: v.number(),
   });
-  
+
   const get = async () => {
     const cached = await cache.get(key);
     if (cached) {
@@ -30,13 +30,16 @@ export const createCache = <const T extends v.BaseSchema<unknown, unknown, v.Bas
     return;
   };
 
-  const set = async (value: unknown) => { 
+  const set = async (value: unknown) => {
     const validated = v.parse(schema, value);
-    await cache.set(key, JSON.stringify({
-      value: validated,
-      timestamp: Date.now(),
-    }));
+    await cache.set(
+      key,
+      JSON.stringify({
+        value: validated,
+        timestamp: Date.now(),
+      }),
+    );
   };
 
   return { get, set };
-}
+};
