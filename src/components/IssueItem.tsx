@@ -1,7 +1,8 @@
 import type { Entity } from "backlog-js"
-import { Action, ActionPanel, Color, Icon, Image, List } from '@raycast/api'
+import { Action, Color, Icon, Image, List } from '@raycast/api'
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { useProject } from "../hooks/useProject";
+import { CommonActionPanel } from "./CommonActionPanel";
 
 type Props = {
   issue: Entity.Issue.Issue;
@@ -76,13 +77,13 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
       }
       accessories={accessories}
       actions={
-        <ActionPanel>
+        <CommonActionPanel>
           <Action.OpenInBrowser title="Open in Browser" url={`https://${currentSpace.host}/view/${issue.issueKey}`} />
           <Action.CopyToClipboard title="Copy Issue Key" content={issue.issueKey} shortcut={{ modifiers: ['cmd'], key: 'c' }} />
           <Action.CopyToClipboard title="Copy Issue Key and Subject" content={`${issue.issueKey} ${issue.summary}`} shortcut={{ modifiers: ['cmd', 'shift'], key: 'c' }} />
           <Action.CopyToClipboard title="Copy URL" content={`https://${currentSpace.host}/view/${issue.issueKey}`} shortcut={{ modifiers: ['cmd', 'shift'], key: 'u' }} />
           <Action title="Toggle Detail" icon={Icon.AppWindowSidebarRight} shortcut={{ modifiers: ['cmd', 'shift'], key: 'f'}} onAction={onToggleShowingDetail} />
-        </ActionPanel>
+        </CommonActionPanel>
       }
     />
   )

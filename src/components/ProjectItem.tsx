@@ -1,6 +1,7 @@
-import { Action, ActionPanel, Icon, List } from "@raycast/api"
+import { Action, Icon, List } from "@raycast/api"
 import { Entity } from "backlog-js"
 import { useCurrentSpace } from "../hooks/useCurrentSpace"
+import { CommonActionPanel } from "./CommonActionPanel"
 
 type Props = {
   project: Entity.Project.Project
@@ -15,7 +16,7 @@ export const ProjectItem = ({project}:Props) => {
       subtitle={project.projectKey}
       icon={`https://${currentSpace.host}/api/v2/projects/${project.projectKey}/image?apiKey=${currentSpace.apiKey}`}
       actions={
-        <ActionPanel>
+        <CommonActionPanel>
           <Action.OpenInBrowser title="Open in Browser" url={`https://${currentSpace.host}/projects/${project.projectKey}`} />
           <Action.OpenInBrowser title="Add Issue" url={`https://${currentSpace.host}/add/${project.projectKey}`} shortcut={{ modifiers: ['cmd'], key: 'n' }} icon={Icon.NewDocument} />
           <Action.OpenInBrowser title="Issues" url={`https://${currentSpace.host}/find/${project.projectKey}`} shortcut={{ modifiers: ['cmd'], key: 'i' }} icon={Icon.Document}/>
@@ -39,7 +40,7 @@ export const ProjectItem = ({project}:Props) => {
           {project.useGit && (
           <Action.OpenInBrowser title="Git" url={`https://${currentSpace.host}/git/${project.projectKey}`} shortcut={{ modifiers: ['cmd'], key: 'g' }} icon={Icon.Code} />
           )}
-        </ActionPanel>
+        </CommonActionPanel>
       }
   />
   )

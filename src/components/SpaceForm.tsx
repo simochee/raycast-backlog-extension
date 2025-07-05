@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Alert, confirmAlert, Form } from "@raycast/api";
+import { ActionPanel, Action, Alert, confirmAlert, Form } from "@raycast/api";
 import { FormValidation, useForm } from "@raycast/utils";
 import { SpaceCredentials } from "../types/space";
 import { getSpaceWithCache } from "../utils/space";

@@ -1,13 +1,13 @@
-import { ActionPanel, Detail, List, Action, Icon, Color, Image } from "@raycast/api";
+import { Detail, List, Action, Icon, Color, Image } from "@raycast/api";
 import { WithCredentials } from "./components/WithCredentials";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { usePromise } from "@raycast/utils";
 import type { Backlog, Option } from "backlog-js";
-import { useState } from "react";
-import { SpaceList } from "./components/SpaceList";
+import { useEffect, useState } from "react";
 import { IssueItem } from "./components/IssueItem";
 import { WikiItem } from "./components/WikiItem";
 import { ProjectItem } from "./components/ProjectItem";
+import { CommonActionPanel } from "./components/CommonActionPanel";
 
 export default function Command() {
   const [type, setType] = useState<string>('issue');
@@ -43,9 +43,7 @@ export default function Command() {
           <List.Dropdown.Item value="wiki" title="Wikis" />
         </List.Dropdown>
       } actions={
-        <ActionPanel>
-          <Action.Push title="Switch Space" target={<SpaceList />} />
-        </ActionPanel>
+        <CommonActionPanel />
       }>
         {data?.map((item) => {
           // Projects

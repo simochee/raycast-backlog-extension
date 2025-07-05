@@ -1,4 +1,4 @@
-import { useLocalStorage, usePromise } from "@raycast/utils";
+import { useCachedState, usePromise } from "@raycast/utils";
 import { useCredentials } from "./useCredentials";
 import { Backlog } from "backlog-js";
 import { getSpaceWithCache } from "../utils/space";
@@ -6,7 +6,7 @@ import { useMemo } from "react";
 
 export const useCurrentSpace = () => {
   const { credentials } = useCredentials();
-  const { value: currentSpaceId, setValue: setCurrentSpaceId } = useLocalStorage<string>("current-space-id");
+  const [currentSpaceId, setCurrentSpaceId] = useCachedState<string | undefined>('current-space-id')
 
   const credential = credentials.find((credential) => credential.spaceKey === currentSpaceId) || credentials[0];
 

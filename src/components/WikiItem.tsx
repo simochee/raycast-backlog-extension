@@ -1,7 +1,8 @@
-import { Action, ActionPanel, Color, List } from "@raycast/api";
+import { Action, Color, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { useProject } from "../hooks/useProject";
+import { CommonActionPanel } from "./CommonActionPanel";
 
 type Props = {
   page: Entity.Wiki.WikiListItem;
@@ -21,10 +22,10 @@ export const WikiItem = ({ page}: Props) => {
         { date: new Date(page.updated) }
       ]}
       actions={
-        <ActionPanel>
+        <CommonActionPanel>
           <Action.OpenInBrowser url={`https://${currentSpace.host}/alias/wiki/${page.id}`} />
           <Action.CopyToClipboard title="Copy URL" shortcut={{ modifiers: ['cmd', 'shift'], key: 'u'}} content={`https://${currentSpace.host}/alias/wiki/${page.id}`} />
-        </ActionPanel>
+        </CommonActionPanel>
       }
     />
   )
