@@ -57,7 +57,7 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
                     const value = Array.isArray(field.value) ? field.value.sort((a, b) => a.displayOrder - b.displayOrder).map(({ name }) => name).join(', ') : field.fieldTypeId === 4 && field.value ? new Date(field.value).toLocaleDateString() : field.value || '';
 
                     return (
-                      <List.Item.Detail.Metadata.Label title={field.name} text={value} />
+                      <List.Item.Detail.Metadata.Label key={field.id} title={field.name} text={value} />
                     )
                   })}
                 </>

@@ -16,8 +16,6 @@ export const useCurrentSpace = () => {
   const host = `${spaceKey}.${domain}`;
 
   const api = useMemo(() => {
-    console.log({ host: `${spaceKey}.${domain}`, apiKey })
-    
     if (!spaceKey || !apiKey || !domain) return
 
     return new Backlog({ host: `${spaceKey}.${domain}`, apiKey })

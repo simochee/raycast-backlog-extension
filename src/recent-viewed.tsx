@@ -46,10 +46,10 @@ export default function Command() {
         {data?.map((item) => {
           // Wikis
           if ('page' in item) {
-            return <WikiItem page={item.page} />
+            return <WikiItem key={item.page.id} page={item.page} />
           }
           if ('issue' in item) {
-            return <IssueItem issue={item.issue} onToggleShowingDetail={() => setIsShowingDetail((v) => !v)} />
+            return <IssueItem key={item.issue.id} issue={item.issue} onToggleShowingDetail={() => setIsShowingDetail((v) => !v)} />
           }
           return null;
         })}
