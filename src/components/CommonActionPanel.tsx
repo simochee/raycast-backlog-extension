@@ -3,7 +3,7 @@ import { useSpaces } from "../hooks/useSpaces";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { SpaceForm } from "./SpaceForm";
 import { useCredentials } from "../hooks/useCredentials";
-import { SpaceCredentials } from "../types/space";
+import type { SpaceCredentials } from "../utils/credentials";
 
 type Props = {
   children?: React.ReactNode | Promise<React.ReactNode>;
@@ -19,7 +19,7 @@ export const CommonActionPanel = ({ children }: Props) => {
 
   const handleAddSpace = async (values: SpaceCredentials) => {
     await addCredential(values);
-    currentSpace.setSpaceKey(values.spaceKey);
+    // currentSpace.setSpaceKey(values.spaceKey);
     pop();
   };
 

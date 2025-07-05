@@ -1,7 +1,6 @@
 import { Keyboard, launchCommand, LaunchProps, LaunchType, MenuBarExtra } from "@raycast/api";
-import { useCachedPromise, useCachedState, usePromise } from "@raycast/utils";
+import { useCachedState } from "@raycast/utils";
 import * as v from "valibot";
-import { getUnreadCounts } from "./utils/unread";
 import { useSpaces } from "./hooks/useSpaces";
 
 const ContextSchema = v.object({
@@ -28,7 +27,7 @@ const Command = (props: LaunchProps) => {
 
   return (
     <MenuBarExtra
-      icon={{ source: { dark: "icon-white.png", light: "icon-black.png" } }}
+      icon={{ source: totalCount > 0 ? 'icon.png' : { dark: "icon-white.png", light: "icon-black.png" } }}
       title={totalCount === 0 ? "All read" : `${totalCount} unread`}
     >
       {spaces?.map(({ space, domain, apiKey }, index) => {

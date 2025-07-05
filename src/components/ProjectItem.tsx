@@ -75,7 +75,7 @@ export const ProjectItem = ({ project }: Props) => {
             <Action.OpenInBrowser
               title="Subversion"
               url={`https://${currentSpace.host}/subversion/${project.projectKey}`}
-              shortcut={{ modifiers: ["cmd"], key: "s" }}
+              shortcut={{ modifiers: ["cmd"], key: "r" }}
               icon={Icon.Code}
             />
           )}
