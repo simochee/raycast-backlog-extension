@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Form } from "@raycast/api";
+import { Action, ActionPanel, Alert, confirmAlert, Form } from "@raycast/api";
 import { FormValidation, useForm } from "@raycast/utils";
 import { SpaceCredentials } from "../types/space";
 import { getSpaceWithCache } from "../utils/space";
@@ -6,6 +6,7 @@ import { getSpaceWithCache } from "../utils/space";
 type Props = {
   initialValues?: SpaceCredentials;
   onSubmit(values: SpaceCredentials): void;
+  onDelete?(spaceKey: string): void;
 };
 
 type FormSchema = {
@@ -13,7 +14,7 @@ type FormSchema = {
   apiKey: string;
 };
 
-export const SpaceForm = ({ initialValues, onSubmit }: Props) => {
+export const SpaceForm = ({ initialValues, onSubmit, onDelete }: Props) => {
   const { handleSubmit, itemProps } = useForm<FormSchema>({
     async onSubmit(values) {
       const backlogDomains = ["backlog.com", "backlog.jp"] as const;
@@ -39,11 +40,31 @@ export const SpaceForm = ({ initialValues, onSubmit }: Props) => {
     },
   });
 
+  const handleDelete = async () => {
+    if (!initialValues) {
+      return;
+    }
+
+    await confirmAlert({
+      title: "Delete Space",
+      message: "Are you sure you want to delete this space?",
+      primaryAction: {
+        title: "Delete",
+        style: Alert.ActionStyle.Destructive,
+        onAction() {
+          onDelete?.(initialValues.spaceKey);
+        },
+      },
+    });
+  };
+
   return (
     <Form
+      navigationTitle={initialValues ? "Edit Space" : "Add Space"}
       actions={
         <ActionPanel>
           <Action.SubmitForm title="Add Space" onSubmit={handleSubmit} />
+          {onDelete && <Action title="Delete Space" onAction={handleDelete} />}
         </ActionPanel>
       }
     >

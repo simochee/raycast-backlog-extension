@@ -4,10 +4,12 @@ import { useCredentials } from "../hooks/useCredentials";
 import { usePromise } from "@raycast/utils";
 import { getSpaceWithCache } from "../utils/space";
 import { SpaceCredentials } from "../types/space";
+import { useCurrentSpace } from "../hooks/useCurrentSpace";
 
 export const SpaceList = () => {
   const { pop } = useNavigation();
-  const { credentials, addCredential, updateCredential } = useCredentials();
+  const { credentials, addCredential, updateCredential, removeCredential } = useCredentials();
+  const currentSpace = useCurrentSpace();
 
   const { isLoading, data } = usePromise(
     async (credentials: SpaceCredentials[]) =>
@@ -26,6 +28,7 @@ export const SpaceList = () => {
 
   return (
     <List
+      navigationTitle="Manage Spaces"
       isLoading={isLoading}
       actions={
         <ActionPanel>
@@ -33,8 +36,8 @@ export const SpaceList = () => {
             title="Add Space"
             target={
               <SpaceForm
-                onSubmit={async (credential) => {
-                  await addCredential(credential);
+                onSubmit={(credential) => {
+                  addCredential(credential);
                   pop();
                 }}
               />
@@ -49,17 +52,18 @@ export const SpaceList = () => {
           title={name}
           subtitle={spaceKey}
           icon={`https://${spaceKey}.${domain}/api/v2/space/image?apiKey=${apiKey}`}
-          accessories={[{ icon: Icon.Check }]}
+          accessories={currentSpace.spaceKey === spaceKey ? [{ icon: Icon.Check }] : []}
           actions={
             <ActionPanel>
-              <Action title="Switch" onAction={() => {}} />
+              <Action title="Switch" onAction={() => currentSpace.setSpaceKey(spaceKey)} />
               <Action.Push
                 title="Manage"
                 target={
                   <SpaceForm
                     initialValues={{ spaceKey, apiKey, domain }}
-                    onSubmit={async (credential) => {
-                      await updateCredential(credential);
+                    onSubmit={updateCredential}
+                    onDelete={(spaceKey) => {
+                      removeCredential(spaceKey);
                       pop();
                     }}
                   />
@@ -69,8 +73,8 @@ export const SpaceList = () => {
                 title="Add Space"
                 target={
                   <SpaceForm
-                    onSubmit={async (credential) => {
-                      await addCredential(credential);
+                    onSubmit={(credential) => {
+                      addCredential(credential);
                       pop();
                     }}
                   />
