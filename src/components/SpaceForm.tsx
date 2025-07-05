@@ -45,7 +45,11 @@ export const SpaceForm = ({ initialValues, onSubmit }: Props) => {
         <Action.SubmitForm title="Add Space" onSubmit={handleSubmit} />
       </ActionPanel>
     }>
+      {initialValues ? (
+        <Form.Description title="Space Key" text={initialValues.spaceKey} />
+      ) : (
       <Form.TextField title="Space Key" {...itemProps.spaceKey} />
+      )}
       <Form.TextField title="API Key" {...itemProps.apiKey} />
     </Form>
   )
