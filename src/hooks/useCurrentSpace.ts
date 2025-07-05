@@ -6,7 +6,7 @@ import { useMemo } from "react";
 
 export const useCurrentSpace = () => {
   const { credentials } = useCredentials();
-  const [currentSpaceId, setCurrentSpaceId] = useCachedState<string | undefined>('current-space-id')
+  const [currentSpaceId, setCurrentSpaceId] = useCachedState<string | undefined>("current-space-id");
 
   const credential = credentials.find((credential) => credential.spaceKey === currentSpaceId) || credentials[0];
 
@@ -16,10 +16,10 @@ export const useCurrentSpace = () => {
   const host = `${spaceKey}.${domain}`;
 
   const api = useMemo(() => {
-    if (!spaceKey || !apiKey || !domain) return
+    if (!spaceKey || !apiKey || !domain) return;
 
-    return new Backlog({ host: `${spaceKey}.${domain}`, apiKey })
-  }, [spaceKey, apiKey, domain])
+    return new Backlog({ host: `${spaceKey}.${domain}`, apiKey });
+  }, [spaceKey, apiKey, domain]);
 
   const { data: space } = usePromise(
     async (spaceKey: string | undefined, domain: string | undefined, apiKey: string | undefined) => {

@@ -27,8 +27,8 @@ export const getSpaceWithCache = async (spaceKey: string, domain: string, apiKey
 
   const api = new Backlog({ host, apiKey });
   const space = await dedupe(api.getSpace.bind(api));
-  
-    cache.set(space);
-  
-    return space;
+
+  cache.set(space);
+
+  return space;
 };

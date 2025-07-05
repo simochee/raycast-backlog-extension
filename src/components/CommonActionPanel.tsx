@@ -7,34 +7,34 @@ import { SpaceCredentials } from "../types/space";
 
 type Props = {
   children?: React.ReactNode | Promise<React.ReactNode>;
-}
+};
 
 export const CommonActionPanel = ({ children }: Props) => {
-  const { pop } = useNavigation()
-  const { addCredential, updateCredential, removeCredential } = useCredentials()
+  const { pop } = useNavigation();
+  const { addCredential, updateCredential, removeCredential } = useCredentials();
   const currentSpace = useCurrentSpace();
 
-  const [spaces] = useSpaces()
-  const sortedSpaces = spaces?.slice().sort((a) => a.space.spaceKey === currentSpace.spaceKey ? -1 : 1)
+  const [spaces] = useSpaces();
+  const sortedSpaces = spaces?.slice().sort((a) => (a.space.spaceKey === currentSpace.spaceKey ? -1 : 1));
 
   const handleAddSpace = (values: SpaceCredentials) => {
     addCredential(values);
-    currentSpace.setSpaceKey(values.spaceKey)
-    pop()
-  }
+    currentSpace.setSpaceKey(values.spaceKey);
+    pop();
+  };
 
   const handleUpdateSpace = (values: SpaceCredentials) => {
     updateCredential(values);
-    pop()
-  }
+    pop();
+  };
 
   const handleDeleteSpace = (spaceKey: string) => {
-    removeCredential(spaceKey)
+    removeCredential(spaceKey);
     if (currentSpace.spaceKey === spaceKey) {
-      currentSpace.setSpaceKey(sortedSpaces?.[0]?.space.spaceKey ?? "")
+      currentSpace.setSpaceKey(sortedSpaces?.[0]?.space.spaceKey ?? "");
     }
-    pop()
-  }
+    pop();
+  };
 
   return (
     <ActionPanel>
@@ -43,25 +43,44 @@ export const CommonActionPanel = ({ children }: Props) => {
         <ActionPanel.Section title="Spaces">
           {sortedSpaces && sortedSpaces.length > 0 && (
             <>
-          <ActionPanel.Submenu title="Switch" shortcut={{ modifiers: ['cmd'], key: 's' }}>
-            {sortedSpaces.map(({ space, domain, apiKey }, index) => (
-              <Action key={space.spaceKey} title={`${space.name} (${space.spaceKey})`} icon={index === 0 ? { source: Icon.CheckCircle, tintColor: Color.Green } : `https://${space.spaceKey}.${domain}/api/v2/space/image?apiKey=${apiKey}`} onAction={() => currentSpace.setSpaceKey(space.spaceKey)} />
-            ))}
-          </ActionPanel.Submenu>
-          <ActionPanel.Submenu title="Manage">
-            {sortedSpaces.map(({ space, domain, apiKey }) => (
-              <Action.Push key={space.spaceKey}
-                title={`${space.name} (${space.spaceKey})`} icon={`https://${space.spaceKey}.${domain}/api/v2/space/image?apiKey=${apiKey}`} target={<SpaceForm initialValues={{ spaceKey: space.spaceKey, domain: domain, apiKey: apiKey }} onSubmit={handleUpdateSpace} onDelete={handleDeleteSpace} />} />
-            ))}
-          </ActionPanel.Submenu>
+              <ActionPanel.Submenu title="Switch" shortcut={{ modifiers: ["cmd"], key: "s" }}>
+                {sortedSpaces.map(({ space, domain, apiKey }, index) => (
+                  <Action
+                    key={space.spaceKey}
+                    title={`${space.name} (${space.spaceKey})`}
+                    icon={
+                      index === 0
+                        ? { source: Icon.CheckCircle, tintColor: Color.Green }
+                        : `https://${space.spaceKey}.${domain}/api/v2/space/image?apiKey=${apiKey}`
+                    }
+                    onAction={() => currentSpace.setSpaceKey(space.spaceKey)}
+                  />
+                ))}
+              </ActionPanel.Submenu>
+              <ActionPanel.Submenu title="Manage">
+                {sortedSpaces.map(({ space, domain, apiKey }) => (
+                  <Action.Push
+                    key={space.spaceKey}
+                    title={`${space.name} (${space.spaceKey})`}
+                    icon={`https://${space.spaceKey}.${domain}/api/v2/space/image?apiKey=${apiKey}`}
+                    target={
+                      <SpaceForm
+                        initialValues={{ spaceKey: space.spaceKey, domain: domain, apiKey: apiKey }}
+                        onSubmit={handleUpdateSpace}
+                        onDelete={handleDeleteSpace}
+                      />
+                    }
+                  />
+                ))}
+              </ActionPanel.Submenu>
             </>
           )}
-          <Action.Push title="Add Space" target={<SpaceForm onSubmit={handleAddSpace } />} />
+          <Action.Push title="Add Space" target={<SpaceForm onSubmit={handleAddSpace} />} />
         </ActionPanel.Section>
         <ActionPanel.Submenu title="Help">
           <Action title="Clear Cached Data" icon={Icon.Check} />
         </ActionPanel.Submenu>
       </>
     </ActionPanel>
-  )
-}
+  );
+};

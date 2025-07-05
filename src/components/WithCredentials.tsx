@@ -6,8 +6,8 @@ type Props = {
 };
 
 export const WithCredentials = ({ children }: Props) => {
-  const { credentials, addCredential} = useCredentials();
-  
+  const { credentials, addCredential } = useCredentials();
+
   if (credentials.length === 0) {
     return <SpaceForm onSubmit={addCredential} />;
   }

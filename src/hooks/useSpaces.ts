@@ -3,7 +3,7 @@ import { getSpaceWithCache } from "../utils/space";
 import { useCredentials } from "./useCredentials";
 
 export const useSpaces = () => {
-  const { credentials } = useCredentials()
+  const { credentials } = useCredentials();
 
   const { isLoading, data } = useCachedPromise(
     async (creds: typeof credentials) =>
@@ -21,4 +21,4 @@ export const useSpaces = () => {
   );
 
   return [data, { isLoading }] as const;
-}
+};

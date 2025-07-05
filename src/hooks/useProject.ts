@@ -1,6 +1,6 @@
-import { usePromise } from "@raycast/utils"
-import { useCurrentSpace } from "./useCurrentSpace"
-import { createCache } from "../utils/cache"
+import { usePromise } from "@raycast/utils";
+import { useCurrentSpace } from "./useCurrentSpace";
+import { createCache } from "../utils/cache";
 import * as v from "valibot";
 import { dedupe } from "../utils/promise-dedupe";
 
@@ -22,16 +22,16 @@ const schema = v.object({
   archived: v.optional(v.boolean()),
   displayOrder: v.optional(v.number()),
   useDevAttributes: v.optional(v.boolean()),
-})
+});
 
 export const useProject = (projectId: number) => {
-  const currentSpace = useCurrentSpace()
+  const currentSpace = useCurrentSpace();
 
   const { data, isLoading } = usePromise(
     async (api: typeof currentSpace.api, spaceKey: typeof currentSpace.spaceKey, projectId: number) => {
       if (!api || !spaceKey) return;
-      
-      const cache = createCache([spaceKey, 'project', projectId.toString()], schema)
+
+      const cache = createCache([spaceKey, "project", projectId.toString()], schema);
       const cached = cache.get();
 
       if (cached) return cached;
@@ -43,7 +43,7 @@ export const useProject = (projectId: number) => {
       return project;
     },
     [currentSpace.api, currentSpace.spaceKey, projectId],
-  )
+  );
 
   return [data, { isLoading }] as const;
-}
+};
