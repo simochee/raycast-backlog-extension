@@ -2,6 +2,7 @@ import { usePromise } from "@raycast/utils"
 import { useCurrentSpace } from "./useCurrentSpace"
 import { createCache } from "../utils/cache"
 import * as v from "valibot";
+import { dedupe } from "../utils/promise-dedupe";
 
 const schema = v.object({
   id: v.number(),
@@ -32,10 +33,10 @@ export const useProject = (projectId: number) => {
       
       const cache = createCache([spaceKey, 'project', projectId.toString()], schema)
       const cached = cache.get();
-      
+
       if (cached) return cached;
 
-      const project = await api.getProject(projectId);
+      const project = await dedupe(api.getProject.bind(api), projectId);
 
       cache.set(project);
 

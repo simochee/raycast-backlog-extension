@@ -1,6 +1,7 @@
 import { Backlog } from "backlog-js";
 import { createCache } from "./cache";
 import * as v from "valibot";
+import { dedupe } from "./promise-dedupe";
 
 const schema = v.object({
   spaceKey: v.string(),
@@ -24,8 +25,8 @@ export const getSpaceWithCache = async (spaceKey: string, domain: string, apiKey
     return cached;
   }
 
-  const backlog = new Backlog({ host, apiKey });
-    const space = await backlog.getSpace();
+  const api = new Backlog({ host, apiKey });
+  const space = await dedupe(api.getSpace.bind(api));
   
     cache.set(space);
   
