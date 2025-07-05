@@ -8,13 +8,6 @@
   "license": "MIT",
   "commands": [
     {
-      "name": "my-issues",
-      "title": "My Issues",
-      "subtitle": "Backlog",
-      "description": "",
-      "mode": "view"
-    },
-    {
       "name": "notifications",
       "title": "Notifications",
       "subtitle": "Backlog",

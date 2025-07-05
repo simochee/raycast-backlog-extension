@@ -3,7 +3,7 @@ import { WithCredentials } from "./components/WithCredentials";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { usePromise } from "@raycast/utils";
 import type { Backlog, Option } from "backlog-js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IssueItem } from "./components/IssueItem";
 import { WikiItem } from "./components/WikiItem";
 import { ProjectItem } from "./components/ProjectItem";
@@ -33,6 +33,12 @@ export default function Command() {
     },
     [type, currentSpace.api],
   );
+
+  useEffect(() => {
+    if (type !== 'issue') {
+      setIsShowingDetail(false)
+    }
+  }, [type])
 
   return (
     <WithCredentials>
