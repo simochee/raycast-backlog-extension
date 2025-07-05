@@ -1,0 +1,42 @@
+import { Cache } from "@raycast/api";
+import * as v from 'valibot';
+
+const cache = new Cache();
+
+/**
+ * Cache wrapper that validates and expires the cache.
+ */
+export const createCache = <const T extends v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>>(
+  keyOrArray: string | string[],
+  schema: T,
+  expiresIn = 60 * 60 * 24 * 30, // 30 days
+) => {
+  const key = Array.isArray(keyOrArray) ? keyOrArray.join('-') : keyOrArray;
+  
+  const schemaWithTimestamp = v.object({
+    value: schema,
+    timestamp: v.number(),
+  });
+  
+  const get = async () => {
+    const cached = await cache.get(key);
+    if (cached) {
+      const parsed = v.parse(schemaWithTimestamp, JSON.parse(cached));
+      if (!parsed.timestamp || parsed.timestamp + expiresIn > Date.now()) {
+        return parsed.value;
+      }
+      cache.remove(key);
+    }
+    return;
+  };
+
+  const set = async (value: unknown) => { 
+    const validated = v.parse(schema, value);
+    await cache.set(key, JSON.stringify({
+      value: validated,
+      timestamp: Date.now(),
+    }));
+  };
+
+  return { get, set };
+}

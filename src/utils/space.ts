@@ -1,27 +1,33 @@
-import { Cache } from '@raycast/api';
 import { Backlog, type Entity } from 'backlog-js';
+import { createCache } from './cache';
+import * as v from 'valibot';
 
-const cache = new Cache();
+const schema = v.object({
+  spaceKey: v.string(),
+  name: v.string(),
+  ownerId: v.number(),
+  lang: v.string(),
+  timezone: v.string(),
+  reportSendTime: v.string(),
+  textFormattingRule: v.string(),
+  created: v.string(),
+  updated: v.string(),
+})
 
 export const getSpaceWithCache = async (spaceKey: string, domain: string, apiKey: string) => {
-  const host = `${spaceKey}.${domain}`;
-  const cacheKey = `backlog-space-${host}`;
-  const cached = await cache.get(cacheKey);
+  const cache = createCache([spaceKey, 'space'], schema)
 
-  console.log(cached);
+  const host = `${spaceKey}.${domain}`;
+  const cached = await cache.get();
 
   if (cached) {
-    return JSON.parse(cached) as Entity.Space.Space;
+    return cached;
   }
 
-  console.log(host, apiKey)
-  
   const backlog = new Backlog({ host, apiKey });
   const space = await backlog.getSpace();
 
-  console.log(space);
-
-  cache.set(cacheKey, JSON.stringify(space));
+  cache.set(space);
 
   return space;
 }

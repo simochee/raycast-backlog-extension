@@ -39,7 +39,8 @@
   "dependencies": {
     "@raycast/api": "^1.100.3",
     "@raycast/utils": "^1.17.0",
-    "backlog-js": "^0.13.6"
+    "backlog-js": "^0.13.6",
+    "valibot": "^1.1.0"
   },
   "devDependencies": {
     "@raycast/eslint-config": "^2.0.4",
