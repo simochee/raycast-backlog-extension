@@ -6,6 +6,7 @@ import type { Backlog, Option } from "backlog-js";
 import { useState } from "react";
 import { SpaceList } from "./components/SpaceList";
 import { IssueItem } from "./components/IssueItem";
+import { WikiItem } from "./components/WikiItem";
 
 export default function Command() {
   const [type, setType] = useState<string>('issue');
@@ -45,11 +46,7 @@ export default function Command() {
         {data?.map((item) => {
           // Wikis
           if ('page' in item) {
-            return (
-              <List.Item
-                title={item.page.name}
-              />
-            )
+            return <WikiItem page={item.page} />
           }
           if ('issue' in item) {
             return <IssueItem issue={item.issue} onToggleShowingDetail={() => setIsShowingDetail((v) => !v)} />

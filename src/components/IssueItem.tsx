@@ -44,7 +44,7 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
               <List.Item.Detail.Metadata.Label title="Issue Type" text={issue.issueType.name} icon={{ source: Icon.CircleFilled, tintColor: issue.issueType.color }} />
               <List.Item.Detail.Metadata.Label title="Status" text={issue.status.name} icon={{ source: Icon.CircleFilled, tintColor: issue.status.color }} />
               <List.Item.Detail.Metadata.Label title="Assignee" text={issue.assignee?.name} icon={issue.assignee ? { source: `https://${currentSpace.host}/api/v2/users/${issue.assignee.id}/icon?apiKey=${currentSpace.apiKey}`, mask: Image.Mask.Circle } : null} />
-              <List.Item.Detail.Metadata.Label title="Due Date" text={issue.dueDate ? new Date(issue.dueDate).toLocaleDateString() : ''} icon={{ source: Icon.Calendar }} />
+              <List.Item.Detail.Metadata.Label title="Due Date" text={issue.dueDate ? new Date(issue.dueDate).toLocaleDateString() : ''} icon={issue.dueDate ? { source: Icon.Calendar } : null} />
               <List.Item.Detail.Metadata.Label title="Priority" text={issue.priority.name} icon={{ source: Icon.ArrowDown, tintColor: issue.priority.id === 4 ? Color.Green : issue.priority.id === 2 ? Color.Red : Color.Blue }} />
               <List.Item.Detail.Metadata.Label title="Category" text={issue.category.map((c) => c.name).join(', ')} />
               <List.Item.Detail.Metadata.Label title="Milestone" text={issue.milestone.map((m) => m.name).join(', ')} />
@@ -73,7 +73,7 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
           <Action.CopyToClipboard title="Copy Issue Key" content={issue.issueKey} shortcut={{ modifiers: ['cmd'], key: 'c' }} />
           <Action.CopyToClipboard title="Copy Issue Key and Subject" content={`${issue.issueKey} ${issue.summary}`} shortcut={{ modifiers: ['cmd', 'shift'], key: 'c' }} />
           <Action.CopyToClipboard title="Copy URL" content={`https://${currentSpace.host}/view/${issue.issueKey}`} shortcut={{ modifiers: ['cmd', 'shift'], key: 'u' }} />
-          <Action title="Toggle Detail" shortcut={{ modifiers: ['cmd', 'shift'], key: 'f'}} onAction={onToggleShowingDetail} />
+          <Action title="Toggle Detail" icon={Icon.AppWindowSidebarRight} shortcut={{ modifiers: ['cmd', 'shift'], key: 'f'}} onAction={onToggleShowingDetail} />
         </ActionPanel>
       }
     />
