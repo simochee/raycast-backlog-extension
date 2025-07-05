@@ -29,7 +29,7 @@ export const useCurrentSpace = () => {
 
       return await getSpaceWithCache(spaceKey, domain, apiKey);
     },
-    [spaceKey, apiKey, domain],
+    [spaceKey, domain, apiKey],
   );
 
   const setSpaceKey = (spaceKey: string) => {

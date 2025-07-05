@@ -1,6 +1,7 @@
 import type { Entity } from "backlog-js"
 import { Action, ActionPanel, Color, Icon, Image, List } from '@raycast/api'
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
+import { useProject } from "../hooks/useProject";
 
 type Props = {
   issue: Entity.Issue.Issue;
@@ -9,6 +10,7 @@ type Props = {
 
 export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
   const currentSpace = useCurrentSpace();
+  const [project] = useProject(issue.projectId);
 
   const accessories: List.Item.Accessory[] = []
 
@@ -45,10 +47,16 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
               <List.Item.Detail.Metadata.Label title="Status" text={issue.status.name} icon={{ source: Icon.CircleFilled, tintColor: issue.status.color }} />
               <List.Item.Detail.Metadata.Label title="Assignee" text={issue.assignee?.name} icon={issue.assignee ? { source: `https://${currentSpace.host}/api/v2/users/${issue.assignee.id}/icon?apiKey=${currentSpace.apiKey}`, mask: Image.Mask.Circle } : null} />
               <List.Item.Detail.Metadata.Label title="Due Date" text={issue.dueDate ? new Date(issue.dueDate).toLocaleDateString() : ''} icon={issue.dueDate ? { source: Icon.Calendar } : null} />
+              {project?.useDevAttributes && (
               <List.Item.Detail.Metadata.Label title="Priority" text={issue.priority.name} icon={{ source: Icon.ArrowDown, tintColor: issue.priority.id === 4 ? Color.Green : issue.priority.id === 2 ? Color.Red : Color.Blue }} />
+              )}
               <List.Item.Detail.Metadata.Label title="Category" text={issue.category.map((c) => c.name).join(', ')} />
+              {project?.useDevAttributes && (
+                <>
               <List.Item.Detail.Metadata.Label title="Milestone" text={issue.milestone.map((m) => m.name).join(', ')} />
               <List.Item.Detail.Metadata.Label title="Version" text={issue.versions.map((v) => v.name).join(', ')} />
+                </>
+              )}
               <List.Item.Detail.Metadata.Label title="Resolution" text={issue.resolution?.name} />
               {issue.customFields.length > 0 && (
                 <>

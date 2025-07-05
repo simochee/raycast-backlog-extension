@@ -1,6 +1,7 @@
 import { Action, ActionPanel, Color, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
+import { useProject } from "../hooks/useProject";
 
 type Props = {
   page: Entity.Wiki.WikiListItem;
@@ -8,11 +9,12 @@ type Props = {
 
 export const WikiItem = ({ page}: Props) => {
   const currentSpace = useCurrentSpace()
+  const [project] = useProject(page.projectId)
   
   return (
     <List.Item
       title={page.name}
-      subtitle={'TEST_PROJECT'}
+      subtitle={project?.projectKey}
       icon={`https://${currentSpace.host}/api/v2/projects/${page.projectId}/image?apiKey=${currentSpace.apiKey}`}
       accessories={[
         ...page.tags.map(({ name }) => ({ tag: { value: name, color: Color.Green } })),

@@ -25,9 +25,9 @@ export const getSpaceWithCache = async (spaceKey: string, domain: string, apiKey
   }
 
   const backlog = new Backlog({ host, apiKey });
-  const space = await backlog.getSpace();
-
-  cache.set(space);
-
-  return space;
+    const space = await backlog.getSpace();
+  
+    cache.set(space);
+  
+    return space;
 };

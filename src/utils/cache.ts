@@ -18,21 +18,25 @@ export const createCache = <const T extends v.BaseSchema<unknown, unknown, v.Bas
     timestamp: v.number(),
   });
 
-  const get = async () => {
-    const cached = await cache.get(key);
-    if (cached) {
-      const parsed = v.parse(schemaWithTimestamp, JSON.parse(cached));
-      if (!parsed.timestamp || parsed.timestamp + expiresIn > Date.now()) {
-        return parsed.value;
+  const get = () => {
+    try {
+      const cached = cache.get(key);
+      if (cached) {
+        const parsed = v.parse(schemaWithTimestamp, JSON.parse(cached));
+        if (!parsed.timestamp || parsed.timestamp + expiresIn > Date.now()) {
+          return parsed.value;
+        }
+        cache.remove(key);
       }
-      cache.remove(key);
+      return;
+    } catch {
+      return;
     }
-    return;
   };
 
-  const set = async (value: unknown) => {
+  const set = (value: unknown) => {
     const validated = v.parse(schema, value);
-    await cache.set(
+    cache.set(
       key,
       JSON.stringify({
         value: validated,
