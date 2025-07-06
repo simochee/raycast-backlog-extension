@@ -4,6 +4,7 @@ import { withProviders } from "./utils/providers";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Backlog } from "backlog-js";
 import { getSpaceHost } from "./utils/space";
+import { getSpaceImageUrl } from "./utils/image";
 
 const Command = () => {
   const spaces = useSpaces();
@@ -54,7 +55,7 @@ const Command = () => {
         return (
           <MenuBarExtra.Item
             key={spaceKey}
-            icon={`https://${getSpaceHost(credential)}/api/v2/space/image?apiKey=${credential.apiKey}`}
+            icon={getSpaceImageUrl(credential)}
             title={name}
             subtitle={unreadCount ? `${unreadCount} unread` : undefined}
             tooltip={`${name} (${spaceKey})`}

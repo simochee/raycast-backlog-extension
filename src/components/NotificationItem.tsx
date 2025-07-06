@@ -2,6 +2,7 @@ import { Action, Color, Icon, Image, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 import { CommonActionPanel } from "./CommonActionPanel";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
+import { getUserIconUrl } from "../utils/image";
 
 type Props = {
   notification: Entity.Notification.Notification;
@@ -15,7 +16,7 @@ export const NotificationItem = ({
   const accessories: List.Item.Accessory[] = [
     {
       icon: {
-        source: `https://${currentSpace.host}/api/v2/users/${sender.id}/icon?apiKey=${currentSpace.apiKey}`,
+        source: getUserIconUrl(currentSpace.credential, sender.id),
         mask: Image.Mask.Circle,
       },
       tooltip: sender.name,

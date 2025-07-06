@@ -2,6 +2,7 @@ import { Action, Icon, List } from "@raycast/api";
 import { Entity } from "backlog-js";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { CommonActionPanel } from "./CommonActionPanel";
+import { getProjectImageUrl } from "../utils/image";
 
 type Props = {
   project: Entity.Project.Project;
@@ -14,7 +15,7 @@ export const ProjectItem = ({ project }: Props) => {
     <List.Item
       title={project.name}
       subtitle={project.projectKey}
-      icon={`https://${currentSpace.host}/api/v2/projects/${project.projectKey}/image?apiKey=${currentSpace.apiKey}`}
+      icon={getProjectImageUrl(currentSpace.credential, project.projectKey)}
       actions={
         <CommonActionPanel>
           <Action.OpenInBrowser

@@ -3,6 +3,7 @@ import type { Entity } from "backlog-js";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { useProject } from "../hooks/useProject";
 import { CommonActionPanel } from "./CommonActionPanel";
+import { getProjectImageUrl } from "../utils/image";
 
 type Props = {
   page: Entity.Wiki.WikiListItem;
@@ -16,7 +17,7 @@ export const WikiItem = ({ page }: Props) => {
     <List.Item
       title={page.name}
       subtitle={project?.projectKey}
-      icon={`https://${currentSpace.host}/api/v2/projects/${page.projectId}/image?apiKey=${currentSpace.apiKey}`}
+      icon={getProjectImageUrl(currentSpace.credential, page.projectId)}
       accessories={[
         ...page.tags.map(({ name }) => ({ tag: { value: name, color: Color.Green } })),
         { date: new Date(page.updated) },

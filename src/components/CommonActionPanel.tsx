@@ -6,6 +6,7 @@ import { useCredentials } from "../hooks/useCredentials";
 import type { SpaceCredentials } from "../utils/credentials";
 import { getSpaceHost } from "../utils/space";
 import { cache } from "../utils/cache";
+import { getSpaceImageUrl } from "../utils/image";
 
 type Props = {
   children?: React.ReactNode | Promise<React.ReactNode>;
@@ -53,7 +54,7 @@ export const CommonActionPanel = ({ children }: Props) => {
                     icon={
                       index === 0
                         ? { source: Icon.CheckCircle, tintColor: Color.Green }
-                        : `https://${getSpaceHost(credential)}/api/v2/space/image?apiKey=${credential.apiKey}`
+                        : getSpaceImageUrl(credential)
                     }
                     onAction={() => currentSpace.setSpaceKey(spaceKey)}
                   />
@@ -64,7 +65,7 @@ export const CommonActionPanel = ({ children }: Props) => {
                   <Action.Push
                     key={spaceKey}
                     title={`Edit ${name} (${spaceKey})`}
-                    icon={`https://${getSpaceHost(credential)}/api/v2/space/image?apiKey=${credential.apiKey}`}
+                    icon={getSpaceImageUrl(credential)}
                     target={
                       <SpaceForm initialValues={credential} onSubmit={handleUpdateSpace} onDelete={handleDeleteSpace} />
                     }

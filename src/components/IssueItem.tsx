@@ -3,6 +3,7 @@ import { Action, Color, Icon, Image, List } from "@raycast/api";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { useProject } from "../hooks/useProject";
 import { CommonActionPanel } from "./CommonActionPanel";
+import { getProjectImageUrl, getUserIconUrl } from "../utils/image";
 
 type Props = {
   issue: Entity.Issue.Issue;
@@ -43,7 +44,7 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
   // Assignee
     accessories.push({
       icon: issue.assignee ? {
-        source: `https://${currentSpace.host}/api/v2/users/${issue.assignee.id}/icon?apiKey=${currentSpace.apiKey}`,
+        source: getUserIconUrl(currentSpace.credential, issue.assignee.id),
         mask: Image.Mask.Circle,
       } : { source: Icon.PersonLines, tintColor: Color.SecondaryText },
       tooltip: issue.assignee?.name ?? "Unassigned",
@@ -53,7 +54,7 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
     <List.Item
       title={issue.summary}
       subtitle={issue.issueKey}
-      icon={`https://${currentSpace.host}/api/v2/projects/${issue.projectId}/image?apiKey=${currentSpace.apiKey}`}
+      icon={getProjectImageUrl(currentSpace.credential, issue.projectId)}
       detail={
         <List.Item.Detail
           markdown={issue.description}
@@ -77,7 +78,7 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
                 icon={
                   issue.assignee
                     ? {
-                        source: `https://${currentSpace.host}/api/v2/users/${issue.assignee.id}/icon?apiKey=${currentSpace.apiKey}`,
+                        source: getUserIconUrl(currentSpace.credential, issue.assignee.id),
                         mask: Image.Mask.Circle,
                       }
                     : null
