@@ -23,7 +23,7 @@ export const SpaceForm = ({ initialValues, onSubmit, onDelete }: Props) => {
         console.log("trying", domain);
 
         try {
-          const space = await getSpaceWithCache(values.spaceKey, domain, values.apiKey);
+          const space = await getSpaceWithCache({ spaceKey: values.spaceKey, domain, apiKey: values.apiKey });
 
           console.log(domain, space);
 
