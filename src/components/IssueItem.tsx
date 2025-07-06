@@ -33,26 +33,21 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
       icon: diffDays < 0 ? { source: Icon.Alarm, tintColor: Color.Red } : null,
     });
   }
-  // Assignee
-  if (issue.assignee) {
-    accessories.push({
-      icon: {
-        source: `https://${currentSpace.host}/api/v2/users/${issue.assignee.id}/icon?apiKey=${currentSpace.apiKey}`,
-        mask: Image.Mask.Circle,
-      },
-      tooltip: issue.assignee.name,
-    });
-  }
-  // Priority
-  accessories.push(
-    issue.priority.id === 4
-      ? { icon: { source: Icon.ArrowDown, tintColor: Color.Green } }
-      : issue.priority.id === 2
-        ? { icon: { source: Icon.ArrowUp, tintColor: Color.Red } }
-        : { icon: { source: Icon.ArrowRight, tintColor: Color.Blue } },
-  );
   // Status
   accessories.push({ tag: { value: issue.status.name, color: issue.status.color } });
+  // Priority
+  accessories.push({
+    icon: issue.priority.id === 4 ? { source: Icon.ArrowDown, tintColor: Color.Green } : issue.priority.id === 2 ? { source: Icon.ArrowUp, tintColor: Color.Red } : { source: Icon.ArrowRight, tintColor: Color.Blue },
+    tooltip: issue.priority.name,
+  })
+  // Assignee
+    accessories.push({
+      icon: issue.assignee ? {
+        source: `https://${currentSpace.host}/api/v2/users/${issue.assignee.id}/icon?apiKey=${currentSpace.apiKey}`,
+        mask: Image.Mask.Circle,
+      } : { source: Icon.PersonLines, tintColor: Color.SecondaryText },
+      tooltip: issue.assignee?.name ?? "Unassigned",
+    });
 
   return (
     <List.Item
