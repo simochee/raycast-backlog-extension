@@ -37,7 +37,7 @@ const Command = () => {
   }, [data]);
 
   return (
-    <List isShowingDetail actions={<CommonActionPanel></CommonActionPanel>}>
+    <List isShowingDetail actions={<CommonActionPanel />}>
       {groupedItems.map(({ label, items }) => (
         <List.Section key={label} title={label}>
           {items.map((notification) => (

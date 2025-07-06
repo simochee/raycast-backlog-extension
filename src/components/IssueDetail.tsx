@@ -21,58 +21,62 @@ export const IssueDetail = ({ component: Component, issue, project, comment }: P
       metadata={
         <Component.Metadata>
           <Component.Metadata.Label title="Subject" text={issue.summary} />
-          <Component.Metadata.Label title="Issue Key" text={issue.issueKey} />
-          <Component.Metadata.Label
-            title="Type"
-            text={issue.issueType.name}
-            icon={{ source: Icon.CircleFilled, tintColor: issue.issueType.color }}
-          />
-          <Component.Metadata.Label
-            title="Status"
-            text={issue.status.name}
-            icon={{ source: Icon.CircleFilled, tintColor: issue.status.color }}
-          />
+          <Component.Metadata.Separator />
+          <Component.Metadata.Link title="Issue Key" text={issue.issueKey} target={`https://${currentSpace.host}/view/${issue.issueKey}`} />
+          <Component.Metadata.TagList title="Type">
+            <Component.Metadata.TagList.Item text={issue.issueType.name} color={issue.issueType.color} />
+          </Component.Metadata.TagList>
+          <Component.Metadata.TagList title="Status">
+            <Component.Metadata.TagList.Item text={issue.status.name} color={issue.status.color} /> 
+            </Component.Metadata.TagList>
+            {issue.assignee && (
+
           <Component.Metadata.Label
             title="Assignee"
-            text={issue.assignee?.name ?? "Unassigned"}
-            icon={
-              issue.assignee
-                ? {
+            text={issue.assignee.name}
+            icon={{
                     source: getUserIconUrl(currentSpace.credential, issue.assignee.id),
                     mask: Image.Mask.Circle,
                   }
-                : null
             }
           />
+            )}
+            {issue.dueDate && (
           <Component.Metadata.Label
             title="Due Date"
-            text={issue.dueDate ? new Date(issue.dueDate).toLocaleDateString() : "No due date"}
-            icon={issue.dueDate ? { source: Icon.Calendar } : null}
+            text={new Date(issue.dueDate).toLocaleDateString()}
+            icon={{ source: Icon.Calendar }}
           />
-          {project?.useDevAttributes && (
-            <Component.Metadata.Label
-              title="Priority"
-              text={issue.priority.name}
-              icon={{
-                source: Icon.ArrowDown,
-                tintColor: issue.priority.id === 4 ? Color.Green : issue.priority.id === 2 ? Color.Red : Color.Blue,
-              }}
-            />
+            )}
+          {project?.useDevAttributes && issue.priority.id != null && (
+            <Component.Metadata.TagList title="Priority">
+              <Component.Metadata.TagList.Item text={issue.priority.name} color={issue.priority.id === 4 ? Color.Green : issue.priority.id === 2 ? Color.Red : Color.Blue} />
+            </Component.Metadata.TagList>
           )}
-          <Component.Metadata.Label title="Category" text={issue.category.map((c) => c.name).join(", ")} />
-          {project?.useDevAttributes && (
-            <>
-              <Component.Metadata.Label
-                title="Milestone"
-                text={issue.milestone.map((m) => m.name).join(", ")}
-              />
-              <Component.Metadata.Label
-                title="Version"
-                text={issue.versions.map((v) => v.name).join(", ")}
-              />
-            </>
+          {issue.category.length > 0 && (
+          <Component.Metadata.TagList title="Category">
+            {issue.category.map(({ id, name }) => (
+              <Component.Metadata.TagList.Item key={id} text={name} />
+            ))}
+          </Component.Metadata.TagList>
           )}
-          <Component.Metadata.Label title="Resolution" text={issue.resolution?.name} />
+          {project?.useDevAttributes && issue.milestone.length > 0 && (
+              <Component.Metadata.TagList title="Milestone">
+                {issue.milestone.map(({ id, name }) => (
+                  <Component.Metadata.TagList.Item key={id} text={name} />
+                ))}
+              </Component.Metadata.TagList>
+          )}
+          {project?.useDevAttributes && issue.versions.length > 0 && (
+              <Component.Metadata.TagList title="Version">
+                {issue.versions.map(({ id, name }) => (
+                  <Component.Metadata.TagList.Item key={id} text={name} />
+                ))}
+              </Component.Metadata.TagList>
+          )}
+          {issue.resolution && (
+          <Component.Metadata.Label title="Resolution" text={issue.resolution.name} />
+          )}
           {issue.customFields.length > 0 && (
             <>
               <Component.Metadata.Separator />
@@ -84,7 +88,9 @@ export const IssueDetail = ({ component: Component, issue, project, comment }: P
                       .join(", ")
                   : field.fieldTypeId === 4 && field.value
                     ? new Date(field.value).toLocaleDateString()
-                    : field.value || "";
+                    : field.value;
+
+                if (value == null) return null;
 
                 return <Component.Metadata.Label key={field.id} title={field.name} text={value} />;
               })}
