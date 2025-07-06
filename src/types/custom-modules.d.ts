@@ -50,4 +50,11 @@ declare module "valibot" {
   export default _default;
 }
 
+// React 17+ automatic JSX runtime (fallback re-export)
+declare module "react/jsx-runtime" {
+  export * from "react/jsx-runtime";
+  const _default: typeof import("react/jsx-runtime");
+  export default _default;
+}
+
 /* eslint-enable @typescript-eslint/no-explicit-any */
