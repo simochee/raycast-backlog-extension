@@ -1,10 +1,11 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CredentialsProvider } from "./CredentialsProvider";
+import type { ReactNode } from "react";
 
 const queryClient = new QueryClient();
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export const Providers = ({ children }: Props) => {

@@ -5,9 +5,10 @@ import { SpaceForm } from "./SpaceForm";
 import { useCredentials } from "../hooks/useCredentials";
 import type { SpaceCredentials } from "../utils/credentials";
 import { getSpaceHost } from "../utils/space";
+import type { ReactNode } from "react";
 
 type Props = {
-  children?: React.ReactNode | Promise<React.ReactNode>;
+  children?: ReactNode | Promise<ReactNode>;
 };
 
 export const CommonActionPanel = ({ children }: Props) => {

@@ -1,9 +1,10 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CredentialsProvider } from "../components/CredentialsProvider";
+import type { ComponentType, ReactNode } from "react";
 
 const queryClient = new QueryClient();
 
-const Providers = ({ children }: { children: React.ReactNode }) => {
+const Providers = ({ children }: { children: ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <CredentialsProvider>{children}</CredentialsProvider>
@@ -11,7 +12,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const withProviders = <P extends object>(Component: React.ComponentType<P>): React.ComponentType<P> => {
+export const withProviders = <P extends object>(Component: ComponentType<P>): ComponentType<P> => {
   const WrappedComponent = (props: P) => {
     return (
       <Providers>
