@@ -25,17 +25,9 @@ The first time you run any Backlog command, the extension will prompt you to ent
 
 > You can open the configuration view again at any time by running a Backlog command while holding the **⌥ Option** key.
 
-### Generate an API Key in Backlog
+### API Key
 
-1. Sign in to your Backlog space in a web browser.
-2. Click your avatar in the top-right corner and open **Personal settings**.
-3. Select **API** from the sidebar and click **Add API Key**.
-4. Give the key a name (e.g. "Raycast") and optionally set an expiration date.
-5. Click **Generate** and copy the key — you'll need it only once.
-
-You can now paste this key into the setup view in Raycast.
-
-More details: <https://developer.nulab.com/docs/backlog/auth/#api-key>
+Backlog の Web 画面 → **パーソナル設定** → **API** から発行・確認できます。詳しくは <https://developer.nulab.com/docs/backlog/auth/#api-key> を参照してください。
 
 ## Development
 
