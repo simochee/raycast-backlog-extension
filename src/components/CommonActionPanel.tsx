@@ -75,7 +75,7 @@ export const CommonActionPanel = ({ children }: Props) => {
           <Action.Push title="Add Space" target={<SpaceForm onSubmit={handleAddSpace} />} />
         </ActionPanel.Section>
         <ActionPanel.Submenu title="Help">
-          <Action title="Clear Cached Data" icon={Icon.Check} />
+          <Action title="Clear Cache" icon={Icon.Check} />
         </ActionPanel.Submenu>
       </>
     </ActionPanel>
