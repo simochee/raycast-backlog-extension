@@ -20,7 +20,7 @@ Quick access to your Backlog issues, projects and notifications directly from Ra
 The first time you run any Backlog command, the extension will prompt you to enter your credentials in an on-screen form.
 
 1. Launch a Backlog command (e.g. "Notifications").
-2. A setup view will appear — enter your **Space ID** and **API Key**.
+2. A setup view will appear — enter your **Space Key** (e.g. the "example" in `example.backlog.jp`) and **API Key**.
 3. Press **Save**. From now on the extension will use these credentials automatically.
 
 > You can open the configuration view again at any time by running a Backlog command while holding the **⌥ Option** key.
