@@ -38,17 +38,24 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
   accessories.push({ tag: { value: issue.status.name, color: issue.status.color } });
   // Priority
   accessories.push({
-    icon: issue.priority.id === 4 ? { source: Icon.ArrowDown, tintColor: Color.Green } : issue.priority.id === 2 ? { source: Icon.ArrowUp, tintColor: Color.Red } : { source: Icon.ArrowRight, tintColor: Color.Blue },
+    icon:
+      issue.priority.id === 4
+        ? { source: Icon.ArrowDown, tintColor: Color.Green }
+        : issue.priority.id === 2
+          ? { source: Icon.ArrowUp, tintColor: Color.Red }
+          : { source: Icon.ArrowRight, tintColor: Color.Blue },
     tooltip: issue.priority.name,
-  })
+  });
   // Assignee
-    accessories.push({
-      icon: issue.assignee ? {
-        source: getUserIconUrl(currentSpace.credential, issue.assignee.id),
-        mask: Image.Mask.Circle,
-      } : { source: Icon.PersonLines, tintColor: Color.SecondaryText },
-      tooltip: issue.assignee?.name ?? "Unassigned",
-    });
+  accessories.push({
+    icon: issue.assignee
+      ? {
+          source: getUserIconUrl(currentSpace.credential, issue.assignee.id),
+          mask: Image.Mask.Circle,
+        }
+      : { source: Icon.PersonLines, tintColor: Color.SecondaryText },
+    tooltip: issue.assignee?.name ?? "Unassigned",
+  });
 
   return (
     <List.Item

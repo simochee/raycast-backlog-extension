@@ -20,7 +20,9 @@ const Command = () => {
   const { data } = useSuspenseInfiniteQuery({
     queryKey: ["recent-viewed", currentSpace.spaceKey, type],
     staleTime: 1000 * 30, // 30 seconds
-    queryFn: ({ pageParam }): Promise<
+    queryFn: ({
+      pageParam,
+    }): Promise<
       Entity.Project.RecentlyViewedProject[] | Entity.Wiki.RecentlyViewedWiki[] | Entity.Issue.RecentlyViewedIssue[]
     > => {
       const params: Option.User.GetRecentlyViewedParams = {
@@ -38,11 +40,20 @@ const Command = () => {
       }
     },
     initialPageParam: 0,
-    getNextPageParam: (lastPage, pages) => lastPage.length === PER_PAGE ? pages.flat().length ?? null : null
+    getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? (pages.flat().length ?? null) : null),
   });
 
   const groupedItems = useMemo(() => {
-    return data.pages.flat().reduce<{ label: string; items:(Entity.Project.RecentlyViewedProject | Entity.Wiki.RecentlyViewedWiki | Entity.Issue.RecentlyViewedIssue)[] }[]>((acc, item) => {
+    return data.pages.flat().reduce<
+      {
+        label: string;
+        items: (
+          | Entity.Project.RecentlyViewedProject
+          | Entity.Wiki.RecentlyViewedWiki
+          | Entity.Issue.RecentlyViewedIssue
+        )[];
+      }[]
+    >((acc, item) => {
       const date = new Date(item.updated);
       const label = `${["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."][date.getMonth()]} ${date.getDate()}`;
 
@@ -55,8 +66,8 @@ const Command = () => {
         label,
         items: [item],
       });
-    }, [])
-  }, [data.pages])
+    }, []);
+  }, [data.pages]);
 
   useEffect(() => {
     if (type !== "issue") {
@@ -80,25 +91,25 @@ const Command = () => {
       {groupedItems.map(({ label, items }) => (
         <List.Section key={label} title={label}>
           {items.map((item) => {
-        // Projects
-        if ("project" in item) {
-          return <ProjectItem key={item.project.id} project={item.project} />;
-        }
-        // Wikis
-        if ("page" in item) {
-          return <WikiItem key={item.page.id} page={item.page} />;
-        }
-        // Issues
-        if ("issue" in item) {
-          return (
-            <IssueItem
-              key={item.issue.id}
-              issue={item.issue}
-              onToggleShowingDetail={() => setIsShowingDetail((v) => !v)}
-            />
-          );
-        }
-        return null;
+            // Projects
+            if ("project" in item) {
+              return <ProjectItem key={item.project.id} project={item.project} />;
+            }
+            // Wikis
+            if ("page" in item) {
+              return <WikiItem key={item.page.id} page={item.page} />;
+            }
+            // Issues
+            if ("issue" in item) {
+              return (
+                <IssueItem
+                  key={item.issue.id}
+                  issue={item.issue}
+                  onToggleShowingDetail={() => setIsShowingDetail((v) => !v)}
+                />
+              );
+            }
+            return null;
           })}
         </List.Section>
       ))}

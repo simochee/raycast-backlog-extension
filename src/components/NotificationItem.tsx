@@ -34,7 +34,11 @@ export const NotificationItem = ({
   const actions = (
     <CommonActionPanel>
       <Action.OpenInBrowser title="Open in Browser" url={url} />
-      <Action.CopyToClipboard title="Copy Issue URL" content={url} shortcut={{ modifiers: ["cmd", "shift"], key: "u" }} />
+      <Action.CopyToClipboard
+        title="Copy Issue URL"
+        content={url}
+        shortcut={{ modifiers: ["cmd", "shift"], key: "u" }}
+      />
       {issue && (
         <>
           <Action.CopyToClipboard
@@ -61,19 +65,13 @@ export const NotificationItem = ({
             value: issue?.summary || "",
             tooltip: `${sender.name} assigned you to "${issue?.summary}" (${issue?.issueKey})`,
           }}
-          icon={{ 
-            source: Icon.AddPerson, 
-            tintColor
+          icon={{
+            source: Icon.AddPerson,
+            tintColor,
           }}
           accessories={accessories}
           actions={actions}
-          detail={
-            <IssueDetail
-              component={List.Item.Detail}
-              issue={issue}
-              project={project}
-            />
-          }
+          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} />}
         />
       );
     }
@@ -88,14 +86,7 @@ export const NotificationItem = ({
           icon={{ source: Icon.Bubble, tintColor }}
           accessories={accessories}
           actions={actions}
-          detail={
-            <IssueDetail
-              component={List.Item.Detail}
-              issue={issue}
-              project={project}
-              comment={comment}
-            />
-          }
+          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} comment={comment} />}
         />
       );
     }
@@ -109,13 +100,7 @@ export const NotificationItem = ({
           icon={{ source: Icon.Plus, tintColor }}
           accessories={accessories}
           actions={actions}
-          detail={
-            <IssueDetail
-              component={List.Item.Detail}
-              issue={issue}
-              project={project}
-            />
-          }
+          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} />}
         />
       );
     }
@@ -129,13 +114,7 @@ export const NotificationItem = ({
           icon={{ source: Icon.Pencil, tintColor }}
           accessories={accessories}
           actions={actions}
-          detail={
-            <IssueDetail
-              component={List.Item.Detail}
-              issue={issue}
-              project={project}
-            />
-          }
+          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} />}
         />
       );
     }
@@ -149,13 +128,7 @@ export const NotificationItem = ({
           icon={{ source: Icon.NewDocument, tintColor }}
           accessories={accessories}
           actions={actions}
-          detail={
-            <IssueDetail
-              component={List.Item.Detail}
-              issue={issue}
-              project={project}
-            />
-          }
+          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} />}
         />
       );
     }

@@ -13,7 +13,7 @@ export const useSpaces = () => {
       Promise.all(
         credentials.map(async (credential) => {
           const api = new Backlog({ host: getSpaceHost(credential), apiKey: credential.apiKey });
-          const space = await api.getSpace()
+          const space = await api.getSpace();
           return {
             credential,
             space,

@@ -4,7 +4,6 @@ import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { SpaceForm } from "./SpaceForm";
 import { useCredentials } from "../hooks/useCredentials";
 import type { SpaceCredentials } from "../utils/credentials";
-import { getSpaceHost } from "../utils/space";
 import { cache } from "../utils/cache";
 import { getSpaceImageUrl } from "../utils/image";
 
@@ -52,9 +51,7 @@ export const CommonActionPanel = ({ children }: Props) => {
                     key={spaceKey}
                     title={`${name} (${spaceKey})`}
                     icon={
-                      index === 0
-                        ? { source: Icon.CheckCircle, tintColor: Color.Green }
-                        : getSpaceImageUrl(credential)
+                      index === 0 ? { source: Icon.CheckCircle, tintColor: Color.Green } : getSpaceImageUrl(credential)
                     }
                     onAction={() => currentSpace.setSpaceKey(spaceKey)}
                   />
