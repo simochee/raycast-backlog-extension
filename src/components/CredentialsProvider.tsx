@@ -2,10 +2,10 @@ import { useCredentials } from "../hooks/useCredentials";
 import { SpaceForm } from "./SpaceForm";
 
 type Props = {
-  children: React.ReactNode | Promise<React.ReactNode>;
+  children: React.ReactNode;
 };
 
-export const WithCredentials = ({ children }: Props) => {
+export const CredentialsProvider = ({ children }: Props) => {
   const { credentials, addCredential } = useCredentials();
 
   if (credentials.length === 0) {

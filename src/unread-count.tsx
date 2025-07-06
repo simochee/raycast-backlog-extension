@@ -2,6 +2,7 @@ import { Keyboard, launchCommand, LaunchProps, LaunchType, MenuBarExtra } from "
 import { useCachedState } from "@raycast/utils";
 import * as v from "valibot";
 import { useSpaces } from "./hooks/useSpaces";
+import { withProviders } from "./utils/providers";
 
 const ContextSchema = v.object({
   unreadCounts: v.array(
@@ -70,4 +71,4 @@ const Command = (props: LaunchProps) => {
   );
 };
 
-export default Command;
+export default withProviders(Command);

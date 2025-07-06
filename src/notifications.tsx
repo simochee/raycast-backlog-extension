@@ -1,12 +1,12 @@
-import { List, Action, Icon } from "@raycast/api";
-import { WithCredentials } from "./components/WithCredentials";
+import { List } from "@raycast/api";
 import { CommonActionPanel } from "./components/CommonActionPanel";
 import { usePromise } from "@raycast/utils";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { NotificationItem } from "./components/NotificationItem";
 import { useMemo } from "react";
+import { withProviders } from "./utils/providers";
 
-export default function Command() {
+const Command = () => {
   const currentSpace = useCurrentSpace();
 
   const { data, isLoading } = usePromise(
@@ -42,7 +42,6 @@ export default function Command() {
   }, [data]);
 
   return (
-    <WithCredentials>
       <List isShowingDetail isLoading={isLoading} actions={<CommonActionPanel></CommonActionPanel>}>
         {groupedItems.map(({ label, items }) => (
           <List.Section key={label} title={label}>
@@ -52,6 +51,7 @@ export default function Command() {
           </List.Section>
         ))}
       </List>
-    </WithCredentials>
   );
 }
+
+export default withProviders(Command);

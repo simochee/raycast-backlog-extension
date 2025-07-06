@@ -1,5 +1,4 @@
 import { List } from "@raycast/api";
-import { WithCredentials } from "./components/WithCredentials";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { usePromise } from "@raycast/utils";
 import type { Backlog, Option } from "backlog-js";
@@ -8,8 +7,9 @@ import { IssueItem } from "./components/IssueItem";
 import { WikiItem } from "./components/WikiItem";
 import { ProjectItem } from "./components/ProjectItem";
 import { CommonActionPanel } from "./components/CommonActionPanel";
+import { withProviders } from "./utils/providers";
 
-export default function Command() {
+const Command = () => {
   const [type, setType] = useState<string>("issue");
   const [isShowingDetail, setIsShowingDetail] = useState(false);
   const currentSpace = useCurrentSpace();
@@ -41,7 +41,6 @@ export default function Command() {
   }, [type]);
 
   return (
-    <WithCredentials>
       <List
         isLoading={isLoading}
         isShowingDetail={isShowingDetail}
@@ -77,6 +76,7 @@ export default function Command() {
           return null;
         })}
       </List>
-    </WithCredentials>
   );
 }
+
+export default withProviders(Command);

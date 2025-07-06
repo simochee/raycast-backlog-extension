@@ -1,23 +1,50 @@
-import { useLocalStorage } from "@raycast/utils";
-import { CREDENTIALS_STORAGE_KEY, type SpaceCredentials } from "../utils/credentials";
+import { useCachedState, useLocalStorage } from "@raycast/utils";
+import { CREDENTIALS_STORAGE_KEY, CredentialsSchema, type SpaceCredentials } from "../utils/credentials";
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { LocalStorage } from "@raycast/api";
+import * as v from 'valibot'
+
+const getCredentials = async () => {
+  const raw = await LocalStorage.getItem<string>(CREDENTIALS_STORAGE_KEY)
+
+  return v.parseAsync(v.array(CredentialsSchema), JSON.parse(raw || ''))
+}
 
 export const useCredentials = () => {
-  const { value: credentials = [], setValue: setCredentials } = useLocalStorage<SpaceCredentials[]>(
-    CREDENTIALS_STORAGE_KEY,
-    [],
-  );
+  const { data: initialCredentials } = useSuspenseQuery({
+    queryKey: ['credentials'],
+    queryFn: () => getCredentials()
+  });
 
-  const addCredential = async (credential: SpaceCredentials) => {
-    await setCredentials([...credentials, credential]);
-  };
+  const [credentials, setCredentials] = useCachedState('credentials', initialCredentials);
 
   const updateCredential = async (credential: SpaceCredentials) => {
-    await setCredentials(credentials.map((c) => (c.spaceKey === credential.spaceKey ? credential : c)));
+    if (!credentials.some((c) => c.spaceKey === credential.spaceKey)) {
+      addCredential(credential);
+      return;
+    }
+    
+    const newValue = credentials.map((c) => (c.spaceKey === credential.spaceKey ? credential : c));
+    await LocalStorage.setItem(CREDENTIALS_STORAGE_KEY, JSON.stringify(newValue));
+    setCredentials(newValue);
+  };
+
+  const addCredential = async (credential: SpaceCredentials) => {
+    if (credentials.some((c) => c.spaceKey === credential.spaceKey)) {
+      updateCredential(credential);
+      return;
+    }
+    
+    const newValue = [...credentials, credential];
+    await LocalStorage.setItem(CREDENTIALS_STORAGE_KEY, JSON.stringify(newValue));
+    setCredentials(newValue);
   };
 
   const removeCredential = async (spaceKey: string) => {
-    await setCredentials(credentials.filter((credential) => credential.spaceKey !== spaceKey));
+    const newValue = credentials.filter((credential) => credential.spaceKey !== spaceKey);
+    await LocalStorage.setItem(CREDENTIALS_STORAGE_KEY, JSON.stringify(newValue));
+    setCredentials(newValue);
   };
 
   return { credentials, addCredential, updateCredential, removeCredential };
-};
+}
