@@ -56,5 +56,3 @@ declare module "react/jsx-runtime" {
   const _default: typeof import("react/jsx-runtime");
   export default _default;
 }
-
-/* eslint-enable @typescript-eslint/no-explicit-any */
