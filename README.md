@@ -27,52 +27,7 @@ The first time you run any Backlog command, the extension will prompt you to ent
 
 ### API Key
 
-Backlog の Web 画面 → **パーソナル設定** → **API** から発行・確認できます。詳しくは <https://developer.nulab.com/docs/backlog/auth/#api-key> を参照してください。
-
-## Development
-
-This repository contains the source code of the Raycast extension. Follow the steps below to run it locally.
-
-### Prerequisites
-
-- Node.js ≥ 20
-- [pnpm](https://pnpm.io/) ≥ 8
-- Raycast CLI (`npm i -g @raycast/api`)
-
-### Setup
-
-```bash
-pnpm install
-```
-
-### Start in development mode
-
-```bash
-pnpm dev
-```
-
-Raycast will automatically reload the extension when you save files.
-
-### Lint & format
-
-```bash
-pnpm lint         # check
-pnpm fix-lint     # fix issues automatically
-```
-
-### Build for production
-
-```bash
-pnpm build
-```
-
-### Publish to the Raycast Store
-
-Follow the guidelines in the [Raycast documentation](https://developers.raycast.com/basics/publishing-an-extension) and then run:
-
-```bash
-pnpm publish
-```
+Generate or view a key in Backlog's web UI under **Personal Settings → API**. For details, see the official docs: <https://developer.nulab.com/docs/backlog/auth/#api-key>.
 
 ## License
 
