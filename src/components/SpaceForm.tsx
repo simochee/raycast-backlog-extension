@@ -1,8 +1,9 @@
-import { ActionPanel, Action, Alert, confirmAlert, Form } from "@raycast/api";
+import { ActionPanel, Action, Alert, confirmAlert, Form, showToast, Toast } from "@raycast/api";
 import { FormValidation, useForm } from "@raycast/utils";
 import type { SpaceCredentials } from "../utils/credentials";
 import { getSpaceHost } from "../utils/space";
 import { Backlog } from "backlog-js";
+import { useMemo } from "react";
 
 type Props = {
   initialValues?: SpaceCredentials;
@@ -11,37 +12,49 @@ type Props = {
 };
 
 type FormSchema = {
-  spaceKey: string;
+  spaceHost: string;
   apiKey: string;
 };
 
+const hostRegex = /(([a-z0-9-]+)\.(backlog\.(?:com|jp)))/;
+
 export const SpaceForm = ({ initialValues, onSubmit, onDelete }: Props) => {
-  const { handleSubmit, itemProps } = useForm<FormSchema>({
-    async onSubmit(values) {
-      const backlogDomains = ["backlog.com", "backlog.jp"] as const;
+  const { handleSubmit, itemProps, values } = useForm<FormSchema>({
+    async onSubmit({ spaceHost, apiKey }) {
+      const [,host,spaceKey, domain] = hostRegex.exec(spaceHost) || []
 
-      for (const domain of backlogDomains) {
-        try {
-          // check if the space key and api key are valid
-          const api = new Backlog({ host: getSpaceHost({ spaceKey: values.spaceKey, domain }), apiKey: values.apiKey });
-          await api.getSpace();
-
-          onSubmit({ ...values, domain });
-
-          return;
-        } catch {
-          // try next domain
-        }
+      if (!host || !spaceKey || domain !== "backlog.com" && domain !== "backlog.jp") {
+        throw new Error("Invalid space host")
       }
 
-      throw new Error("Unable to connect to Backlog space. Please verify your Space Key and API Key.");
+      try {
+        // check if the space key and api key are valid
+        const api = new Backlog({ host, apiKey });
+        await api.getSpace();
+  
+        onSubmit({ spaceKey, domain, apiKey })
+      } catch {
+        showToast({
+          style: Toast.Style.Failure,
+          title: "Invalid Space Key or API Key",
+          message: "Please check your Space Key and API Key and try again.",
+        })
+      }
     },
     initialValues,
     validation: {
-      spaceKey: FormValidation.Required,
+      spaceHost: (value) => {
+        if (!value) return 'The item is required'
+
+        const host = hostRegex.exec(value)
+
+        if (!host) return 'Invalid space domain'
+      },
       apiKey: FormValidation.Required,
     },
   });
+
+  const spaceHost = useMemo(() =>  hostRegex.exec(values.spaceHost)?.[1], [values.spaceHost])
 
   const handleDelete = async () => {
     if (!initialValues) {
@@ -64,6 +77,13 @@ export const SpaceForm = ({ initialValues, onSubmit, onDelete }: Props) => {
   return (
     <Form
       navigationTitle={initialValues ? "Edit Space" : "Add Space"}
+      searchBarAccessory={spaceHost ? (
+        <Form.LinkAccessory
+          target={`https://${spaceHost}/EditApiSettings.action`}
+          text="Get API Key"
+        />
+      ) : null
+      }
       actions={
         <ActionPanel>
           <Action.SubmitForm title={initialValues ? "Save Changes" : "Add Space"} onSubmit={handleSubmit} />
@@ -72,11 +92,14 @@ export const SpaceForm = ({ initialValues, onSubmit, onDelete }: Props) => {
       }
     >
       {initialValues ? (
-        <Form.Description title="Space Key" text={initialValues.spaceKey} />
+        <Form.Description title="Space Host" text={getSpaceHost(initialValues)} />
       ) : (
-        <Form.TextField title="Space Key" placeholder="example" {...itemProps.spaceKey} />
+        <Form.TextField title="Space Domain" placeholder="example.backlog.com" {...itemProps.spaceHost} 
+        info="The domain of your Backlog space."
+        
+         />
       )}
-      <Form.TextField title="API Key" placeholder="Enter your Backlog API key" {...itemProps.apiKey} />
+      <Form.TextField title="API Key" placeholder="Your Backlog API key" {...itemProps.apiKey} />
     </Form>
   );
 };
