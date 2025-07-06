@@ -22,13 +22,13 @@ export const ProjectItem = ({ project }: Props) => {
             url={`https://${currentSpace.host}/projects/${project.projectKey}`}
           />
           <Action.OpenInBrowser
-            title="Add Issue"
+            title="Create Issue"
             url={`https://${currentSpace.host}/add/${project.projectKey}`}
             shortcut={{ modifiers: ["cmd"], key: "n" }}
             icon={Icon.NewDocument}
           />
           <Action.OpenInBrowser
-            title="Issues"
+            title="View Issues"
             url={`https://${currentSpace.host}/find/${project.projectKey}`}
             shortcut={{ modifiers: ["cmd"], key: "i" }}
             icon={Icon.Document}
@@ -36,13 +36,13 @@ export const ProjectItem = ({ project }: Props) => {
           {project.chartEnabled && (
             <>
               <Action.OpenInBrowser
-                title="Board"
+                title="View Board"
                 url={`https://${currentSpace.host}/board/${project.projectKey}`}
                 shortcut={{ modifiers: ["cmd"], key: "b" }}
                 icon={Icon.BarChart}
               />
               <Action.OpenInBrowser
-                title="Gantt Chart"
+                title="View Gantt Chart"
                 url={`https://${currentSpace.host}/gantt/${project.projectKey}`}
                 shortcut={{ modifiers: ["cmd"], key: "c" }}
                 icon={Icon.BarChart}
@@ -50,14 +50,14 @@ export const ProjectItem = ({ project }: Props) => {
             </>
           )}
           <Action.OpenInBrowser
-            title="Documents"
+            title="View Documents"
             url={`https://${currentSpace.host}/document/${project.projectKey}`}
             shortcut={{ modifiers: ["cmd"], key: "d" }}
             icon={Icon.Book}
           />
           {project.useWiki && (
             <Action.OpenInBrowser
-              title="Wiki"
+              title="Open Wiki"
               url={`https://${currentSpace.host}/wiki/${project.projectKey}/Home`}
               shortcut={{ modifiers: ["cmd"], key: "v" }}
               icon={Icon.Book}
@@ -65,7 +65,7 @@ export const ProjectItem = ({ project }: Props) => {
           )}
           {project.useFileSharing && (
             <Action.OpenInBrowser
-              title="Files"
+              title="Browse Files"
               url={`https://${currentSpace.host}/file/${project.projectKey}`}
               shortcut={{ modifiers: ["cmd"], key: "f" }}
               icon={Icon.Folder}

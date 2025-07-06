@@ -1,33 +1,35 @@
 # Backlog Raycast Extension
 
-Quick access to your Backlog issues, projects and notifications directly from Raycast.
+Access your Backlog issues, projects, and notifications directly from Raycast.
 
 ## Features
 
-- ✅ View unread notification count in the menu bar
+- ✅ Display unread notification count in menu bar
 - 🔔 Browse and manage notifications
-- 📄 Quickly open recently viewed issues, projects and wikis
-- 🔄 Background process to keep unread counts up-to-date
+- 📄 Access recently viewed issues, projects, and wikis
+- 🔄 Background sync to maintain up-to-date unread counts
 
 ## Installation
 
-1. Open **Raycast** on your Mac.
-2. Navigate to the **Store** tab and search for "Backlog".
-3. Click **Install**.
+1. Open **Raycast** on your Mac
+2. Navigate to **Store** and search for "Backlog"
+3. Click **Install**
 
-## Configuration
+## Setup
 
-The first time you run any Backlog command, the extension will prompt you to enter your credentials in an on-screen form.
+On first use, you'll be prompted to configure your credentials:
 
-1. Launch a Backlog command (e.g. "Notifications").
-2. A setup view will appear — enter your **Space Key** (e.g. the "example" in `example.backlog.jp`) and **API Key**.
-3. Press **Save**. From now on the extension will use these credentials automatically.
+1. Run any Backlog command (e.g., "Notifications")
+2. Enter your **Space Key** (e.g., "example" from `example.backlog.jp`) and **API Key**
+3. Click **Save** to complete setup
 
-> You can open the configuration view again at any time by running a Backlog command while holding the **⌥ Option** key.
+> **Tip:** Hold **⌥ Option** while running any command to access configuration settings
 
-### API Key
+### API Key Generation
 
-Generate or view a key in Backlog's web UI under **Personal Settings → API**. For details, see the [official docs](https://developer.nulab.com/docs/backlog/auth/#api-key).
+1. Go to **Personal Settings → API** in Backlog's web interface
+2. Generate or view your API key
+3. For detailed instructions, see the [official documentation](https://developer.nulab.com/docs/backlog/auth/#api-key)
 
 ## License
 
