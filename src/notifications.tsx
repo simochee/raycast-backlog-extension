@@ -1,3 +1,4 @@
+import React from "react";
 import { List } from "@raycast/api";
 import { CommonActionPanel } from "./components/CommonActionPanel";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";

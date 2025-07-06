@@ -23,18 +23,18 @@ export const useCredentials = () => {
   const [credentials, setCredentials] = useCachedState("credentials", initialCredentials);
 
   const updateCredential = async (credential: SpaceCredentials) => {
-    if (!credentials.some((c) => c.spaceKey === credential.spaceKey)) {
+    if (!credentials.some((c: SpaceCredentials) => c.spaceKey === credential.spaceKey)) {
       addCredential(credential);
       return;
     }
 
-    const newValue = credentials.map((c) => (c.spaceKey === credential.spaceKey ? credential : c));
+    const newValue = credentials.map((c: SpaceCredentials) => (c.spaceKey === credential.spaceKey ? credential : c));
     await LocalStorage.setItem(CREDENTIALS_STORAGE_KEY, JSON.stringify(newValue));
     setCredentials(newValue);
   };
 
   const addCredential = async (credential: SpaceCredentials) => {
-    if (credentials.some((c) => c.spaceKey === credential.spaceKey)) {
+    if (credentials.some((c: SpaceCredentials) => c.spaceKey === credential.spaceKey)) {
       updateCredential(credential);
       return;
     }
@@ -45,7 +45,7 @@ export const useCredentials = () => {
   };
 
   const removeCredential = async (spaceKey: string) => {
-    const newValue = credentials.filter((credential) => credential.spaceKey !== spaceKey);
+    const newValue = credentials.filter((credential: SpaceCredentials) => credential.spaceKey !== spaceKey);
     await LocalStorage.setItem(CREDENTIALS_STORAGE_KEY, JSON.stringify(newValue));
     setCredentials(newValue);
   };

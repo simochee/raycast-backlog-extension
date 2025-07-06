@@ -1,3 +1,4 @@
+import React from "react";
 import { Action, Color, Icon, Image, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 import { CommonActionPanel } from "./CommonActionPanel";

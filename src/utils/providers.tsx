@@ -1,3 +1,4 @@
+import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CredentialsProvider } from "../components/CredentialsProvider";
 import type { ComponentType, ReactNode } from "react";

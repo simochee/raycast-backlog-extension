@@ -1,3 +1,4 @@
+import React from "react";
 import { Keyboard, launchCommand, LaunchProps, LaunchType, MenuBarExtra } from "@raycast/api";
 import { useCachedState } from "@raycast/utils";
 import * as v from "valibot";

@@ -38,6 +38,6 @@ export const getSpaceHost = ({ spaceKey, domain }: Pick<SpaceCredentials, "space
     case "backlog.jp":
       return `${spaceKey}.${domain}`;
     default:
-      throw new TypeError(`invalid domain: ${domain satisfies never}`);
+      throw new TypeError(`invalid domain: ${domain as never}`);
   }
 };

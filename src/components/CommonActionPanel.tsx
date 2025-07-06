@@ -1,3 +1,4 @@
+import React from "react";
 import { Action, ActionPanel, Color, Icon, useNavigation } from "@raycast/api";
 import { useSpaces } from "../hooks/useSpaces";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";

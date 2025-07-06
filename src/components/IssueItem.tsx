@@ -1,3 +1,4 @@
+import React from "react";
 import type { Entity } from "backlog-js";
 import { Action, Color, Icon, Image, List } from "@raycast/api";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";

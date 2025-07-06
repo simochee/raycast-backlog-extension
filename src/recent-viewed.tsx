@@ -1,3 +1,4 @@
+import React from "react";
 import { List } from "@raycast/api";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { useCachedState } from "@raycast/utils";
