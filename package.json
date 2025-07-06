@@ -11,21 +11,21 @@
       "name": "notifications",
       "title": "Notifications",
       "subtitle": "Backlog",
-      "description": "",
+      "description": "Browse and manage your Backlog notifications",
       "mode": "view"
     },
     {
       "name": "recent-viewed",
       "title": "Recent Viewed",
       "subtitle": "Backlog",
-      "description": "",
+      "description": "Access recently viewed issues, projects and wikis",
       "mode": "view"
     },
     {
       "name": "unread-count",
       "title": "Unread Count",
       "subtitle": "Backlog",
-      "description": "",
+      "description": "Display unread notification count in menu bar",
       "icon": "icon.png",
       "mode": "menu-bar"
     },
@@ -33,7 +33,7 @@
       "name": "unread-count-fetcher",
       "title": "Unread Count Fetcher",
       "subtitle": "Backlog",
-      "description": "",
+      "description": "Background process to update unread counts",
       "icon": "icon.png",
       "mode": "no-view",
       "interval": "3m"
