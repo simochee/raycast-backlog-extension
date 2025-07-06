@@ -13,6 +13,8 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
 
 export const withProviders = <P extends object>(Component: React.ComponentType<P>): React.ComponentType<P> => {
   const WrappedComponent = (props: P) => {
+    console.log(Component.displayName, 'rendering with providers');
+    
     return (
       <Providers>
         <Component {...props} />

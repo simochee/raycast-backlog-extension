@@ -14,7 +14,11 @@ const ContextSchema = v.object({
 });
 
 const Command = (props: LaunchProps) => {
+  console.log('launching unread-count')
+  
   const spaces = useSpaces();
+
+  console.log('spaces fetched');
 
   const result = v.safeParse(ContextSchema, props.launchContext);
 
