@@ -64,7 +64,7 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
           markdown={issue.description}
           metadata={
             <List.Item.Detail.Metadata>
-              <List.Item.Detail.Metadata.Label title="Summary" text={issue.summary} />
+              <List.Item.Detail.Metadata.Label title="Subject" text={issue.summary} />
               <List.Item.Detail.Metadata.Label title="Issue Key" text={issue.issueKey} />
               <List.Item.Detail.Metadata.Label
                 title="Type"
@@ -148,7 +148,7 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
             shortcut={{ modifiers: ["cmd"], key: "c" }}
           />
           <Action.CopyToClipboard
-            title="Copy Issue Key and Summary"
+            title="Copy Issue Key and Subject"
             content={`${issue.issueKey} ${issue.summary}`}
             shortcut={{ modifiers: ["cmd", "shift"], key: "c" }}
           />

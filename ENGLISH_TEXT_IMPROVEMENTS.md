@@ -43,24 +43,23 @@ This document summarizes the improvements made to English text throughout the Ba
 
 #### IssueItem.tsx
 - **Metadata labels**: 
-  - "Subject" → "Summary"
   - "Issue Type" → "Type"
 - **Default values**: Added "Unassigned" and "No due date" for better clarity
 - **Action titles**: 
-  - "Copy Issue Key and Subject" → "Copy Issue Key and Summary"
   - "Copy URL" → "Copy Issue URL"
   - "Toggle Detail" → "Toggle Details"
+- **Note**: "Subject" label remains as "Subject" (not changed to "Summary") as this is correct despite the property name being `summary`
 
 #### NotificationItem.tsx
 - **Tooltips**: Added quotation marks around issue/project names for better readability
 - **Action titles**: 
   - "Copy URL" → "Copy Issue URL"
-  - "Copy Issue Key and Subject" → "Copy Issue Key and Summary"
 - **Notification text**: 
   - "attached to issue" → "attached a file to issue"
   - "Invited to project" → "You were invited to project"
   - "Notified" → "Notification"
   - "notified you" → "sent you a notification"
+- **Note**: "Subject" terminology maintained in action titles
 
 #### ProjectItem.tsx
 - **Action titles**: Added "View" or "Open" prefixes for consistency:
@@ -95,6 +94,12 @@ This document summarizes the improvements made to English text throughout the Ba
 4. **Professionalism**: Used appropriate language for a professional tool
 5. **User Experience**: Improved tooltips and error messages for better usability
 6. **Accessibility**: Added default values and placeholders for better guidance
+7. **Domain Accuracy**: Maintained appropriate domain-specific terminology (e.g., "Subject" for issues)
+
+## Important Notes
+
+- **Subject vs Summary**: The term "Subject" is maintained in the UI even though the API property is named `summary`. This reflects the correct domain terminology for issue management.
+- **API vs UI Terminology**: Property names in the API may differ from their appropriate display labels in the user interface.
 
 ## Impact
 
@@ -105,5 +110,6 @@ These improvements enhance the overall user experience by:
 - Improving accessibility with better default values and placeholders
 - Making error messages more actionable
 - Streamlining the language for better tool usability
+- Maintaining domain-appropriate terminology
 
 All changes maintain the original functionality while significantly improving the English text quality throughout the extension.

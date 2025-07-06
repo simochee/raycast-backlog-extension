@@ -41,7 +41,7 @@ export const NotificationItem = ({
             shortcut={{ modifiers: ["cmd"], key: "c" }}
           />
           <Action.CopyToClipboard
-            title="Copy Issue Key and Summary"
+            title="Copy Issue Key and Subject"
             content={`${issue.issueKey} ${issue.summary}`}
             shortcut={{ modifiers: ["cmd", "shift"], key: "c" }}
           />
