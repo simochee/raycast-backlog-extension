@@ -1,3 +1,4 @@
+import React from "react";
 import { Action, ActionPanel, Color, Icon, useNavigation } from "@raycast/api";
 import { useSpaces } from "../hooks/useSpaces";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
@@ -5,9 +6,10 @@ import { SpaceForm } from "./SpaceForm";
 import { useCredentials } from "../hooks/useCredentials";
 import type { SpaceCredentials } from "../utils/credentials";
 import { getSpaceHost } from "../utils/space";
+import type { ReactNode } from "react";
 
 type Props = {
-  children?: React.ReactNode | Promise<React.ReactNode>;
+  children?: ReactNode | Promise<ReactNode>;
 };
 
 export const CommonActionPanel = ({ children }: Props) => {
@@ -75,7 +77,7 @@ export const CommonActionPanel = ({ children }: Props) => {
           <Action.Push title="Add Space" target={<SpaceForm onSubmit={handleAddSpace} />} />
         </ActionPanel.Section>
         <ActionPanel.Submenu title="Help">
-          <Action title="Clear Cached Data" icon={Icon.Check} />
+          <Action title="Clear Cache" icon={Icon.Check} />
         </ActionPanel.Submenu>
       </>
     </ActionPanel>

@@ -1,8 +1,10 @@
+import React from "react";
 import { useCredentials } from "../hooks/useCredentials";
 import { SpaceForm } from "./SpaceForm";
+import type { ReactNode } from "react";
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export const CredentialsProvider = ({ children }: Props) => {

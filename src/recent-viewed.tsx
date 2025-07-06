@@ -1,3 +1,4 @@
+import React from "react";
 import { List } from "@raycast/api";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { useCachedState } from "@raycast/utils";
@@ -46,7 +47,7 @@ const Command = () => {
       isShowingDetail={isShowingDetail}
       navigationTitle={currentSpace.space?.name}
       searchBarAccessory={
-        <List.Dropdown tooltip="Recent Viewed Type" defaultValue={type} onChange={setType}>
+        <List.Dropdown tooltip="Recently Viewed Type" defaultValue={type} onChange={setType}>
           <List.Dropdown.Item value="issue" title="Issues" />
           <List.Dropdown.Item value="project" title="Projects" />
           <List.Dropdown.Item value="wiki" title="Wikis" />

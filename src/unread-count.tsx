@@ -1,3 +1,4 @@
+import React from "react";
 import { Keyboard, launchCommand, LaunchProps, LaunchType, MenuBarExtra } from "@raycast/api";
 import { useCachedState } from "@raycast/utils";
 import * as v from "valibot";
@@ -29,10 +30,10 @@ const Command = (props: LaunchProps) => {
   return (
     <MenuBarExtra
       icon={{ source: totalCount > 0 ? "icon.png" : { dark: "icon@dark.png", light: "icon.png" } }}
-      title={totalCount === 0 ? "All read" : `${totalCount} unread`}
+      title={totalCount === 0 ? "No Unread Notifications" : `${totalCount} Unread`}
     >
       {spaces.map(({ space: { spaceKey, name }, credential: { domain, apiKey } }, index) => {
-        const unraedCount = unreadCounts.find((space) => spaceKey === space.spaceKey)?.count;
+        const unreadCount = unreadCounts.find((space) => spaceKey === space.spaceKey)?.count;
         const shortcut: Keyboard.Shortcut | undefined =
           index === 0
             ? { modifiers: ["cmd"], key: "1" }
@@ -59,7 +60,7 @@ const Command = (props: LaunchProps) => {
             key={spaceKey}
             icon={`https://${spaceKey}.${domain}/api/v2/space/image?apiKey=${apiKey}`}
             title={name}
-            subtitle={unraedCount ? `(${unraedCount} unread)` : undefined}
+            subtitle={unreadCount ? `${unreadCount} Unread` : undefined}
             tooltip={`${name} (${spaceKey})`}
             onAction={() => {
               launchCommand({ name: "notifications", type: LaunchType.UserInitiated });

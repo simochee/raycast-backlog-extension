@@ -1,5 +1,6 @@
 import { useCachedState } from "@raycast/utils";
 import { useCredentials } from "./useCredentials";
+import type { SpaceCredentials } from "../utils/credentials";
 import { Backlog } from "backlog-js";
 import { getSpaceHost, getSpaceWithCache } from "../utils/space";
 import { useMemo } from "react";
@@ -9,7 +10,9 @@ export const useCurrentSpace = () => {
   const { credentials } = useCredentials();
   const [currentSpaceId, setCurrentSpaceId] = useCachedState<string | undefined>("current-space-id");
 
-  const credential = credentials.find((credential) => credential.spaceKey === currentSpaceId) || credentials[0];
+  const credential: SpaceCredentials | undefined = credentials.find(
+    (credential: SpaceCredentials) => credential.spaceKey === currentSpaceId,
+  ) || credentials[0];
 
   if (!credential) {
     throw new Error("No credential found");

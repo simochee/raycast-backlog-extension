@@ -1,5 +1,5 @@
 import { LocalStorage } from "@raycast/api";
-import { CREDENTIALS_STORAGE_KEY, CredentialsSchema } from "./credentials";
+import { CREDENTIALS_STORAGE_KEY, CredentialsSchema, type SpaceCredentials } from "./credentials";
 import * as v from "valibot";
 import { Backlog } from "backlog-js";
 
@@ -13,12 +13,12 @@ export const getUnreadCounts = async () => {
 
     if (!rawValue) return;
 
-    const credentials = v.parse(v.array(CredentialsSchema), JSON.parse(rawValue));
+    const credentials = v.parse(v.array(CredentialsSchema), JSON.parse(rawValue)) as SpaceCredentials[];
 
     console.log(credentials);
 
     return await Promise.all(
-      credentials.map(async ({ spaceKey, domain, apiKey }) => {
+      credentials.map(async ({ spaceKey, domain, apiKey }: SpaceCredentials) => {
         const host = `${spaceKey}.${domain}`;
         const api = new Backlog({ host, apiKey });
         const { count } = await api.getNotificationsCount({ alreadyRead: false, resourceAlreadyRead: false });

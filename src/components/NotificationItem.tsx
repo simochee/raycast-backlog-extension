@@ -1,3 +1,4 @@
+import React from "react";
 import { Action, Color, Icon, Image, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 import { CommonActionPanel } from "./CommonActionPanel";
@@ -41,7 +42,7 @@ export const NotificationItem = ({
             shortcut={{ modifiers: ["cmd"], key: "c" }}
           />
           <Action.CopyToClipboard
-            title="Copy Issue Key and Subject"
+            title="Copy Issue Key & Summary"
             content={`${issue.issueKey} ${issue.summary}`}
             shortcut={{ modifiers: ["cmd", "shift"], key: "c" }}
           />
@@ -110,7 +111,7 @@ export const NotificationItem = ({
         <List.Item
           title={{
             value: issue?.summary || "",
-            tooltip: `${sender.name} attached to issue ${issue?.summary} (${issue?.issueKey})`,
+            tooltip: `${sender.name} added an attachment to ${issue?.summary} (${issue?.issueKey})`,
           }}
           icon={{ source: Icon.NewDocument, tintColor }}
           accessories={accessories}
@@ -161,7 +162,7 @@ export const NotificationItem = ({
       return (
         <List.Item
           title={{
-            value: "Notified",
+            value: "Notification",
             tooltip: `${sender.name} notified you`,
           }}
           icon={{ source: Icon.Bell, tintColor }}

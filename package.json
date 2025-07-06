@@ -44,7 +44,8 @@
     "@raycast/utils": "^1.17.0",
     "@tanstack/react-query": "^5.81.5",
     "backlog-js": "^0.13.6",
-    "valibot": "^1.1.0"
+    "valibot": "^1.1.0",
+    "react": "^19.0.0"
   },
   "devDependencies": {
     "@raycast/eslint-config": "^2.0.4",
