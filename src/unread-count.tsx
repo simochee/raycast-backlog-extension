@@ -28,7 +28,7 @@ const Command = (props: LaunchProps) => {
 
   return (
     <MenuBarExtra
-      icon={{ source: totalCount > 0 ? 'icon.png' : { dark: "icon-white.png", light: "icon-black.png" } }}
+      icon={{ source: totalCount > 0 ? 'icon.png' : { dark: "icon@dark.png", light: "icon.png" } }}
       title={totalCount === 0 ? "All read" : `${totalCount} unread`}
     >
       {spaces.map(({ space: { spaceKey, name }, credential: { domain, apiKey } }, index) => {

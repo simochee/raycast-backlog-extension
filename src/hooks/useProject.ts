@@ -3,6 +3,7 @@ import { useCurrentSpace } from "./useCurrentSpace";
 import { createCache } from "../utils/cache";
 import * as v from "valibot";
 import { dedupe } from "../utils/promise-dedupe";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 const schema = v.object({
   id: v.number(),
@@ -27,23 +28,21 @@ const schema = v.object({
 export const useProject = (projectId: number) => {
   const currentSpace = useCurrentSpace();
 
-  const { data, isLoading } = usePromise(
-    async (api: typeof currentSpace.api, spaceKey: typeof currentSpace.spaceKey, projectId: number) => {
-      if (!api || !spaceKey) return;
-
-      const cache = createCache([spaceKey, "project", projectId.toString()], schema);
+  const { data } = useSuspenseQuery({
+    queryKey: ['project', currentSpace.spaceKey, projectId],
+    queryFn: async () => {
+      const cache = createCache([currentSpace.spaceKey, "project", projectId.toString()], schema);
       const cached = cache.get();
 
       if (cached) return cached;
 
-      const project = await dedupe(api.getProject.bind(api), projectId);
+      const project = await dedupe(currentSpace.api.getProject.bind(currentSpace.api), projectId);
 
       cache.set(project);
 
       return project;
-    },
-    [currentSpace.api, currentSpace.spaceKey, projectId],
-  );
-
-  return [data, { isLoading }] as const;
+    }
+  })
+  
+  return data;
 };

@@ -10,7 +10,7 @@ type Props = {
 
 export const WikiItem = ({ page }: Props) => {
   const currentSpace = useCurrentSpace();
-  const [project] = useProject(page.projectId);
+  const project = useProject(page.projectId);
 
   return (
     <List.Item

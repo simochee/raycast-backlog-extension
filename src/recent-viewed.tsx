@@ -1,38 +1,37 @@
 import { List } from "@raycast/api";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
-import { usePromise } from "@raycast/utils";
-import type { Backlog, Option } from "backlog-js";
+import { useCachedState, usePromise } from "@raycast/utils";
+import type { Backlog, Entity, Option } from "backlog-js";
 import { useEffect, useState } from "react";
 import { IssueItem } from "./components/IssueItem";
 import { WikiItem } from "./components/WikiItem";
 import { ProjectItem } from "./components/ProjectItem";
 import { CommonActionPanel } from "./components/CommonActionPanel";
 import { withProviders } from "./utils/providers";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 const Command = () => {
-  const [type, setType] = useState<string>("issue");
+  const [type, setType] = useCachedState<string>("recent-viewed-type", "issue");
   const [isShowingDetail, setIsShowingDetail] = useState(false);
   const currentSpace = useCurrentSpace();
 
-  const { data, isLoading } = usePromise(
-    async (type: string, api: Backlog | undefined) => {
-      if (!api) return [];
-
+  const { data } = useSuspenseQuery({
+    queryKey: ['recent-viewed', currentSpace.spaceKey, type],
+    queryFn: (): Promise<Entity.Project.RecentlyViewedProject[] | Entity.Wiki.RecentlyViewedWiki[] | Entity.Issue.RecentlyViewedIssue[]> => {
       const params: Option.User.GetRecentlyViewedParams = {
         count: 100,
       };
 
       switch (type) {
         case "project":
-          return api.getRecentlyViewedProjects(params);
+          return currentSpace.api.getRecentlyViewedProjects(params);
         case "wiki":
-          return api.getRecentlyViewedWikis(params);
+          return currentSpace.api.getRecentlyViewedWikis(params);
         default:
-          return api.getRecentlyViewedIssues(params);
+          return currentSpace.api.getRecentlyViewedIssues(params);
       }
-    },
-    [type, currentSpace.api],
-  );
+    }
+  })
 
   useEffect(() => {
     if (type !== "issue") {
@@ -42,11 +41,10 @@ const Command = () => {
 
   return (
       <List
-        isLoading={isLoading}
         isShowingDetail={isShowingDetail}
         navigationTitle={currentSpace.space?.name}
         searchBarAccessory={
-          <List.Dropdown tooltip="Recent Viewed Type" storeValue={true} onChange={setType}>
+          <List.Dropdown tooltip="Recent Viewed Type" defaultValue={type} onChange={setType}>
             <List.Dropdown.Item value="issue" title="Issues" />
             <List.Dropdown.Item value="project" title="Projects" />
             <List.Dropdown.Item value="wiki" title="Wikis" />

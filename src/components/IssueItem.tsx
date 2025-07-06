@@ -11,7 +11,7 @@ type Props = {
 
 export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
   const currentSpace = useCurrentSpace();
-  const [project] = useProject(issue.projectId);
+  const project = useProject(issue.projectId);
 
   const accessories: List.Item.Accessory[] = [];
 

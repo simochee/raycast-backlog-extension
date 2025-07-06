@@ -1,26 +1,20 @@
 import { List } from "@raycast/api";
 import { CommonActionPanel } from "./components/CommonActionPanel";
-import { usePromise } from "@raycast/utils";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { NotificationItem } from "./components/NotificationItem";
 import { useMemo } from "react";
 import { withProviders } from "./utils/providers";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 const Command = () => {
   const currentSpace = useCurrentSpace();
 
-  const { data, isLoading } = usePromise(
-    async (api: typeof currentSpace.api) => {
-      if (!api) return;
-
-      const notifications = await api.getNotifications({
-        count: 100,
-      });
-
-      return notifications;
-    },
-    [currentSpace.api],
-  );
+  const { data } = useSuspenseQuery({
+    queryKey: ['notifications', currentSpace.spaceKey],
+    queryFn: () => currentSpace.api.getNotifications({
+      count: 100,
+    })
+  })
 
   const groupedItems = useMemo(() => {
     if (!data) return [];
@@ -42,7 +36,7 @@ const Command = () => {
   }, [data]);
 
   return (
-      <List isShowingDetail isLoading={isLoading} actions={<CommonActionPanel></CommonActionPanel>}>
+      <List isShowingDetail actions={<CommonActionPanel></CommonActionPanel>}>
         {groupedItems.map(({ label, items }) => (
           <List.Section key={label} title={label}>
             {items.map((notification) => (

@@ -3,8 +3,8 @@
   "name": "backlog",
   "title": "Backlog",
   "description": "Quick access to your Backlog issues, projects and notifications.",
-  "icon": "icon.png",
   "author": "simochee",
+  "icon": "icon-logo.png",
   "license": "MIT",
   "commands": [
     {
@@ -26,6 +26,7 @@
       "title": "Unread Count",
       "subtitle": "Backlog",
       "description": "",
+      "icon": "icon.png",
       "mode": "menu-bar"
     },
     {
@@ -33,6 +34,7 @@
       "title": "Unread Count Fetcher",
       "subtitle": "Backlog",
       "description": "",
+      "icon": "icon.png",
       "mode": "no-view",
       "interval": "3m"
     }
