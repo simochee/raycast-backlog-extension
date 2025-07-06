@@ -27,7 +27,7 @@ The first time you run any Backlog command, the extension will prompt you to ent
 
 ### API Key
 
-Generate or view a key in Backlog's web UI under **Personal Settings → API**. For details, see the official docs: <https://developer.nulab.com/docs/backlog/auth/#api-key>.
+Generate or view a key in Backlog's web UI under **Personal Settings → API**. For details, see the [official docs](https://developer.nulab.com/docs/backlog/auth/#api-key).
 
 ## License
 
