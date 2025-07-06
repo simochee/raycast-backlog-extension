@@ -23,9 +23,9 @@ export const WikiItem = ({ page }: Props) => {
       ]}
       actions={
         <CommonActionPanel>
-          <Action.OpenInBrowser url={`https://${currentSpace.host}/alias/wiki/${page.id}`} />
+          <Action.OpenInBrowser title="Open in Browser" url={`https://${currentSpace.host}/alias/wiki/${page.id}`} />
           <Action.CopyToClipboard
-            title="Copy URL"
+            title="Copy Wiki URL"
             shortcut={{ modifiers: ["cmd", "shift"], key: "u" }}
             content={`https://${currentSpace.host}/alias/wiki/${page.id}`}
           />

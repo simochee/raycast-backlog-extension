@@ -64,10 +64,10 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
           markdown={issue.description}
           metadata={
             <List.Item.Detail.Metadata>
-              <List.Item.Detail.Metadata.Label title="Subject" text={issue.summary} />
+              <List.Item.Detail.Metadata.Label title="Summary" text={issue.summary} />
               <List.Item.Detail.Metadata.Label title="Issue Key" text={issue.issueKey} />
               <List.Item.Detail.Metadata.Label
-                title="Issue Type"
+                title="Type"
                 text={issue.issueType.name}
                 icon={{ source: Icon.CircleFilled, tintColor: issue.issueType.color }}
               />
@@ -78,7 +78,7 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
               />
               <List.Item.Detail.Metadata.Label
                 title="Assignee"
-                text={issue.assignee?.name}
+                text={issue.assignee?.name ?? "Unassigned"}
                 icon={
                   issue.assignee
                     ? {
@@ -90,7 +90,7 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
               />
               <List.Item.Detail.Metadata.Label
                 title="Due Date"
-                text={issue.dueDate ? new Date(issue.dueDate).toLocaleDateString() : ""}
+                text={issue.dueDate ? new Date(issue.dueDate).toLocaleDateString() : "No due date"}
                 icon={issue.dueDate ? { source: Icon.Calendar } : null}
               />
               {project?.useDevAttributes && (
@@ -148,17 +148,17 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
             shortcut={{ modifiers: ["cmd"], key: "c" }}
           />
           <Action.CopyToClipboard
-            title="Copy Issue Key and Subject"
+            title="Copy Issue Key and Summary"
             content={`${issue.issueKey} ${issue.summary}`}
             shortcut={{ modifiers: ["cmd", "shift"], key: "c" }}
           />
           <Action.CopyToClipboard
-            title="Copy URL"
+            title="Copy Issue URL"
             content={`https://${currentSpace.host}/view/${issue.issueKey}`}
             shortcut={{ modifiers: ["cmd", "shift"], key: "u" }}
           />
           <Action
-            title="Toggle Detail"
+            title="Toggle Details"
             icon={Icon.AppWindowSidebarRight}
             shortcut={{ modifiers: ["cmd", "shift"], key: "f" }}
             onAction={onToggleShowingDetail}

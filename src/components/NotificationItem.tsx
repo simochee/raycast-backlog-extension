@@ -32,7 +32,7 @@ export const NotificationItem = ({
   const actions = (
     <CommonActionPanel>
       <Action.OpenInBrowser title="Open in Browser" url={url} />
-      <Action.CopyToClipboard title="Copy URL" content={url} shortcut={{ modifiers: ["cmd", "shift"], key: "u" }} />
+      <Action.CopyToClipboard title="Copy Issue URL" content={url} shortcut={{ modifiers: ["cmd", "shift"], key: "u" }} />
       {issue && (
         <>
           <Action.CopyToClipboard
@@ -41,7 +41,7 @@ export const NotificationItem = ({
             shortcut={{ modifiers: ["cmd"], key: "c" }}
           />
           <Action.CopyToClipboard
-            title="Copy Issue Key and Subject"
+            title="Copy Issue Key and Summary"
             content={`${issue.issueKey} ${issue.summary}`}
             shortcut={{ modifiers: ["cmd", "shift"], key: "c" }}
           />
@@ -57,7 +57,7 @@ export const NotificationItem = ({
         <List.Item
           title={{
             value: issue?.summary || "",
-            tooltip: `${sender.name} assigned you to ${issue?.summary} (${issue?.issueKey})`,
+            tooltip: `${sender.name} assigned you to "${issue?.summary}" (${issue?.issueKey})`,
           }}
           icon={{ source: Icon.AddPerson, tintColor }}
           accessories={accessories}
@@ -71,7 +71,7 @@ export const NotificationItem = ({
         <List.Item
           title={{
             value: comment?.content || "",
-            tooltip: `${sender.name} commented on ${issue?.summary} (${issue?.issueKey})\n\n${comment?.content}`,
+            tooltip: `${sender.name} commented on "${issue?.summary}" (${issue?.issueKey})\n\n${comment?.content}`,
           }}
           icon={{ source: Icon.Bubble, tintColor }}
           accessories={accessories}
@@ -84,7 +84,7 @@ export const NotificationItem = ({
         <List.Item
           title={{
             value: issue?.summary || "",
-            tooltip: `${sender.name} created issue ${issue?.summary} (${issue?.issueKey})`,
+            tooltip: `${sender.name} created issue "${issue?.summary}" (${issue?.issueKey})`,
           }}
           icon={{ source: Icon.Plus, tintColor }}
           accessories={accessories}
@@ -97,7 +97,7 @@ export const NotificationItem = ({
         <List.Item
           title={{
             value: issue?.summary || "",
-            tooltip: `${sender.name} updated issue ${issue?.summary} (${issue?.issueKey})`,
+            tooltip: `${sender.name} updated issue "${issue?.summary}" (${issue?.issueKey})`,
           }}
           icon={{ source: Icon.Pencil, tintColor }}
           accessories={accessories}
@@ -110,7 +110,7 @@ export const NotificationItem = ({
         <List.Item
           title={{
             value: issue?.summary || "",
-            tooltip: `${sender.name} attached to issue ${issue?.summary} (${issue?.issueKey})`,
+            tooltip: `${sender.name} attached a file to issue "${issue?.summary}" (${issue?.issueKey})`,
           }}
           icon={{ source: Icon.NewDocument, tintColor }}
           accessories={accessories}
@@ -123,7 +123,7 @@ export const NotificationItem = ({
         <List.Item
           title={{
             value: project.name,
-            tooltip: `Invited to project ${project.name} (${project.projectKey})`,
+            tooltip: `You were invited to project "${project.name}" (${project.projectKey})`,
           }}
           icon={{ source: Icon.Ticket, tintColor }}
           accessories={accessories}
@@ -136,7 +136,7 @@ export const NotificationItem = ({
         <List.Item
           title={{
             value: `#${pullRequest?.number} ${pullRequest?.summary}`,
-            tooltip: `${sender.name} created pull request #${pullRequest?.number} ${pullRequest?.summary}`,
+            tooltip: `${sender.name} created pull request #${pullRequest?.number} "${pullRequest?.summary}"`,
           }}
           icon={{ source: Icon.Plus, tintColor }}
           accessories={accessories}
@@ -149,7 +149,7 @@ export const NotificationItem = ({
         <List.Item
           title={{
             value: `#${pullRequest?.number} ${pullRequest?.summary}`,
-            tooltip: `${sender.name} updated pull request #${pullRequest?.number} ${pullRequest?.summary}`,
+            tooltip: `${sender.name} updated pull request #${pullRequest?.number} "${pullRequest?.summary}"`,
           }}
           icon={{ source: Icon.Upload, tintColor }}
           accessories={accessories}
@@ -161,8 +161,8 @@ export const NotificationItem = ({
       return (
         <List.Item
           title={{
-            value: "Notified",
-            tooltip: `${sender.name} notified you`,
+            value: "Notification",
+            tooltip: `${sender.name} sent you a notification`,
           }}
           icon={{ source: Icon.Bell, tintColor }}
           accessories={accessories}
