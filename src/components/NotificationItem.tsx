@@ -3,6 +3,7 @@ import type { Entity } from "backlog-js";
 import { CommonActionPanel } from "./CommonActionPanel";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { getUserIconUrl } from "../utils/image";
+import { IssueDetail } from "./IssueDetail";
 
 type Props = {
   notification: Entity.Notification.Notification;
@@ -60,9 +61,19 @@ export const NotificationItem = ({
             value: issue?.summary || "",
             tooltip: `${sender.name} assigned you to "${issue?.summary}" (${issue?.issueKey})`,
           }}
-          icon={{ source: Icon.AddPerson, tintColor }}
+          icon={{ 
+            source: Icon.AddPerson, 
+            tintColor
+          }}
           accessories={accessories}
           actions={actions}
+          detail={
+            <IssueDetail
+              component={List.Item.Detail}
+              issue={issue}
+              project={project}
+            />
+          }
         />
       );
     }
@@ -77,6 +88,14 @@ export const NotificationItem = ({
           icon={{ source: Icon.Bubble, tintColor }}
           accessories={accessories}
           actions={actions}
+          detail={
+            <IssueDetail
+              component={List.Item.Detail}
+              issue={issue}
+              project={project}
+              comment={comment}
+            />
+          }
         />
       );
     }
@@ -90,6 +109,13 @@ export const NotificationItem = ({
           icon={{ source: Icon.Plus, tintColor }}
           accessories={accessories}
           actions={actions}
+          detail={
+            <IssueDetail
+              component={List.Item.Detail}
+              issue={issue}
+              project={project}
+            />
+          }
         />
       );
     }
@@ -103,6 +129,13 @@ export const NotificationItem = ({
           icon={{ source: Icon.Pencil, tintColor }}
           accessories={accessories}
           actions={actions}
+          detail={
+            <IssueDetail
+              component={List.Item.Detail}
+              issue={issue}
+              project={project}
+            />
+          }
         />
       );
     }
@@ -116,6 +149,13 @@ export const NotificationItem = ({
           icon={{ source: Icon.NewDocument, tintColor }}
           accessories={accessories}
           actions={actions}
+          detail={
+            <IssueDetail
+              component={List.Item.Detail}
+              issue={issue}
+              project={project}
+            />
+          }
         />
       );
     }
