@@ -5,6 +5,7 @@ import { SpaceForm } from "./SpaceForm";
 import { useCredentials } from "../hooks/useCredentials";
 import type { SpaceCredentials } from "../utils/credentials";
 import { getSpaceHost } from "../utils/space";
+import { cache } from "../utils/cache";
 
 type Props = {
   children?: React.ReactNode | Promise<React.ReactNode>;
@@ -75,7 +76,7 @@ export const CommonActionPanel = ({ children }: Props) => {
           <Action.Push title="Add New Space" target={<SpaceForm onSubmit={handleAddSpace} />} />
         </ActionPanel.Section>
         <ActionPanel.Section title="Tools">
-          <Action title="Clear Cache" icon={Icon.Trash} />
+          <Action title="Clear Cache" icon={Icon.Trash} onAction={() => cache.clear()} />
         </ActionPanel.Section>
       </>
     </ActionPanel>

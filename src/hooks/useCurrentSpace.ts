@@ -1,7 +1,7 @@
 import { useCachedState } from "@raycast/utils";
 import { useCredentials } from "./useCredentials";
 import { Backlog } from "backlog-js";
-import { getSpaceHost, getSpaceWithCache } from "../utils/space";
+import { getSpaceHost } from "../utils/space";
 import { useMemo } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
@@ -24,7 +24,8 @@ export const useCurrentSpace = () => {
 
   const { data: space } = useSuspenseQuery({
     queryKey: ["space", credential.spaceKey],
-    queryFn: () => getSpaceWithCache(credential),
+    staleTime: 1000 * 60 * 10, // 10 minutes
+    queryFn: () => api.getSpace(),
   });
 
   const setSpaceKey = (spaceKey: string) => {

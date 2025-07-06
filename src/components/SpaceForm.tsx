@@ -1,7 +1,8 @@
 import { ActionPanel, Action, Alert, confirmAlert, Form } from "@raycast/api";
 import { FormValidation, useForm } from "@raycast/utils";
 import type { SpaceCredentials } from "../utils/credentials";
-import { getSpaceWithCache } from "../utils/space";
+import { getSpaceHost } from "../utils/space";
+import { Backlog } from "backlog-js";
 
 type Props = {
   initialValues?: SpaceCredentials;
@@ -21,7 +22,9 @@ export const SpaceForm = ({ initialValues, onSubmit, onDelete }: Props) => {
 
       for (const domain of backlogDomains) {
         try {
-          const space = await getSpaceWithCache({ spaceKey: values.spaceKey, domain, apiKey: values.apiKey });
+          // check if the space key and api key are valid
+          const api = new Backlog({ host: getSpaceHost({ spaceKey: values.spaceKey, domain }), apiKey: values.apiKey });
+          await api.getSpace();
 
           onSubmit({ ...values, domain });
 

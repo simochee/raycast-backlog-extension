@@ -1,7 +1,7 @@
 import { Cache } from "@raycast/api";
 import * as v from "valibot";
 
-const cache = new Cache();
+export const cache = new Cache();
 
 /**
  * Cache wrapper that validates and expires the cache.
