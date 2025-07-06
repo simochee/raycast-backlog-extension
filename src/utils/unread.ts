@@ -2,6 +2,14 @@ import { LocalStorage } from "@raycast/api";
 import { CREDENTIALS_STORAGE_KEY, CredentialsSchema } from "./credentials";
 import * as v from "valibot";
 import { Backlog } from "backlog-js";
+import { cache } from "./cache";
+
+const schema = v.array(
+  v.object({
+    spaceKey: v.string(),
+    count: v.number(),
+  })
+)
 
 export const getUnreadCounts = async () => {
   try {

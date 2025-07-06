@@ -1,38 +1,35 @@
-import { Keyboard, launchCommand, LaunchProps, LaunchType, MenuBarExtra } from "@raycast/api";
-import { useCachedState } from "@raycast/utils";
-import * as v from "valibot";
+import { Keyboard, launchCommand, LaunchType, MenuBarExtra } from "@raycast/api";
 import { useSpaces } from "./hooks/useSpaces";
 import { withProviders } from "./utils/providers";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { Backlog } from "backlog-js";
+import { getSpaceHost } from "./utils/space";
 
-const ContextSchema = v.object({
-  unreadCounts: v.array(
-    v.object({
-      spaceKey: v.string(),
-      count: v.number(),
-    }),
-  ),
-});
-
-const Command = (props: LaunchProps) => {
+const Command = () => {
   const spaces = useSpaces();
 
-  const result = v.safeParse(ContextSchema, props.launchContext);
+  const { data } = useSuspenseQuery({
+    queryKey: ["unread-counts"],
+    queryFn: async () => Promise.all(
+      spaces.map(async ({ space, credential }) => {
+        const api = new Backlog({ host: getSpaceHost(credential), apiKey: credential.apiKey });
+        const { count } = await api.getNotificationsCount({ alreadyRead: false, resourceAlreadyRead: false });
 
-  const [unreadCounts, setUnreadCounts] = useCachedState<{ spaceKey: string; count: number }[]>("unread-counts", []);
+        return { space, count }
+      })
+    ),
+    staleTime: 1000 * 60 * 1, // 1 minute
+  })
 
-  if (result.success) {
-    setUnreadCounts(result.output.unreadCounts);
-  }
-
-  const totalCount = unreadCounts.reduce((acc, curr) => acc + curr.count, 0);
+  const totalCount = data?.reduce((acc, curr) => acc + curr.count, 0) ?? 0;
 
   return (
     <MenuBarExtra
       icon={{ source: totalCount > 0 ? "icon.png" : { dark: "icon@dark.png", light: "icon.png" } }}
       title={totalCount === 0 ? "No unread" : `${totalCount} unread`}
     >
-      {spaces.map(({ space: { spaceKey, name }, credential: { domain, apiKey } }, index) => {
-        const unreadCount = unreadCounts.find((space) => spaceKey === space.spaceKey)?.count;
+      {spaces.map(({ space: { spaceKey, name }, credential }, index) => {
+        const unreadCount = data?.find(({space}) => spaceKey === space.spaceKey)?.count;
         const shortcut: Keyboard.Shortcut | undefined =
           index === 0
             ? { modifiers: ["cmd"], key: "1" }
@@ -57,7 +54,7 @@ const Command = (props: LaunchProps) => {
         return (
           <MenuBarExtra.Item
             key={spaceKey}
-            icon={`https://${spaceKey}.${domain}/api/v2/space/image?apiKey=${apiKey}`}
+            icon={`https://${getSpaceHost(credential)}/api/v2/space/image?apiKey=${credential.apiKey}`}
             title={name}
             subtitle={unreadCount ? `${unreadCount} unread` : undefined}
             tooltip={`${name} (${spaceKey})`}

@@ -27,15 +27,7 @@
       "subtitle": "Backlog",
       "description": "Show unread notification count in menu bar",
       "icon": "icon.png",
-      "mode": "menu-bar"
-    },
-    {
-      "name": "unread-count-fetcher",
-      "title": "Unread Count Fetcher",
-      "subtitle": "Backlog",
-      "description": "Background sync for unread notification counts",
-      "icon": "icon.png",
-      "mode": "no-view",
+      "mode": "menu-bar",
       "interval": "3m"
     }
   ],
