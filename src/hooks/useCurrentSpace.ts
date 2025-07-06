@@ -1,9 +1,9 @@
-import { useCachedState } from "@raycast/utils";
-import { useCredentials } from "./useCredentials";
-import { Backlog } from "backlog-js";
 import { getSpaceHost } from "../utils/space";
-import { useMemo } from "react";
+import { useCredentials } from "./useCredentials";
+import { useCachedState } from "@raycast/utils";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { Backlog } from "backlog-js";
+import { useMemo } from "react";
 
 export const useCurrentSpace = () => {
   const { credentials } = useCredentials();

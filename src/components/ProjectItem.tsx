@@ -1,8 +1,8 @@
+import { useCurrentSpace } from "../hooks/useCurrentSpace";
+import { getProjectImageUrl } from "../utils/image";
+import { CommonActionPanel } from "./CommonActionPanel";
 import { Action, Icon, List } from "@raycast/api";
 import { Entity } from "backlog-js";
-import { useCurrentSpace } from "../hooks/useCurrentSpace";
-import { CommonActionPanel } from "./CommonActionPanel";
-import { getProjectImageUrl } from "../utils/image";
 
 type Props = {
   project: Entity.Project.Project;

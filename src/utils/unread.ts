@@ -1,7 +1,7 @@
-import { LocalStorage } from "@raycast/api";
 import { CREDENTIALS_STORAGE_KEY, CredentialsSchema } from "./credentials";
-import * as v from "valibot";
+import { LocalStorage } from "@raycast/api";
 import { Backlog } from "backlog-js";
+import * as v from "valibot";
 
 export const getUnreadCounts = async () => {
   try {

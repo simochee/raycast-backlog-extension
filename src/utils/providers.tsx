@@ -1,8 +1,8 @@
+import { CredentialsProvider } from "../components/CredentialsProvider";
+import { cache } from "./cache";
+import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
-import { CredentialsProvider } from "../components/CredentialsProvider";
-import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
-import { cache } from "./cache";
 
 const queryClient = new QueryClient({
   defaultOptions: {

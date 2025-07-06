@@ -1,7 +1,7 @@
+import { useCurrentSpace } from "../hooks/useCurrentSpace";
+import { getUserIconUrl } from "../utils/image";
 import { Color, Detail, Icon, Image, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
-import { getUserIconUrl } from "../utils/image";
-import { useCurrentSpace } from "../hooks/useCurrentSpace";
 
 type Props = {
   component: typeof List.Item.Detail | typeof Detail;
