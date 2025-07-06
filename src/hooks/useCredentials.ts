@@ -5,9 +5,13 @@ import { LocalStorage } from "@raycast/api";
 import * as v from "valibot";
 
 const getCredentials = async () => {
-  const raw = await LocalStorage.getItem<string>(CREDENTIALS_STORAGE_KEY);
-
-  return v.parseAsync(v.array(CredentialsSchema), JSON.parse(raw || ""));
+  try {
+    const raw = await LocalStorage.getItem<string>(CREDENTIALS_STORAGE_KEY);
+  
+    return v.parseAsync(v.array(CredentialsSchema), JSON.parse(raw || ""));
+  } catch {
+    return [];
+  }
 };
 
 export const useCredentials = () => {
