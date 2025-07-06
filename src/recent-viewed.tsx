@@ -8,20 +8,24 @@ import { WikiItem } from "./components/WikiItem";
 import { ProjectItem } from "./components/ProjectItem";
 import { CommonActionPanel } from "./components/CommonActionPanel";
 import { withProviders } from "./utils/providers";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
+
+const PER_PAGE = 25;
 
 const Command = () => {
   const [type, setType] = useCachedState<string>("recent-viewed-type", "issue");
   const [isShowingDetail, setIsShowingDetail] = useState(false);
   const currentSpace = useCurrentSpace();
 
-  const { data } = useSuspenseQuery({
+  const { data } = useSuspenseInfiniteQuery({
     queryKey: ["recent-viewed", currentSpace.spaceKey, type],
-    queryFn: (): Promise<
+    staleTime: 1000 * 30, // 30 seconds
+    queryFn: ({ pageParam }): Promise<
       Entity.Project.RecentlyViewedProject[] | Entity.Wiki.RecentlyViewedWiki[] | Entity.Issue.RecentlyViewedIssue[]
     > => {
       const params: Option.User.GetRecentlyViewedParams = {
-        count: 100,
+        count: PER_PAGE,
+        offset: pageParam,
       };
 
       switch (type) {
@@ -33,6 +37,8 @@ const Command = () => {
           return currentSpace.api.getRecentlyViewedIssues(params);
       }
     },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, pages) => lastPage.length === PER_PAGE ? pages.flat().length ?? null : null
   });
 
   useEffect(() => {
@@ -54,7 +60,7 @@ const Command = () => {
       }
       actions={<CommonActionPanel />}
     >
-      {data?.map((item) => {
+      {data.pages.flat().map((item) => {
         // Projects
         if ("project" in item) {
           return <ProjectItem key={item.project.id} project={item.project} />;

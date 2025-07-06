@@ -4,23 +4,31 @@ import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { NotificationItem } from "./components/NotificationItem";
 import { useMemo } from "react";
 import { withProviders } from "./utils/providers";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
+import type { Entity } from "backlog-js";
+
+const PER_PAGE = 25;
 
 const Command = () => {
   const currentSpace = useCurrentSpace();
 
-  const { data } = useSuspenseQuery({
+  const { data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+   } = useSuspenseInfiniteQuery({
     queryKey: ["notifications", currentSpace.spaceKey],
-    queryFn: () =>
-      currentSpace.api.getNotifications({
-        count: 100,
+    staleTime: 1000 * 30, // 30 seconds
+    queryFn: ({ pageParam }) =>  currentSpace.api.getNotifications({
+        count: PER_PAGE,
+        maxId: pageParam !== -1 ? pageParam : undefined
       }),
+    initialPageParam: -1,
+    getNextPageParam: (lastPage) => lastPage.length === PER_PAGE ? lastPage.slice().pop()?.id ?? null : null
   });
 
   const groupedItems = useMemo(() => {
-    if (!data) return [];
-
-    return data.reduce<{ label: string; items: typeof data }[]>((acc, notification) => {
+    return data.pages.flat().reduce<{ label: string; items: Entity.Notification.Notification[]  }[]>((acc, notification) => {
       const date = new Date(notification.created);
       const label = `${["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."][date.getMonth()]} ${date.getDate()}`;
 
@@ -37,7 +45,11 @@ const Command = () => {
   }, [data]);
 
   return (
-    <List isShowingDetail actions={<CommonActionPanel />}>
+    <List isShowingDetail isLoading={isFetchingNextPage} pagination={{
+      onLoadMore: fetchNextPage,
+      hasMore: hasNextPage,
+      pageSize: PER_PAGE,
+    }} actions={<CommonActionPanel />}>
       {groupedItems.map(({ label, items }) => (
         <List.Section key={label} title={label}>
           {items.map((notification) => (
