@@ -1,4 +1,3 @@
-import { usePromise } from "@raycast/utils";
 import { useCurrentSpace } from "./useCurrentSpace";
 import { createCache } from "../utils/cache";
 import * as v from "valibot";
@@ -29,7 +28,7 @@ export const useProject = (projectId: number) => {
   const currentSpace = useCurrentSpace();
 
   const { data } = useSuspenseQuery({
-    queryKey: ['project', currentSpace.spaceKey, projectId],
+    queryKey: ["project", currentSpace.spaceKey, projectId],
     queryFn: async () => {
       const cache = createCache([currentSpace.spaceKey, "project", projectId.toString()], schema);
       const cached = cache.get();
@@ -41,8 +40,8 @@ export const useProject = (projectId: number) => {
       cache.set(project);
 
       return project;
-    }
-  })
-  
+    },
+  });
+
   return data;
 };

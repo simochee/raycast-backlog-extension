@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 const promiseCache = new Map<string, Promise<any>>();
 
 /**

@@ -1,4 +1,4 @@
-import { useCachedState, usePromise } from "@raycast/utils";
+import { useCachedState } from "@raycast/utils";
 import { useCredentials } from "./useCredentials";
 import { Backlog } from "backlog-js";
 import { getSpaceHost, getSpaceWithCache } from "../utils/space";
@@ -22,10 +22,10 @@ export const useCurrentSpace = () => {
 
   const api = useMemo(() => new Backlog({ host: getSpaceHost(credential), apiKey }), [credential]);
 
-  const { data : space} = useSuspenseQuery({
-    queryKey: ['space', credential.spaceKey],
-    queryFn: () => getSpaceWithCache(credential)
-  })
+  const { data: space } = useSuspenseQuery({
+    queryKey: ["space", credential.spaceKey],
+    queryFn: () => getSpaceWithCache(credential),
+  });
 
   const setSpaceKey = (spaceKey: string) => {
     setCurrentSpaceId(spaceKey);

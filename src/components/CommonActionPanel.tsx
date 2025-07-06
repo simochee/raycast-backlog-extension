@@ -16,7 +16,7 @@ export const CommonActionPanel = ({ children }: Props) => {
   const currentSpace = useCurrentSpace();
 
   const spaces = useSpaces();
-  const sortedSpaces = spaces.slice().sort(({ space: {spaceKey }}) => (spaceKey === currentSpace.spaceKey ? -1 : 1));
+  const sortedSpaces = spaces.slice().sort(({ space: { spaceKey } }) => (spaceKey === currentSpace.spaceKey ? -1 : 1));
 
   const handleAddSpace = async (values: SpaceCredentials) => {
     await addCredential(values);
@@ -65,11 +65,7 @@ export const CommonActionPanel = ({ children }: Props) => {
                     title={`${name} (${spaceKey})`}
                     icon={`https://${getSpaceHost(credential)}/api/v2/space/image?apiKey=${credential.apiKey}`}
                     target={
-                      <SpaceForm
-                        initialValues={credential}
-                        onSubmit={handleUpdateSpace}
-                        onDelete={handleDeleteSpace}
-                      />
+                      <SpaceForm initialValues={credential} onSubmit={handleUpdateSpace} onDelete={handleDeleteSpace} />
                     }
                   />
                 ))}

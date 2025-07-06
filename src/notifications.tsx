@@ -10,11 +10,12 @@ const Command = () => {
   const currentSpace = useCurrentSpace();
 
   const { data } = useSuspenseQuery({
-    queryKey: ['notifications', currentSpace.spaceKey],
-    queryFn: () => currentSpace.api.getNotifications({
-      count: 100,
-    })
-  })
+    queryKey: ["notifications", currentSpace.spaceKey],
+    queryFn: () =>
+      currentSpace.api.getNotifications({
+        count: 100,
+      }),
+  });
 
   const groupedItems = useMemo(() => {
     if (!data) return [];
@@ -36,16 +37,16 @@ const Command = () => {
   }, [data]);
 
   return (
-      <List isShowingDetail actions={<CommonActionPanel></CommonActionPanel>}>
-        {groupedItems.map(({ label, items }) => (
-          <List.Section key={label} title={label}>
-            {items.map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} />
-            ))}
-          </List.Section>
-        ))}
-      </List>
+    <List isShowingDetail actions={<CommonActionPanel></CommonActionPanel>}>
+      {groupedItems.map(({ label, items }) => (
+        <List.Section key={label} title={label}>
+          {items.map((notification) => (
+            <NotificationItem key={notification.id} notification={notification} />
+          ))}
+        </List.Section>
+      ))}
+    </List>
   );
-}
+};
 
 export default withProviders(Command);

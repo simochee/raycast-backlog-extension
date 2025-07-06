@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const NotificationItem = ({
-  notification: { id, sender, issue, reason, alreadyRead, comment, project, pullRequest },
+  notification: { sender, issue, reason, alreadyRead, comment, project, pullRequest },
 }: Props) => {
   const currentSpace = useCurrentSpace();
 
