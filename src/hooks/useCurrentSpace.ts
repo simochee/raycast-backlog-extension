@@ -1,8 +1,9 @@
 import { useCachedState, usePromise } from "@raycast/utils";
 import { useCredentials } from "./useCredentials";
 import { Backlog } from "backlog-js";
-import { getSpaceWithCache } from "../utils/space";
+import { getSpaceHost, getSpaceWithCache } from "../utils/space";
 import { useMemo } from "react";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 export const useCurrentSpace = () => {
   const { credentials } = useCredentials();
@@ -10,31 +11,25 @@ export const useCurrentSpace = () => {
 
   const credential = credentials.find((credential) => credential.spaceKey === currentSpaceId) || credentials[0];
 
+  if (!credential) {
+    throw new Error("No credential found");
+  }
+
   const spaceKey = credential?.spaceKey;
   const apiKey = credential?.apiKey;
   const domain = credential?.domain;
   const host = `${spaceKey}.${domain}`;
 
-  const api = useMemo(() => {
-    if (!spaceKey || !apiKey || !domain) return;
+  const api = useMemo(() => new Backlog({ host: getSpaceHost(credential), apiKey }), [credential]);
 
-    return new Backlog({ host: `${spaceKey}.${domain}`, apiKey });
-  }, [spaceKey, apiKey, domain]);
-
-  const { data: space } = usePromise(
-    async (spaceKey: string | undefined, domain: string | undefined, apiKey: string | undefined) => {
-      if (!spaceKey || !domain || !apiKey) {
-        return;
-      }
-
-      return await getSpaceWithCache(spaceKey, domain, apiKey);
-    },
-    [spaceKey, domain, apiKey],
-  );
+  const { data : space} = useSuspenseQuery({
+    queryKey: ['space', credential.spaceKey],
+    queryFn: () => getSpaceWithCache(credential)
+  })
 
   const setSpaceKey = (spaceKey: string) => {
     setCurrentSpaceId(spaceKey);
   };
 
-  return { spaceKey, host, apiKey, api, space, setSpaceKey };
+  return { credential, spaceKey, host, apiKey, api, space, setSpaceKey };
 };

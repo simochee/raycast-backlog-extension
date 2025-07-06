@@ -4,6 +4,7 @@ import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { SpaceForm } from "./SpaceForm";
 import { useCredentials } from "../hooks/useCredentials";
 import type { SpaceCredentials } from "../utils/credentials";
+import { getSpaceHost } from "../utils/space";
 
 type Props = {
   children?: React.ReactNode | Promise<React.ReactNode>;
@@ -14,8 +15,8 @@ export const CommonActionPanel = ({ children }: Props) => {
   const { addCredential, updateCredential, removeCredential } = useCredentials();
   const currentSpace = useCurrentSpace();
 
-  const [spaces] = useSpaces();
-  const sortedSpaces = spaces?.slice().sort((a) => (a.space.spaceKey === currentSpace.spaceKey ? -1 : 1));
+  const spaces = useSpaces();
+  const sortedSpaces = spaces.slice().sort(({ space: {spaceKey }}) => (spaceKey === currentSpace.spaceKey ? -1 : 1));
 
   const handleAddSpace = async (values: SpaceCredentials) => {
     await addCredential(values);
@@ -44,28 +45,28 @@ export const CommonActionPanel = ({ children }: Props) => {
           {sortedSpaces && sortedSpaces.length > 0 && (
             <>
               <ActionPanel.Submenu title="Switch" shortcut={{ modifiers: ["cmd"], key: "s" }}>
-                {sortedSpaces.map(({ space, domain, apiKey }, index) => (
+                {sortedSpaces.map(({ space: { spaceKey, name }, credential }, index) => (
                   <Action
-                    key={space.spaceKey}
-                    title={`${space.name} (${space.spaceKey})`}
+                    key={spaceKey}
+                    title={`${name} (${spaceKey})`}
                     icon={
                       index === 0
                         ? { source: Icon.CheckCircle, tintColor: Color.Green }
-                        : `https://${space.spaceKey}.${domain}/api/v2/space/image?apiKey=${apiKey}`
+                        : `https://${getSpaceHost(credential)}/api/v2/space/image?apiKey=${credential.apiKey}`
                     }
-                    onAction={() => currentSpace.setSpaceKey(space.spaceKey)}
+                    onAction={() => currentSpace.setSpaceKey(spaceKey)}
                   />
                 ))}
               </ActionPanel.Submenu>
               <ActionPanel.Submenu title="Manage">
-                {sortedSpaces.map(({ space, domain, apiKey }) => (
+                {sortedSpaces.map(({ space: { spaceKey, name }, credential }) => (
                   <Action.Push
-                    key={space.spaceKey}
-                    title={`${space.name} (${space.spaceKey})`}
-                    icon={`https://${space.spaceKey}.${domain}/api/v2/space/image?apiKey=${apiKey}`}
+                    key={spaceKey}
+                    title={`${name} (${spaceKey})`}
+                    icon={`https://${getSpaceHost(credential)}/api/v2/space/image?apiKey=${credential.apiKey}`}
                     target={
                       <SpaceForm
-                        initialValues={{ spaceKey: space.spaceKey, domain: domain, apiKey: apiKey }}
+                        initialValues={credential}
                         onSubmit={handleUpdateSpace}
                         onDelete={handleDeleteSpace}
                       />

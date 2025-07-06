@@ -14,7 +14,7 @@ const ContextSchema = v.object({
 });
 
 const Command = (props: LaunchProps) => {
-  const [spaces] = useSpaces();
+  const spaces = useSpaces();
 
   const result = v.safeParse(ContextSchema, props.launchContext);
 
@@ -31,8 +31,8 @@ const Command = (props: LaunchProps) => {
       icon={{ source: totalCount > 0 ? 'icon.png' : { dark: "icon-white.png", light: "icon-black.png" } }}
       title={totalCount === 0 ? "All read" : `${totalCount} unread`}
     >
-      {spaces?.map(({ space, domain, apiKey }, index) => {
-        const unraedCount = unreadCounts.find(({ spaceKey }) => spaceKey === space.spaceKey)?.count;
+      {spaces.map(({ space: { spaceKey, name }, credential: { domain, apiKey } }, index) => {
+        const unraedCount = unreadCounts.find((space) => spaceKey === space.spaceKey)?.count;
         const shortcut: Keyboard.Shortcut | undefined = index === 0
           ? { modifiers: ["cmd"], key: "1" }   
           : index === 1
@@ -55,11 +55,11 @@ const Command = (props: LaunchProps) => {
         
         return (
           <MenuBarExtra.Item
-            key={space.spaceKey}
-            icon={`https://${space.spaceKey}.${domain}/api/v2/space/image?apiKey=${apiKey}`}
-            title={space.name}
+            key={spaceKey}
+            icon={`https://${spaceKey}.${domain}/api/v2/space/image?apiKey=${apiKey}`}
+            title={name}
             subtitle={unraedCount ? `(${unraedCount} unread)` : undefined}
-            tooltip={`${space.name} (${space.spaceKey})`}
+            tooltip={`${name} (${spaceKey})`}
             onAction={() => {
               launchCommand({ name: "notifications", type: LaunchType.UserInitiated });
             }}
