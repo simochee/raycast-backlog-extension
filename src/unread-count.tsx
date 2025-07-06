@@ -1,10 +1,10 @@
-import { Keyboard, launchCommand, LaunchType, MenuBarExtra } from "@raycast/api";
 import { useSpaces } from "./hooks/useSpaces";
+import { getSpaceImageUrl } from "./utils/image";
 import { withProviders } from "./utils/providers";
+import { getSpaceHost } from "./utils/space";
+import { Keyboard, launchCommand, LaunchType, MenuBarExtra } from "@raycast/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Backlog } from "backlog-js";
-import { getSpaceHost } from "./utils/space";
-import { getSpaceImageUrl } from "./utils/image";
 
 const Command = () => {
   const spaces = useSpaces();
