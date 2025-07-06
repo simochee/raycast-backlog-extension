@@ -42,7 +42,7 @@ const Command = () => {
         items: [notification],
       });
     }, []);
-  }, [data]);
+  }, [data.pages]);
 
   return (
     <List isShowingDetail isLoading={isFetchingNextPage} pagination={{
