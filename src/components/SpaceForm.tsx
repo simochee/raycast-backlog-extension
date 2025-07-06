@@ -21,40 +21,40 @@ const hostRegex = /(([a-z0-9-]+)\.(backlog\.(?:com|jp)))/;
 export const SpaceForm = ({ initialValues, onSubmit, onDelete }: Props) => {
   const { handleSubmit, itemProps, values } = useForm<FormSchema>({
     async onSubmit({ spaceHost, apiKey }) {
-      const [,host,spaceKey, domain] = hostRegex.exec(spaceHost) || []
+      const [, host, spaceKey, domain] = hostRegex.exec(spaceHost) || [];
 
-      if (!host || !spaceKey || domain !== "backlog.com" && domain !== "backlog.jp") {
-        throw new Error("Invalid space host")
+      if (!host || !spaceKey || (domain !== "backlog.com" && domain !== "backlog.jp")) {
+        throw new Error("Invalid space host");
       }
 
       try {
         // check if the space key and api key are valid
         const api = new Backlog({ host, apiKey });
         await api.getSpace();
-  
-        onSubmit({ spaceKey, domain, apiKey })
+
+        onSubmit({ spaceKey, domain, apiKey });
       } catch {
         showToast({
           style: Toast.Style.Failure,
           title: "Invalid Space Key or API Key",
           message: "Please check your Space Key and API Key and try again.",
-        })
+        });
       }
     },
     initialValues,
     validation: {
       spaceHost: (value) => {
-        if (!value) return 'The item is required'
+        if (!value) return "The item is required";
 
-        const host = hostRegex.exec(value)
+        const host = hostRegex.exec(value);
 
-        if (!host) return 'Invalid space domain'
+        if (!host) return "Invalid space domain";
       },
       apiKey: FormValidation.Required,
     },
   });
 
-  const spaceHost = useMemo(() =>  hostRegex.exec(values.spaceHost)?.[1], [values.spaceHost])
+  const spaceHost = useMemo(() => hostRegex.exec(values.spaceHost)?.[1], [values.spaceHost]);
 
   const handleDelete = async () => {
     if (!initialValues) {
@@ -77,12 +77,10 @@ export const SpaceForm = ({ initialValues, onSubmit, onDelete }: Props) => {
   return (
     <Form
       navigationTitle={initialValues ? "Edit Space" : "Add Space"}
-      searchBarAccessory={spaceHost ? (
-        <Form.LinkAccessory
-          target={`https://${spaceHost}/EditApiSettings.action`}
-          text="Get API Key"
-        />
-      ) : null
+      searchBarAccessory={
+        spaceHost ? (
+          <Form.LinkAccessory target={`https://${spaceHost}/EditApiSettings.action`} text="Get API Key" />
+        ) : null
       }
       actions={
         <ActionPanel>
@@ -94,10 +92,12 @@ export const SpaceForm = ({ initialValues, onSubmit, onDelete }: Props) => {
       {initialValues ? (
         <Form.Description title="Space Host" text={getSpaceHost(initialValues)} />
       ) : (
-        <Form.TextField title="Space Domain" placeholder="example.backlog.com" {...itemProps.spaceHost} 
-        info="The domain of your Backlog space."
-        
-         />
+        <Form.TextField
+          title="Space Domain"
+          placeholder="example.backlog.com"
+          {...itemProps.spaceHost}
+          info="The domain of your Backlog space."
+        />
       )}
       <Form.TextField title="API Key" placeholder="Your Backlog API key" {...itemProps.apiKey} />
     </Form>

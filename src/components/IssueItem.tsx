@@ -1,5 +1,5 @@
 import type { Entity } from "backlog-js";
-import { Action, Color, Icon, Image, List } from "@raycast/api";
+import { Action, ActionPanel, Color, Icon, Image, List } from "@raycast/api";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { useProject } from "../hooks/useProject";
 import { CommonActionPanel } from "./CommonActionPanel";
@@ -7,10 +7,11 @@ import { getProjectImageUrl, getUserIconUrl } from "../utils/image";
 
 type Props = {
   issue: Entity.Issue.Issue;
+  actions?: React.ReactNode;
   onToggleShowingDetail(): void;
 };
 
-export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
+export const IssueItem = ({ issue, actions, onToggleShowingDetail }: Props) => {
   const currentSpace = useCurrentSpace();
   const project = useProject(issue.projectId);
 
@@ -38,17 +39,24 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
   accessories.push({ tag: { value: issue.status.name, color: issue.status.color } });
   // Priority
   accessories.push({
-    icon: issue.priority.id === 4 ? { source: Icon.ArrowDown, tintColor: Color.Green } : issue.priority.id === 2 ? { source: Icon.ArrowUp, tintColor: Color.Red } : { source: Icon.ArrowRight, tintColor: Color.Blue },
+    icon:
+      issue.priority.id === 4
+        ? { source: Icon.ArrowDown, tintColor: Color.Green }
+        : issue.priority.id === 2
+          ? { source: Icon.ArrowUp, tintColor: Color.Red }
+          : { source: Icon.ArrowRight, tintColor: Color.Blue },
     tooltip: issue.priority.name,
-  })
+  });
   // Assignee
-    accessories.push({
-      icon: issue.assignee ? {
-        source: getUserIconUrl(currentSpace.credential, issue.assignee.id),
-        mask: Image.Mask.Circle,
-      } : { source: Icon.PersonLines, tintColor: Color.SecondaryText },
-      tooltip: issue.assignee?.name ?? "Unassigned",
-    });
+  accessories.push({
+    icon: issue.assignee
+      ? {
+          source: getUserIconUrl(currentSpace.credential, issue.assignee.id),
+          mask: Image.Mask.Circle,
+        }
+      : { source: Icon.PersonLines, tintColor: Color.SecondaryText },
+    tooltip: issue.assignee?.name ?? "Unassigned",
+  });
 
   return (
     <List.Item
@@ -138,27 +146,31 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
       actions={
         <CommonActionPanel>
           <Action.OpenInBrowser title="Open in Browser" url={`https://${currentSpace.host}/view/${issue.issueKey}`} />
-          <Action.CopyToClipboard
-            title="Copy Issue Key"
-            content={issue.issueKey}
-            shortcut={{ modifiers: ["cmd"], key: "c" }}
-          />
-          <Action.CopyToClipboard
-            title="Copy Issue Key and Subject"
-            content={`${issue.issueKey} ${issue.summary}`}
-            shortcut={{ modifiers: ["cmd", "shift"], key: "c" }}
-          />
-          <Action.CopyToClipboard
-            title="Copy Issue URL"
-            content={`https://${currentSpace.host}/view/${issue.issueKey}`}
-            shortcut={{ modifiers: ["cmd", "shift"], key: "u" }}
-          />
-          <Action
-            title="Toggle Details"
-            icon={Icon.AppWindowSidebarRight}
-            shortcut={{ modifiers: ["cmd", "shift"], key: "f" }}
-            onAction={onToggleShowingDetail}
-          />
+
+          {actions}
+          <ActionPanel.Section title="Actions">
+            <Action.CopyToClipboard
+              title="Copy Issue Key"
+              content={issue.issueKey}
+              shortcut={{ modifiers: ["cmd"], key: "c" }}
+            />
+            <Action.CopyToClipboard
+              title="Copy Issue Key and Subject"
+              content={`${issue.issueKey} ${issue.summary}`}
+              shortcut={{ modifiers: ["cmd", "shift"], key: "c" }}
+            />
+            <Action.CopyToClipboard
+              title="Copy Issue URL"
+              content={`https://${currentSpace.host}/view/${issue.issueKey}`}
+              shortcut={{ modifiers: ["cmd", "shift"], key: "u" }}
+            />
+            <Action
+              title="Toggle Details"
+              icon={Icon.AppWindowSidebarRight}
+              shortcut={{ modifiers: ["cmd", "shift"], key: "f" }}
+              onAction={onToggleShowingDetail}
+            />
+          </ActionPanel.Section>
         </CommonActionPanel>
       }
     />

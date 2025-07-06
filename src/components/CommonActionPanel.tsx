@@ -1,11 +1,9 @@
-import { Action, ActionPanel, Color, Icon, useNavigation } from "@raycast/api";
+import { Action, ActionPanel, Icon, useNavigation } from "@raycast/api";
 import { useSpaces } from "../hooks/useSpaces";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { SpaceForm } from "./SpaceForm";
 import { useCredentials } from "../hooks/useCredentials";
 import type { SpaceCredentials } from "../utils/credentials";
-import { getSpaceHost } from "../utils/space";
-import { cache } from "../utils/cache";
 import { getSpaceImageUrl } from "../utils/image";
 
 type Props = {
@@ -46,21 +44,7 @@ export const CommonActionPanel = ({ children }: Props) => {
         <ActionPanel.Section title="Spaces">
           {sortedSpaces && sortedSpaces.length > 0 && (
             <>
-              <ActionPanel.Submenu title="Switch Space" shortcut={{ modifiers: ["cmd"], key: "s" }}>
-                {sortedSpaces.map(({ space: { spaceKey, name }, credential }, index) => (
-                  <Action
-                    key={spaceKey}
-                    title={`${name} (${spaceKey})`}
-                    icon={
-                      index === 0
-                        ? { source: Icon.CheckCircle, tintColor: Color.Green }
-                        : getSpaceImageUrl(credential)
-                    }
-                    onAction={() => currentSpace.setSpaceKey(spaceKey)}
-                  />
-                ))}
-              </ActionPanel.Submenu>
-              <ActionPanel.Submenu title="Manage Spaces">
+              <ActionPanel.Submenu title="Manage Spaces" icon={Icon.Gear}>
                 {sortedSpaces.map(({ space: { spaceKey, name }, credential }) => (
                   <Action.Push
                     key={spaceKey}
@@ -74,10 +58,7 @@ export const CommonActionPanel = ({ children }: Props) => {
               </ActionPanel.Submenu>
             </>
           )}
-          <Action.Push title="Add New Space" target={<SpaceForm onSubmit={handleAddSpace} />} />
-        </ActionPanel.Section>
-        <ActionPanel.Section title="Tools">
-          <Action title="Clear Cache" icon={Icon.Trash} onAction={() => cache.clear()} />
+          <Action.Push title="Add New Space" icon={Icon.Plus} target={<SpaceForm onSubmit={handleAddSpace} />} />
         </ActionPanel.Section>
       </>
     </ActionPanel>

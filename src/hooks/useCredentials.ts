@@ -7,7 +7,7 @@ import * as v from "valibot";
 const getCredentials = async () => {
   try {
     const raw = await LocalStorage.getItem<string>(CREDENTIALS_STORAGE_KEY);
-  
+
     return v.parseAsync(v.array(CredentialsSchema), JSON.parse(raw || ""));
   } catch {
     return [];

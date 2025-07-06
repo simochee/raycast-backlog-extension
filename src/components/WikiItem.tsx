@@ -1,4 +1,4 @@
-import { Action, Color, List } from "@raycast/api";
+import { Action, ActionPanel, Color, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { useProject } from "../hooks/useProject";
@@ -7,9 +7,10 @@ import { getProjectImageUrl } from "../utils/image";
 
 type Props = {
   page: Entity.Wiki.WikiListItem;
+  actions?: React.ReactNode;
 };
 
-export const WikiItem = ({ page }: Props) => {
+export const WikiItem = ({ page, actions }: Props) => {
   const currentSpace = useCurrentSpace();
   const project = useProject(page.projectId);
 
@@ -25,11 +26,14 @@ export const WikiItem = ({ page }: Props) => {
       actions={
         <CommonActionPanel>
           <Action.OpenInBrowser title="Open in Browser" url={`https://${currentSpace.host}/alias/wiki/${page.id}`} />
-          <Action.CopyToClipboard
-            title="Copy Wiki URL"
-            shortcut={{ modifiers: ["cmd", "shift"], key: "u" }}
-            content={`https://${currentSpace.host}/alias/wiki/${page.id}`}
-          />
+          {actions}
+          <ActionPanel.Section title="Actions">
+            <Action.CopyToClipboard
+              title="Copy Wiki URL"
+              shortcut={{ modifiers: ["cmd", "shift"], key: "u" }}
+              content={`https://${currentSpace.host}/alias/wiki/${page.id}`}
+            />
+          </ActionPanel.Section>
         </CommonActionPanel>
       }
     />

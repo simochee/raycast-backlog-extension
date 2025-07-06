@@ -1,4 +1,4 @@
-import { Action, Color, Icon, Image, List } from "@raycast/api";
+import { Action, ActionPanel, Color, Icon, Image, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 import { CommonActionPanel } from "./CommonActionPanel";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
@@ -34,21 +34,27 @@ export const NotificationItem = ({
   const actions = (
     <CommonActionPanel>
       <Action.OpenInBrowser title="Open in Browser" url={url} />
-      <Action.CopyToClipboard title="Copy Issue URL" content={url} shortcut={{ modifiers: ["cmd", "shift"], key: "u" }} />
-      {issue && (
-        <>
-          <Action.CopyToClipboard
-            title="Copy Issue Key"
-            content={issue.issueKey}
-            shortcut={{ modifiers: ["cmd"], key: "c" }}
-          />
-          <Action.CopyToClipboard
-            title="Copy Issue Key and Subject"
-            content={`${issue.issueKey} ${issue.summary}`}
-            shortcut={{ modifiers: ["cmd", "shift"], key: "c" }}
-          />
-        </>
-      )}
+      <ActionPanel.Section title="Actions">
+        <Action.CopyToClipboard
+          title="Copy Issue URL"
+          content={url}
+          shortcut={{ modifiers: ["cmd", "shift"], key: "u" }}
+        />
+        {issue && (
+          <>
+            <Action.CopyToClipboard
+              title="Copy Issue Key"
+              content={issue.issueKey}
+              shortcut={{ modifiers: ["cmd"], key: "c" }}
+            />
+            <Action.CopyToClipboard
+              title="Copy Issue Key and Subject"
+              content={`${issue.issueKey} ${issue.summary}`}
+              shortcut={{ modifiers: ["cmd", "shift"], key: "c" }}
+            />
+          </>
+        )}
+      </ActionPanel.Section>
     </CommonActionPanel>
   );
 
@@ -61,19 +67,13 @@ export const NotificationItem = ({
             value: issue?.summary || "",
             tooltip: `${sender.name} assigned you to "${issue?.summary}" (${issue?.issueKey})`,
           }}
-          icon={{ 
-            source: Icon.AddPerson, 
-            tintColor
+          icon={{
+            source: Icon.AddPerson,
+            tintColor,
           }}
           accessories={accessories}
           actions={actions}
-          detail={
-            <IssueDetail
-              component={List.Item.Detail}
-              issue={issue}
-              project={project}
-            />
-          }
+          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} />}
         />
       );
     }
@@ -88,14 +88,7 @@ export const NotificationItem = ({
           icon={{ source: Icon.Bubble, tintColor }}
           accessories={accessories}
           actions={actions}
-          detail={
-            <IssueDetail
-              component={List.Item.Detail}
-              issue={issue}
-              project={project}
-              comment={comment}
-            />
-          }
+          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} comment={comment} />}
         />
       );
     }
@@ -109,13 +102,7 @@ export const NotificationItem = ({
           icon={{ source: Icon.Plus, tintColor }}
           accessories={accessories}
           actions={actions}
-          detail={
-            <IssueDetail
-              component={List.Item.Detail}
-              issue={issue}
-              project={project}
-            />
-          }
+          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} />}
         />
       );
     }
@@ -129,13 +116,7 @@ export const NotificationItem = ({
           icon={{ source: Icon.Pencil, tintColor }}
           accessories={accessories}
           actions={actions}
-          detail={
-            <IssueDetail
-              component={List.Item.Detail}
-              issue={issue}
-              project={project}
-            />
-          }
+          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} />}
         />
       );
     }
@@ -149,13 +130,7 @@ export const NotificationItem = ({
           icon={{ source: Icon.NewDocument, tintColor }}
           accessories={accessories}
           actions={actions}
-          detail={
-            <IssueDetail
-              component={List.Item.Detail}
-              issue={issue}
-              project={project}
-            />
-          }
+          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} />}
         />
       );
     }

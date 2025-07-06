@@ -11,16 +11,17 @@ const Command = () => {
 
   const { data } = useSuspenseQuery({
     queryKey: ["unread-counts"],
-    queryFn: async () => Promise.all(
-      spaces.map(async ({ space, credential }) => {
-        const api = new Backlog({ host: getSpaceHost(credential), apiKey: credential.apiKey });
-        const { count } = await api.getNotificationsCount({ alreadyRead: false, resourceAlreadyRead: false });
+    queryFn: async () =>
+      Promise.all(
+        spaces.map(async ({ space, credential }) => {
+          const api = new Backlog({ host: getSpaceHost(credential), apiKey: credential.apiKey });
+          const { count } = await api.getNotificationsCount({ alreadyRead: false, resourceAlreadyRead: false });
 
-        return { space, count }
-      })
-    ),
+          return { space, count };
+        }),
+      ),
     staleTime: 1000 * 60 * 1, // 1 minute
-  })
+  });
 
   const totalCount = data?.reduce((acc, curr) => acc + curr.count, 0) ?? 0;
 
@@ -30,7 +31,7 @@ const Command = () => {
       title={totalCount === 0 ? "No unread" : `${totalCount} unread`}
     >
       {spaces.map(({ space: { spaceKey, name }, credential }, index) => {
-        const unreadCount = data?.find(({space}) => spaceKey === space.spaceKey)?.count;
+        const unreadCount = data?.find(({ space }) => spaceKey === space.spaceKey)?.count;
         const shortcut: Keyboard.Shortcut | undefined =
           index === 0
             ? { modifiers: ["cmd"], key: "1" }
