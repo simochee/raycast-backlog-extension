@@ -44,7 +44,7 @@ export const CommonActionPanel = ({ children }: Props) => {
         <ActionPanel.Section title="Spaces">
           {sortedSpaces && sortedSpaces.length > 0 && (
             <>
-              <ActionPanel.Submenu title="Switch" shortcut={{ modifiers: ["cmd"], key: "s" }}>
+              <ActionPanel.Submenu title="Switch Space" shortcut={{ modifiers: ["cmd"], key: "s" }}>
                 {sortedSpaces.map(({ space: { spaceKey, name }, credential }, index) => (
                   <Action
                     key={spaceKey}
@@ -58,11 +58,11 @@ export const CommonActionPanel = ({ children }: Props) => {
                   />
                 ))}
               </ActionPanel.Submenu>
-              <ActionPanel.Submenu title="Manage">
+              <ActionPanel.Submenu title="Manage Spaces">
                 {sortedSpaces.map(({ space: { spaceKey, name }, credential }) => (
                   <Action.Push
                     key={spaceKey}
-                    title={`${name} (${spaceKey})`}
+                    title={`Edit ${name} (${spaceKey})`}
                     icon={`https://${getSpaceHost(credential)}/api/v2/space/image?apiKey=${credential.apiKey}`}
                     target={
                       <SpaceForm initialValues={credential} onSubmit={handleUpdateSpace} onDelete={handleDeleteSpace} />
@@ -72,11 +72,11 @@ export const CommonActionPanel = ({ children }: Props) => {
               </ActionPanel.Submenu>
             </>
           )}
-          <Action.Push title="Add Space" target={<SpaceForm onSubmit={handleAddSpace} />} />
+          <Action.Push title="Add New Space" target={<SpaceForm onSubmit={handleAddSpace} />} />
         </ActionPanel.Section>
-        <ActionPanel.Submenu title="Help">
-          <Action title="Clear Cached Data" icon={Icon.Check} />
-        </ActionPanel.Submenu>
+        <ActionPanel.Section title="Tools">
+          <Action title="Clear Cache" icon={Icon.Trash} />
+        </ActionPanel.Section>
       </>
     </ActionPanel>
   );

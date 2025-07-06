@@ -31,7 +31,7 @@ export const SpaceForm = ({ initialValues, onSubmit, onDelete }: Props) => {
         }
       }
 
-      throw new Error("Space not found");
+      throw new Error("Unable to connect to Backlog space. Please verify your Space Key and API Key.");
     },
     initialValues,
     validation: {
@@ -46,10 +46,10 @@ export const SpaceForm = ({ initialValues, onSubmit, onDelete }: Props) => {
     }
 
     await confirmAlert({
-      title: "Delete Space",
-      message: "Are you sure you want to delete this space?",
+      title: "Remove Space",
+      message: "Are you sure you want to remove this space configuration?",
       primaryAction: {
-        title: "Delete",
+        title: "Remove",
         style: Alert.ActionStyle.Destructive,
         onAction() {
           onDelete?.(initialValues.spaceKey);
@@ -63,17 +63,17 @@ export const SpaceForm = ({ initialValues, onSubmit, onDelete }: Props) => {
       navigationTitle={initialValues ? "Edit Space" : "Add Space"}
       actions={
         <ActionPanel>
-          <Action.SubmitForm title="Add Space" onSubmit={handleSubmit} />
-          {onDelete && <Action title="Delete Space" onAction={handleDelete} />}
+          <Action.SubmitForm title={initialValues ? "Save Changes" : "Add Space"} onSubmit={handleSubmit} />
+          {onDelete && <Action title="Remove Space" onAction={handleDelete} />}
         </ActionPanel>
       }
     >
       {initialValues ? (
         <Form.Description title="Space Key" text={initialValues.spaceKey} />
       ) : (
-        <Form.TextField title="Space Key" {...itemProps.spaceKey} />
+        <Form.TextField title="Space Key" placeholder="example" {...itemProps.spaceKey} />
       )}
-      <Form.TextField title="API Key" {...itemProps.apiKey} />
+      <Form.TextField title="API Key" placeholder="Enter your Backlog API key" {...itemProps.apiKey} />
     </Form>
   );
 };
