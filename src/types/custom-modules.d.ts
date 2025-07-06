@@ -15,34 +15,39 @@
 // Make sure this file is a module so that the declarations are scoped.
 export {};
 
-// Fallback stubs — remove at will if you prefer to rely on the library typings.
-// ---------------------------------------------------------------------------
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
+// If the real type declarations of each library can be resolved, these
+// re-export declarations simply forward to them.  Should the resolution fail
+// (e.g. in an isolated build environment), this file still prevents the
+// compiler from throwing a "Cannot find module" error.
 
 declare module "@raycast/api" {
-  const value: any;
-  export = value;
+  export * from "@raycast/api";
+  const _default: typeof import("@raycast/api");
+  export default _default;
 }
 
 declare module "@raycast/utils" {
-  const value: any;
-  export = value;
+  export * from "@raycast/utils";
+  const _default: typeof import("@raycast/utils");
+  export default _default;
 }
 
 declare module "backlog-js" {
-  const value: any;
-  export = value;
+  export * from "backlog-js";
+  const _default: typeof import("backlog-js");
+  export default _default;
 }
 
 declare module "@tanstack/react-query" {
-  const value: any;
-  export = value;
+  export * from "@tanstack/react-query";
+  const _default: typeof import("@tanstack/react-query");
+  export default _default;
 }
 
 declare module "valibot" {
-  const value: any;
-  export = value;
+  export * from "valibot";
+  const _default: typeof import("valibot");
+  export default _default;
 }
 
 /* eslint-enable @typescript-eslint/no-explicit-any */
