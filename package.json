@@ -15,10 +15,24 @@
       "mode": "view"
     },
     {
-      "name": "recent-viewed",
-      "title": "Recent Viewed",
+      "name": "recent-issues",
+      "title": "Recent Issues",
       "subtitle": "Backlog",
-      "description": "Browse recently viewed issues, projects, and wikis",
+      "description": "Browse recently viewed issues",
+      "mode": "view"
+    },
+    {
+      "name": "recent-projects",
+      "title": "Recent Projects",
+      "subtitle": "Backlog",
+      "description": "Browse recently viewed projects",
+      "mode": "view"
+    },
+    {
+      "name": "recent-wikis",
+      "title": "Recent Wikis",
+      "subtitle": "Backlog",
+      "description": "Browse recently viewed wikis",
       "mode": "view"
     },
     {

@@ -6,10 +6,9 @@ import { Entity } from "backlog-js";
 
 type Props = {
   project: Entity.Project.Project;
-  actions?: React.ReactNode;
 };
 
-export const ProjectItem = ({ project, actions }: Props) => {
+export const ProjectItem = ({ project }: Props) => {
   const currentSpace = useCurrentSpace();
 
   return (
@@ -23,7 +22,6 @@ export const ProjectItem = ({ project, actions }: Props) => {
             title="Open in Browser"
             url={`https://${currentSpace.host}/projects/${project.projectKey}`}
           />
-          {actions}
           <ActionPanel.Section title="Actions">
             <Action.OpenInBrowser
               title="Create Issue"

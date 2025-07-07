@@ -7,10 +7,9 @@ import type { Entity } from "backlog-js";
 
 type Props = {
   page: Entity.Wiki.WikiListItem;
-  actions?: React.ReactNode;
 };
 
-export const WikiItem = ({ page, actions }: Props) => {
+export const WikiItem = ({ page }: Props) => {
   const currentSpace = useCurrentSpace();
   const project = useProject(page.projectId);
 
@@ -26,7 +25,6 @@ export const WikiItem = ({ page, actions }: Props) => {
       actions={
         <CommonActionPanel>
           <Action.OpenInBrowser title="Open in Browser" url={`https://${currentSpace.host}/alias/wiki/${page.id}`} />
-          {actions}
           <ActionPanel.Section title="Actions">
             <Action.CopyToClipboard
               title="Copy Wiki URL"

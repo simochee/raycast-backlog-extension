@@ -23,6 +23,7 @@ const Command = () => {
         }),
       ),
     staleTime: 1000 * 60 * 1, // 1 minute
+    gcTime: 1000 * 60 * 1, // 1 minute
   });
 
   const totalCount = data?.reduce((acc, curr) => acc + curr.count, 0) ?? 0;
@@ -76,9 +77,19 @@ const Command = () => {
       </MenuBarExtra.Section>
       <MenuBarExtra.Section>
         <MenuBarExtra.Item
-          title="Recent Viewed"
-          icon={{ source: Icon.Eye, tintColor: Color.SecondaryText }}
-          onAction={() => launchCommand({ name: "recent-viewed", type: LaunchType.UserInitiated })}
+          title="Recent Issues"
+          icon={{ source: Icon.BulletPoints, tintColor: Color.SecondaryText }}
+          onAction={() => launchCommand({ name: "recent-issues", type: LaunchType.UserInitiated })}
+        />
+        <MenuBarExtra.Item
+          title="Recent Projects"
+          icon={{ source: Icon.Switch, tintColor: Color.SecondaryText }}
+          onAction={() => launchCommand({ name: "recent-projects", type: LaunchType.UserInitiated })}
+        />
+        <MenuBarExtra.Item
+          title="Recent Wikis"
+          icon={{ source: Icon.Document, tintColor: Color.SecondaryText }}
+          onAction={() => launchCommand({ name: "recent-wikis", type: LaunchType.UserInitiated })}
         />
         <MenuBarExtra.Item
           title="Notifications"
