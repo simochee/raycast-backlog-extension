@@ -1,11 +1,11 @@
 import { CommonActionPanel } from "./components/CommonActionPanel";
 import { NotificationItem } from "./components/NotificationItem";
+import { SearchBarAccessory } from "./components/SearchBarAccessory";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { withProviders } from "./utils/providers";
 import { List } from "@raycast/api";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import type { Entity } from "backlog-js";
-import { SearchBarAccessory } from "./components/SearchBarAccessory";
 import { useMemo } from "react";
 
 const PER_PAGE = 25;
