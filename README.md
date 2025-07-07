@@ -20,7 +20,7 @@ Access your Backlog issues, projects, and notifications directly from Raycast.
 On first use, you'll be prompted to configure your credentials:
 
 1. Run any Backlog command (e.g., "Notifications")
-2. Enter your **Space Key** (e.g., "example" from `example.backlog.jp`) and **API Key**
+2. Enter your **Space Domain** (e.g., `example.backlog.jp`) and **API Key**
 3. Click **Save** to complete setup
 
 > **Tip:** Hold **⌥ Option** while running any command to access configuration settings
