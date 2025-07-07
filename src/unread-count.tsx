@@ -31,7 +31,7 @@ const Command = () => {
 
   return (
     <MenuBarExtra
-      icon={{ source: totalCount > 0 ? "icon.png" : { dark: "icon@dark.png", light: "icon.png" } }}
+      icon={{ source: totalCount > 0 ? "icon-brand.png" : { dark: "icon@dark.png", light: "icon.png" } }}
       title={totalCount === 0 ? "No unread" : `${totalCount} unread`}
     >
       <MenuBarExtra.Section title="Spaces">
