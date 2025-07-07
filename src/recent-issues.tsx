@@ -2,11 +2,11 @@ import { CommonActionPanel } from "./components/CommonActionPanel";
 import { IssueItem } from "./components/IssueItem";
 import { SearchBarAccessory } from "./components/SearchBarAccessory";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
+import { groupByDate } from "./utils/group";
 import { withProviders } from "./utils/providers";
 import { List } from "@raycast/api";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
-import type { Entity } from "backlog-js";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 const PER_PAGE = 25;
 
@@ -27,28 +27,6 @@ const Command = () => {
     getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? (pages.flat().length ?? null) : null),
   });
 
-  const groupedItems = useMemo(() => {
-    return data.pages.flat().reduce<
-      {
-        label: string;
-        items: Entity.Issue.RecentlyViewedIssue[];
-      }[]
-    >((acc, item) => {
-      const date = new Date(item.updated);
-      const label = `${["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."][date.getMonth()]} ${date.getDate()}`;
-
-      const existingGroup = acc.find((g) => g.label === label);
-      if (existingGroup) {
-        existingGroup.items.push(item);
-        return acc;
-      }
-      return acc.concat({
-        label,
-        items: [item],
-      });
-    }, []);
-  }, [data.pages]);
-
   return (
     <List
       isShowingDetail={isShowingDetail}
@@ -56,7 +34,7 @@ const Command = () => {
       searchBarAccessory={<SearchBarAccessory />}
       actions={<CommonActionPanel />}
     >
-      {groupedItems.map(({ label, items }) => (
+      {groupByDate(data.pages.flat()).map(({ label, items }) => (
         <List.Section key={label} title={label}>
           {items.map((item) => (
             <IssueItem

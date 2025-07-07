@@ -145,6 +145,12 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
       actions={
         <CommonActionPanel>
           <Action.OpenInBrowser title="Open in Browser" url={`https://${currentSpace.host}/view/${issue.issueKey}`} />
+          <Action
+            title="Toggle Details"
+            icon={Icon.AppWindowSidebarRight}
+            shortcut={{ modifiers: ["cmd", "shift"], key: "f" }}
+            onAction={onToggleShowingDetail}
+          />
           <ActionPanel.Section title="Actions">
             <Action.CopyToClipboard
               title="Copy Issue Key"
@@ -160,12 +166,6 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
               title="Copy Issue URL"
               content={`https://${currentSpace.host}/view/${issue.issueKey}`}
               shortcut={{ modifiers: ["cmd", "shift"], key: "u" }}
-            />
-            <Action
-              title="Toggle Details"
-              icon={Icon.AppWindowSidebarRight}
-              shortcut={{ modifiers: ["cmd", "shift"], key: "f" }}
-              onAction={onToggleShowingDetail}
             />
           </ActionPanel.Section>
         </CommonActionPanel>
