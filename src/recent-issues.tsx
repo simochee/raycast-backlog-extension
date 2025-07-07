@@ -34,7 +34,7 @@ const Command = () => {
       searchBarAccessory={<SearchBarAccessory />}
       actions={<CommonActionPanel />}
     >
-      {groupByDate(data.pages.flat()).map(({ label, items }) => (
+      {groupByDate("updated", data.pages.flat()).map(({ label, items }) => (
         <List.Section key={label} title={label}>
           {items.map((item) => (
             <IssueItem

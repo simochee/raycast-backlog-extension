@@ -10,7 +10,7 @@ type Props = {
 };
 
 export const NotificationItem = ({
-  notification: { sender, issue, reason, alreadyRead, comment, project, pullRequest },
+  notification: { id, sender, issue, reason, alreadyRead, comment, project, pullRequest },
 }: Props) => {
   const currentSpace = useCurrentSpace();
 
@@ -24,13 +24,7 @@ export const NotificationItem = ({
     },
   ];
   const tintColor = alreadyRead ? Color.SecondaryText : Color.Orange;
-  const url = pullRequest
-    ? `https://${currentSpace.host}/git/${project.projectKey}/app/pullRequests/${pullRequest.number}`
-    : issue
-      ? comment
-        ? `https://${currentSpace.host}/view/${issue.issueKey}#comment-${comment.id}`
-        : `https://${currentSpace.host}/view/${issue.issueKey}`
-      : `https://${currentSpace.host}/projects/${project.projectKey}`;
+  const url = `https://${currentSpace.host}/globalbar/notifications/redirect/${id}`;
   const actions = (
     <CommonActionPanel>
       <Action.OpenInBrowser title="Open in Browser" url={url} />
@@ -63,6 +57,7 @@ export const NotificationItem = ({
     case 10: {
       return (
         <List.Item
+          id={`${id}`}
           title={{
             value: issue?.summary || "",
             tooltip: `${sender.name} assigned you to "${issue?.summary}" (${issue?.issueKey})`,
@@ -81,6 +76,7 @@ export const NotificationItem = ({
     case 11: {
       return (
         <List.Item
+          id={`${id}`}
           title={{
             value: comment?.content || "",
             tooltip: `${sender.name} commented on "${issue?.summary}" (${issue?.issueKey})\n\n${comment?.content}`,
@@ -95,6 +91,7 @@ export const NotificationItem = ({
     case 3: {
       return (
         <List.Item
+          id={`${id}`}
           title={{
             value: issue?.summary || "",
             tooltip: `${sender.name} created issue "${issue?.summary}" (${issue?.issueKey})`,
@@ -109,6 +106,7 @@ export const NotificationItem = ({
     case 4: {
       return (
         <List.Item
+          id={`${id}`}
           title={{
             value: issue?.summary || "",
             tooltip: `${sender.name} updated issue "${issue?.summary}" (${issue?.issueKey})`,
@@ -123,6 +121,7 @@ export const NotificationItem = ({
     case 5: {
       return (
         <List.Item
+          id={`${id}`}
           title={{
             value: issue?.summary || "",
             tooltip: `${sender.name} attached a file to issue "${issue?.summary}" (${issue?.issueKey})`,
@@ -137,6 +136,7 @@ export const NotificationItem = ({
     case 6: {
       return (
         <List.Item
+          id={`${id}`}
           title={{
             value: project.name,
             tooltip: `You were invited to project "${project.name}" (${project.projectKey})`,
@@ -150,6 +150,7 @@ export const NotificationItem = ({
     case 12: {
       return (
         <List.Item
+          id={`${id}`}
           title={{
             value: `#${pullRequest?.number} ${pullRequest?.summary}`,
             tooltip: `${sender.name} created pull request #${pullRequest?.number} "${pullRequest?.summary}"`,
@@ -163,6 +164,7 @@ export const NotificationItem = ({
     case 13: {
       return (
         <List.Item
+          id={`${id}`}
           title={{
             value: `#${pullRequest?.number} ${pullRequest?.summary}`,
             tooltip: `${sender.name} updated pull request #${pullRequest?.number} "${pullRequest?.summary}"`,
@@ -176,6 +178,7 @@ export const NotificationItem = ({
     default: {
       return (
         <List.Item
+          id={`${id}`}
           title={{
             value: "Notification",
             tooltip: `${sender.name} sent you a notification`,
