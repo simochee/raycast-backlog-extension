@@ -4,7 +4,7 @@
   "title": "Backlog",
   "description": "Access your Backlog issues, projects, and notifications directly from Raycast.",
   "author": "simochee",
-  "icon": "icon-logo.png",
+  "icon": "icon-brand.png",
   "license": "MIT",
   "commands": [
     {
