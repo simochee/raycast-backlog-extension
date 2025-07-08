@@ -25,11 +25,11 @@ const Command = () => {
   });
 
   const handleSelectionChange = async (id: string | null) => {
-    const notificationId = id && Number.parseInt(id, 10);
+    const notification = data.pages.flat().find((notification) => notification.id === Number(id));
 
-    if (typeof notificationId !== "number" || Number.isNaN(notificationId)) return;
-
-    await currentSpace.api.markAsReadNotification(notificationId);
+    if (notification?.resourceAlreadyRead === false) {
+      await currentSpace.api.markAsReadNotification(notification.id);
+    }
   };
 
   return (

@@ -16,22 +16,22 @@
     },
     {
       "name": "recent-issues",
-      "title": "Recent Issues",
-      "subtitle": "Backlog",
+      "title": "Issues",
+      "subtitle": "Recent Viewed - Backlog",
       "description": "Browse recently viewed issues",
       "mode": "view"
     },
     {
       "name": "recent-projects",
-      "title": "Recent Projects",
-      "subtitle": "Backlog",
+      "title": "Projects",
+      "subtitle": "Recent Viewed - Backlog",
       "description": "Browse recently viewed projects",
       "mode": "view"
     },
     {
       "name": "recent-wikis",
-      "title": "Recent Wikis",
-      "subtitle": "Backlog",
+      "title": "Wikis",
+      "subtitle": "Recent Viewed - Backlog",
       "description": "Browse recently viewed wikis",
       "mode": "view"
     },

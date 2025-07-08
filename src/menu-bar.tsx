@@ -3,7 +3,7 @@ import { useSpaces } from "./hooks/useSpaces";
 import { getSpaceImageUrl } from "./utils/image";
 import { withProviders } from "./utils/providers";
 import { getSpaceHost } from "./utils/space";
-import { Color, Icon, Keyboard, launchCommand, LaunchType, MenuBarExtra } from "@raycast/api";
+import { Color, Keyboard, launchCommand, LaunchType, MenuBarExtra } from "@raycast/api";
 import { useQuery } from "@tanstack/react-query";
 import { Backlog } from "backlog-js";
 import { useEffect, useState } from "react";
@@ -18,7 +18,7 @@ const Command = () => {
       Promise.all(
         spaces.map(async ({ space, credential }) => {
           const api = new Backlog({ host: getSpaceHost(credential), apiKey: credential.apiKey });
-          const { count } = await api.getNotificationsCount({ alreadyRead: false, resourceAlreadyRead: false });
+          const { count } = await api.getNotificationsCount({ alreadyRead: true, resourceAlreadyRead: false });
 
           return { space, count };
         }),
@@ -44,7 +44,7 @@ const Command = () => {
     <MenuBarExtra
       isLoading={isLoading}
       icon={{ source: totalCount > 0 ? "icon-brand.png" : { dark: "icon@dark.png", light: "icon.png" } }}
-      title={totalCount === 0 ? "No unread" : `${totalCount} unread`}
+      title={totalCount === 0 ? "No new" : `${totalCount.toLocaleString()} unread`}
     >
       <MenuBarExtra.Section title="Spaces">
         {spaces.map(({ space: { spaceKey, name }, credential }, index) => {
@@ -75,7 +75,7 @@ const Command = () => {
               key={spaceKey}
               title={name}
               icon={getSpaceImageUrl(credential)}
-              subtitle={unreadCount ? `${unreadCount} unread` : undefined}
+              subtitle={unreadCount ? `${unreadCount.toLocaleString()} unread` : undefined}
               tooltip={`${name} (${spaceKey})`}
               onAction={() => {
                 currentSpace.setSpaceKey(spaceKey);
@@ -88,23 +88,26 @@ const Command = () => {
       </MenuBarExtra.Section>
       <MenuBarExtra.Section>
         <MenuBarExtra.Item
-          title="Recent Issues"
-          icon={{ source: Icon.BulletPoints, tintColor: Color.SecondaryText }}
+          title="Issues"
+          subtitle="Recent Viewed"
+          icon={{ source: "tabler/checklist.svg", tintColor: Color.SecondaryText }}
           onAction={() => launchCommand({ name: "recent-issues", type: LaunchType.UserInitiated })}
         />
         <MenuBarExtra.Item
-          title="Recent Projects"
-          icon={{ source: Icon.Switch, tintColor: Color.SecondaryText }}
+          title="Projects"
+          subtitle="Recent Viewed"
+          icon={{ source: "tabler/buildings.svg", tintColor: Color.SecondaryText }}
           onAction={() => launchCommand({ name: "recent-projects", type: LaunchType.UserInitiated })}
         />
         <MenuBarExtra.Item
-          title="Recent Wikis"
-          icon={{ source: Icon.Document, tintColor: Color.SecondaryText }}
+          title="Wikis"
+          subtitle="Recent Viewed"
+          icon={{ source: "tabler/article.svg", tintColor: Color.SecondaryText }}
           onAction={() => launchCommand({ name: "recent-wikis", type: LaunchType.UserInitiated })}
         />
         <MenuBarExtra.Item
           title="Notifications"
-          icon={{ source: Icon.Bell, tintColor: Color.SecondaryText }}
+          icon={{ source: "tabler/bell-ringing-2.svg", tintColor: Color.SecondaryText }}
           onAction={() => launchCommand({ name: "notifications", type: LaunchType.UserInitiated })}
         />
       </MenuBarExtra.Section>

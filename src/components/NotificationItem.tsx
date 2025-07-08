@@ -10,7 +10,7 @@ type Props = {
 };
 
 export const NotificationItem = ({
-  notification: { id, sender, issue, reason, alreadyRead, comment, project, pullRequest },
+  notification: { id, sender, issue, reason, resourceAlreadyRead, comment, project, pullRequest },
 }: Props) => {
   const currentSpace = useCurrentSpace();
 
@@ -23,7 +23,7 @@ export const NotificationItem = ({
       tooltip: sender.name,
     },
   ];
-  const tintColor = alreadyRead ? Color.SecondaryText : Color.Orange;
+  const tintColor = resourceAlreadyRead ? Color.SecondaryText : Color.Orange;
   const url = `https://${currentSpace.host}/globalbar/notifications/redirect/${id}`;
   const actions = (
     <CommonActionPanel>
@@ -53,8 +53,8 @@ export const NotificationItem = ({
   );
 
   switch (reason) {
-    case 1:
-    case 10: {
+    // Assigned to Issue
+    case 1: {
       return (
         <List.Item
           id={`${id}`}
@@ -72,8 +72,8 @@ export const NotificationItem = ({
         />
       );
     }
-    case 2:
-    case 11: {
+    // Issue Commented
+    case 2: {
       return (
         <List.Item
           id={`${id}`}
@@ -88,6 +88,7 @@ export const NotificationItem = ({
         />
       );
     }
+    // Issue Created
     case 3: {
       return (
         <List.Item
@@ -103,6 +104,7 @@ export const NotificationItem = ({
         />
       );
     }
+    // Issue Updated
     case 4: {
       return (
         <List.Item
@@ -118,6 +120,7 @@ export const NotificationItem = ({
         />
       );
     }
+    // File Added
     case 5: {
       return (
         <List.Item
@@ -133,6 +136,7 @@ export const NotificationItem = ({
         />
       );
     }
+    // Project User Added
     case 6: {
       return (
         <List.Item
@@ -147,6 +151,42 @@ export const NotificationItem = ({
         />
       );
     }
+    // Assigned to Pull Request
+    case 10: {
+      return (
+        <List.Item
+          id={`${id}`}
+          title={{
+            value: `${pullRequest?.number} ${pullRequest?.summary}`,
+            tooltip: `${sender.name} assigned you to #${pullRequest?.number} "${pullRequest?.summary}"`,
+          }}
+          icon={{
+            source: Icon.AddPerson,
+            tintColor,
+          }}
+          accessories={accessories}
+          actions={actions}
+          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} />}
+        />
+      );
+    }
+    // Comment Added on Pull Request
+    case 11: {
+      return (
+        <List.Item
+          id={`${id}`}
+          title={{
+            value: pullRequest?.summary || "",
+            tooltip: `${sender.name} commented on #${pullRequest?.number} "${pullRequest?.summary}"\n\n${comment?.content}`,
+          }}
+          icon={{ source: Icon.Bubble, tintColor }}
+          accessories={accessories}
+          actions={actions}
+          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} comment={comment} />}
+        />
+      );
+    }
+    // Pull Request Added
     case 12: {
       return (
         <List.Item
@@ -161,6 +201,7 @@ export const NotificationItem = ({
         />
       );
     }
+    // Pull Request Updated
     case 13: {
       return (
         <List.Item
@@ -175,6 +216,7 @@ export const NotificationItem = ({
         />
       );
     }
+    // Other (maybe reason = 9)
     default: {
       return (
         <List.Item
