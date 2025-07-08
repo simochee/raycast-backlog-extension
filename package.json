@@ -36,7 +36,7 @@
       "mode": "view"
     },
     {
-      "name": "unread-count",
+      "name": "menu-bar",
       "title": "Unread Count",
       "subtitle": "Backlog",
       "description": "Show unread notification count in menu bar",

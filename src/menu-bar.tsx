@@ -4,14 +4,15 @@ import { getSpaceImageUrl } from "./utils/image";
 import { withProviders } from "./utils/providers";
 import { getSpaceHost } from "./utils/space";
 import { Color, Icon, Keyboard, launchCommand, LaunchType, MenuBarExtra } from "@raycast/api";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Backlog } from "backlog-js";
+import { useEffect, useState } from "react";
 
 const Command = () => {
   const spaces = useSpaces();
   const currentSpace = useCurrentSpace();
 
-  const { data } = useSuspenseQuery({
+  const { data, isStale, isFetched, isFetching } = useQuery({
     queryKey: ["unread-counts"],
     queryFn: async () =>
       Promise.all(
@@ -22,16 +23,26 @@ const Command = () => {
           return { space, count };
         }),
       ),
-    staleTime: 1000 * 60 * 1, // 1 minute
-    gcTime: 1000 * 60 * 1, // 1 minute
+    staleTime: 1000 * 60 * 2, // 2 minutes
   });
 
   const totalCount = data?.reduce((acc, curr) => acc + curr.count, 0) ?? 0;
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!isStale || (isFetched && !isFetching)) {
+      // Wait for the next tick to ensure the query cache is updated
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+    }
+  }, [isStale, isFetched, isFetching]);
 
   if (spaces.length === 0) return null;
 
   return (
     <MenuBarExtra
+      isLoading={isLoading}
       icon={{ source: totalCount > 0 ? "icon-brand.png" : { dark: "icon@dark.png", light: "icon.png" } }}
       title={totalCount === 0 ? "No unread" : `${totalCount} unread`}
     >
