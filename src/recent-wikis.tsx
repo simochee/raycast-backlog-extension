@@ -26,11 +26,7 @@ const Command = () => {
   });
 
   return (
-    <List
-      navigationTitle={currentSpace.space?.name}
-      searchBarAccessory={<SearchBarAccessory />}
-      actions={<CommonActionPanel />}
-    >
+    <List navigationTitle="Recent Wikis" searchBarAccessory={<SearchBarAccessory />} actions={<CommonActionPanel />}>
       {groupByDate("updated", data.pages.flat()).map(({ label, items }) => (
         <List.Section key={label} title={label}>
           {items.map((item) => (

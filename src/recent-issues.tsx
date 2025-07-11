@@ -30,7 +30,7 @@ const Command = () => {
   return (
     <List
       isShowingDetail={isShowingDetail}
-      navigationTitle={currentSpace.space?.name}
+      navigationTitle="Recent Issues"
       searchBarAccessory={<SearchBarAccessory />}
       actions={<CommonActionPanel />}
     >
