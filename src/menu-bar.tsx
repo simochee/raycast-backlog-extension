@@ -18,7 +18,8 @@ const Command = () => {
       Promise.all(
         spaces.map(async ({ space, credential }) => {
           const api = new Backlog({ host: getSpaceHost(credential), apiKey: credential.apiKey });
-          const { count } = await api.getNotificationsCount({ alreadyRead: true, resourceAlreadyRead: false });
+          // @ts-expect-error invalid type definition
+          const { count } = await api.getNotificationsCount({ alreadyRead: false });
 
           return { space, count };
         }),
