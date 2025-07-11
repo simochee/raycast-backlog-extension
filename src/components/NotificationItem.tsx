@@ -4,7 +4,7 @@ import { CommonActionPanel } from "./CommonActionPanel";
 import { IssueDetail } from "./IssueDetail";
 import { ProjectDetail } from "./ProjectDetail";
 import { PullRequestDetail } from "./PullRequestDetail";
-import { Action, ActionPanel, Color, Icon, Image, List } from "@raycast/api";
+import { Action, ActionPanel, Color, Image, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 
 type Props = {
