@@ -43,7 +43,7 @@ const Command = () => {
   return (
     <MenuBarExtra
       isLoading={isLoading}
-      icon={{ source: totalCount > 0 ? "icon-brand.png" : { dark: "icon@dark.png", light: "icon.png" } }}
+      icon={{ source: totalCount > 0 ? "icon-brand.svg" : { dark: "icon@dark.svg", light: "icon.svg" } }}
       title={totalCount === 0 ? "No new" : `${totalCount.toLocaleString()} unread`}
     >
       <MenuBarExtra.Section title="Spaces">

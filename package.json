@@ -4,7 +4,7 @@
   "title": "Backlog",
   "description": "Access your Backlog issues, projects, and notifications directly from Raycast.",
   "author": "simochee",
-  "icon": "icon-brand.png",
+  "icon": "icon-brand.svg",
   "license": "MIT",
   "commands": [
     {
@@ -40,7 +40,7 @@
       "title": "Unread Count",
       "subtitle": "Backlog",
       "description": "Show unread notification count in menu bar",
-      "icon": "icon.png",
+      "icon": "icon.svg",
       "mode": "menu-bar",
       "interval": "3m"
     }
