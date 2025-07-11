@@ -2,6 +2,7 @@ import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { getUserIconUrl } from "../utils/image";
 import { CommonActionPanel } from "./CommonActionPanel";
 import { IssueDetail } from "./IssueDetail";
+import { PullRequestDetail } from "./PullRequestDetail";
 import { Action, ActionPanel, Color, Icon, Image, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 
@@ -182,7 +183,14 @@ export const NotificationItem = ({
           icon={{ source: Icon.Bubble, tintColor }}
           accessories={accessories}
           actions={actions}
-          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} comment={comment} />}
+          detail={
+            <PullRequestDetail
+              component={List.Item.Detail}
+              project={project}
+              pullRequest={pullRequest}
+              comment={comment}
+            />
+          }
         />
       );
     }
@@ -198,6 +206,7 @@ export const NotificationItem = ({
           icon={{ source: Icon.Plus, tintColor }}
           accessories={accessories}
           actions={actions}
+          detail={<PullRequestDetail component={List.Item.Detail} project={project} pullRequest={pullRequest} />}
         />
       );
     }
@@ -213,6 +222,7 @@ export const NotificationItem = ({
           icon={{ source: Icon.Upload, tintColor }}
           accessories={accessories}
           actions={actions}
+          detail={<PullRequestDetail component={List.Item.Detail} project={project} pullRequest={pullRequest} />}
         />
       );
     }

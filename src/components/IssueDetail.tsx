@@ -1,5 +1,6 @@
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { getUserIconUrl } from "../utils/image";
+import { formatMarkdown } from "../utils/markdown";
 import { Color, Detail, Icon, Image, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 
@@ -17,16 +18,18 @@ export const IssueDetail = ({ component: Component, issue, project, comment }: P
 
   return (
     <Component
-      markdown={comment ? comment.content : issue.description}
+      markdown={formatMarkdown(comment ? comment.content : issue.description)}
       metadata={
         <Component.Metadata>
-          <Component.Metadata.Label title="Subject" text={issue.summary} />
-          <Component.Metadata.Separator />
           <Component.Metadata.Link
             title="Issue Key"
             text={issue.issueKey}
             target={`https://${currentSpace.host}/view/${issue.issueKey}`}
           />
+          <Component.Metadata.Separator />
+          <Component.Metadata.Label title="Subject" text={issue.summary} />
+          {comment && <Component.Metadata.Label title="Description" text={issue.description} />}
+          <Component.Metadata.Separator />
           <Component.Metadata.TagList title="Type">
             <Component.Metadata.TagList.Item text={issue.issueType.name} color={issue.issueType.color} />
           </Component.Metadata.TagList>
