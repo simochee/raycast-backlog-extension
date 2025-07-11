@@ -1,12 +1,11 @@
 import { CommonActionPanel } from "./components/CommonActionPanel";
 import { NotificationItem } from "./components/NotificationItem";
+import { SearchBarAccessory } from "./components/SearchBarAccessory";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
+import { groupByDate } from "./utils/group";
 import { withProviders } from "./utils/providers";
 import { List } from "@raycast/api";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
-import type { Entity } from "backlog-js";
-import { SearchBarAccessory } from "./components/SearchBarAccessory";
-import { useMemo } from "react";
 
 const PER_PAGE = 25;
 
@@ -25,24 +24,13 @@ const Command = () => {
     getNextPageParam: (lastPage) => (lastPage.length === PER_PAGE ? (lastPage.slice().pop()?.id ?? null) : null),
   });
 
-  const groupedItems = useMemo(() => {
-    return data.pages
-      .flat()
-      .reduce<{ label: string; items: Entity.Notification.Notification[] }[]>((acc, notification) => {
-        const date = new Date(notification.created);
-        const label = `${["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."][date.getMonth()]} ${date.getDate()}`;
+  const handleSelectionChange = async (id: string | null) => {
+    const notification = data.pages.flat().find((notification) => notification.id === Number(id));
 
-        const existingGroup = acc.find((g) => g.label === label);
-        if (existingGroup) {
-          existingGroup.items.push(notification);
-          return acc;
-        }
-        return acc.concat({
-          label,
-          items: [notification],
-        });
-      }, []);
-  }, [data]);
+    if (notification?.resourceAlreadyRead === false) {
+      await currentSpace.api.markAsReadNotification(notification.id);
+    }
+  };
 
   return (
     <List
@@ -55,8 +43,9 @@ const Command = () => {
         pageSize: PER_PAGE,
       }}
       actions={<CommonActionPanel />}
+      onSelectionChange={handleSelectionChange}
     >
-      {groupedItems.map(({ label, items }) => (
+      {groupByDate("created", data.pages.flat()).map(({ label, items }) => (
         <List.Section key={label} title={label}>
           {items.map((notification) => (
             <NotificationItem key={notification.id} notification={notification} />

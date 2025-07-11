@@ -7,11 +7,10 @@ import type { Entity } from "backlog-js";
 
 type Props = {
   issue: Entity.Issue.Issue;
-  actions?: React.ReactNode;
   onToggleShowingDetail(): void;
 };
 
-export const IssueItem = ({ issue, actions, onToggleShowingDetail }: Props) => {
+export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
   const currentSpace = useCurrentSpace();
   const project = useProject(issue.projectId);
 
@@ -146,8 +145,12 @@ export const IssueItem = ({ issue, actions, onToggleShowingDetail }: Props) => {
       actions={
         <CommonActionPanel>
           <Action.OpenInBrowser title="Open in Browser" url={`https://${currentSpace.host}/view/${issue.issueKey}`} />
-
-          {actions}
+          <Action
+            title="Toggle Details"
+            icon={Icon.AppWindowSidebarRight}
+            shortcut={{ modifiers: ["cmd", "shift"], key: "f" }}
+            onAction={onToggleShowingDetail}
+          />
           <ActionPanel.Section title="Actions">
             <Action.CopyToClipboard
               title="Copy Issue Key"
@@ -163,12 +166,6 @@ export const IssueItem = ({ issue, actions, onToggleShowingDetail }: Props) => {
               title="Copy Issue URL"
               content={`https://${currentSpace.host}/view/${issue.issueKey}`}
               shortcut={{ modifiers: ["cmd", "shift"], key: "u" }}
-            />
-            <Action
-              title="Toggle Details"
-              icon={Icon.AppWindowSidebarRight}
-              shortcut={{ modifiers: ["cmd", "shift"], key: "f" }}
-              onAction={onToggleShowingDetail}
             />
           </ActionPanel.Section>
         </CommonActionPanel>

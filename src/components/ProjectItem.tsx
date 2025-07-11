@@ -1,15 +1,14 @@
+import { useCurrentSpace } from "../hooks/useCurrentSpace";
+import { getProjectImageUrl } from "../utils/image";
+import { CommonActionPanel } from "./CommonActionPanel";
 import { Action, ActionPanel, Icon, List } from "@raycast/api";
 import { Entity } from "backlog-js";
-import { CommonActionPanel } from "./CommonActionPanel";
-import { getProjectImageUrl } from "../utils/image";
-import { useCurrentSpace } from "../hooks/useCurrentSpace";
 
 type Props = {
   project: Entity.Project.Project;
-  actions?: React.ReactNode;
 };
 
-export const ProjectItem = ({ project, actions }: Props) => {
+export const ProjectItem = ({ project }: Props) => {
   const currentSpace = useCurrentSpace();
 
   return (
@@ -23,7 +22,6 @@ export const ProjectItem = ({ project, actions }: Props) => {
             title="Open in Browser"
             url={`https://${currentSpace.host}/projects/${project.projectKey}`}
           />
-          {actions}
           <ActionPanel.Section title="Actions">
             <Action.OpenInBrowser
               title="Create Issue"

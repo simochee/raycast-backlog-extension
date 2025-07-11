@@ -15,14 +15,28 @@
       "mode": "view"
     },
     {
-      "name": "recent-viewed",
-      "title": "Recent Viewed",
-      "subtitle": "Backlog",
-      "description": "Browse recently viewed issues, projects, and wikis",
+      "name": "recent-issues",
+      "title": "Issues",
+      "subtitle": "Recent Viewed - Backlog",
+      "description": "Browse recently viewed issues",
       "mode": "view"
     },
     {
-      "name": "unread-count",
+      "name": "recent-projects",
+      "title": "Projects",
+      "subtitle": "Recent Viewed - Backlog",
+      "description": "Browse recently viewed projects",
+      "mode": "view"
+    },
+    {
+      "name": "recent-wikis",
+      "title": "Wikis",
+      "subtitle": "Recent Viewed - Backlog",
+      "description": "Browse recently viewed wikis",
+      "mode": "view"
+    },
+    {
+      "name": "menu-bar",
       "title": "Unread Count",
       "subtitle": "Backlog",
       "description": "Show unread notification count in menu bar",
@@ -39,6 +53,8 @@
     "@tanstack/react-query-persist-client": "^5.81.5",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "backlog-js": "^0.13.6",
+    "date-fns": "^4.1.0",
+    "node-emoji": "^2.2.0",
     "valibot": "^1.1.0"
   },
   "devDependencies": {
