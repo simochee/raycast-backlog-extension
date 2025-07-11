@@ -64,7 +64,7 @@ export const NotificationItem = ({
             tooltip: `${sender.name} assigned you to "${issue?.summary}" (${issue?.issueKey})`,
           }}
           icon={{
-            source: Icon.AddPerson,
+            source: "tabler/user-square-rounded.svg",
             tintColor,
           }}
           accessories={accessories}
@@ -82,7 +82,7 @@ export const NotificationItem = ({
             value: comment?.content || "",
             tooltip: `${sender.name} commented on "${issue?.summary}" (${issue?.issueKey})\n\n${comment?.content}`,
           }}
-          icon={{ source: Icon.Bubble, tintColor }}
+          icon={{ source: "tabler/messages.svg", tintColor }}
           accessories={accessories}
           actions={actions}
           detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} comment={comment} />}
@@ -98,7 +98,7 @@ export const NotificationItem = ({
             value: issue?.summary || "",
             tooltip: `${sender.name} created issue "${issue?.summary}" (${issue?.issueKey})`,
           }}
-          icon={{ source: Icon.Plus, tintColor }}
+          icon={{ source: "tabler/square-rounded-plus-2.svg", tintColor }}
           accessories={accessories}
           actions={actions}
           detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} />}
@@ -114,7 +114,7 @@ export const NotificationItem = ({
             value: issue?.summary || "",
             tooltip: `${sender.name} updated issue "${issue?.summary}" (${issue?.issueKey})`,
           }}
-          icon={{ source: Icon.Pencil, tintColor }}
+          icon={{ source: "tabler/info-square-rounded.svg", tintColor }}
           accessories={accessories}
           actions={actions}
           detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} />}
@@ -130,7 +130,7 @@ export const NotificationItem = ({
             value: issue?.summary || "",
             tooltip: `${sender.name} attached a file to issue "${issue?.summary}" (${issue?.issueKey})`,
           }}
-          icon={{ source: Icon.NewDocument, tintColor }}
+          icon={{ source: "tabler/file-plus.svg", tintColor }}
           accessories={accessories}
           actions={actions}
           detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} />}
@@ -146,7 +146,7 @@ export const NotificationItem = ({
             value: project.name,
             tooltip: `You were invited to project "${project.name}" (${project.projectKey})`,
           }}
-          icon={{ source: Icon.Ticket, tintColor }}
+          icon={{ source: "tabler/users-plus.svg", tintColor }}
           accessories={accessories}
           actions={actions}
         />
@@ -162,12 +162,19 @@ export const NotificationItem = ({
             tooltip: `${sender.name} assigned you to #${pullRequest?.number} "${pullRequest?.summary}"`,
           }}
           icon={{
-            source: Icon.AddPerson,
+            source: "tabler/user-plus.svg",
             tintColor,
           }}
           accessories={accessories}
           actions={actions}
-          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} />}
+          detail={
+            <PullRequestDetail
+              component={List.Item.Detail}
+              pullRequest={pullRequest}
+              project={project}
+              comment={comment}
+            />
+          }
         />
       );
     }
@@ -180,7 +187,7 @@ export const NotificationItem = ({
             value: pullRequest?.summary || "",
             tooltip: `${sender.name} commented on #${pullRequest?.number} "${pullRequest?.summary}"\n\n${comment?.content}`,
           }}
-          icon={{ source: Icon.Bubble, tintColor }}
+          icon={{ source: "tabler/message.svg", tintColor }}
           accessories={accessories}
           actions={actions}
           detail={
@@ -203,7 +210,7 @@ export const NotificationItem = ({
             value: `#${pullRequest?.number} ${pullRequest?.summary}`,
             tooltip: `${sender.name} created pull request #${pullRequest?.number} "${pullRequest?.summary}"`,
           }}
-          icon={{ source: Icon.Plus, tintColor }}
+          icon={{ source: "tabler/git-pull-request.svg", tintColor }}
           accessories={accessories}
           actions={actions}
           detail={<PullRequestDetail component={List.Item.Detail} project={project} pullRequest={pullRequest} />}
@@ -219,7 +226,7 @@ export const NotificationItem = ({
             value: `#${pullRequest?.number} ${pullRequest?.summary}`,
             tooltip: `${sender.name} updated pull request #${pullRequest?.number} "${pullRequest?.summary}"`,
           }}
-          icon={{ source: Icon.Upload, tintColor }}
+          icon={{ source: "tabler/git-pull-request-draft.svg", tintColor }}
           accessories={accessories}
           actions={actions}
           detail={<PullRequestDetail component={List.Item.Detail} project={project} pullRequest={pullRequest} />}
@@ -235,7 +242,7 @@ export const NotificationItem = ({
             value: "Notification",
             tooltip: `${sender.name} sent you a notification`,
           }}
-          icon={{ source: Icon.Bell, tintColor }}
+          icon={{ source: "tabler/point.svg", tintColor }}
           accessories={accessories}
           actions={actions}
         />

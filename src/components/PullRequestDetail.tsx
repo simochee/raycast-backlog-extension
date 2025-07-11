@@ -1,7 +1,7 @@
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { getUserIconUrl } from "../utils/image";
 import { formatMarkdown } from "../utils/markdown";
-import { Color, Detail, Icon, Image, List } from "@raycast/api";
+import { Detail, Image, List } from "@raycast/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import type { Entity } from "backlog-js";
 
@@ -50,7 +50,7 @@ export const PullRequestDetail = ({ component: Component, project, pullRequest, 
           />
           <Component.Metadata.Separator />
           <Component.Metadata.Label title="Summary" text={pullRequest.summary} />
-          <Component.Metadata.Label title="Description" text={pullRequest.description} />
+          {comment && <Component.Metadata.Label title="Description" text={pullRequest.description} />}
           <Component.Metadata.Separator />
           <Component.Metadata.TagList title="Status">
             <Component.Metadata.TagList.Item
