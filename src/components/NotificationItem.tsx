@@ -2,6 +2,7 @@ import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { getUserIconUrl } from "../utils/image";
 import { CommonActionPanel } from "./CommonActionPanel";
 import { IssueDetail } from "./IssueDetail";
+import { ProjectDetail } from "./ProjectDetail";
 import { PullRequestDetail } from "./PullRequestDetail";
 import { Action, ActionPanel, Color, Icon, Image, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
@@ -149,6 +150,7 @@ export const NotificationItem = ({
           icon={{ source: "tabler/users-plus.svg", tintColor }}
           accessories={accessories}
           actions={actions}
+          detail={<ProjectDetail component={List.Item.Detail} project={project} />}
         />
       );
     }
