@@ -1,12 +1,13 @@
+import { Color, LaunchType, MenuBarExtra, launchCommand } from "@raycast/api";
+import { useQuery } from "@tanstack/react-query";
+import { Backlog } from "backlog-js";
+import { useEffect, useState } from "react";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { useSpaces } from "./hooks/useSpaces";
 import { getSpaceImageUrl } from "./utils/image";
 import { withProviders } from "./utils/providers";
 import { getSpaceHost } from "./utils/space";
-import { Color, Keyboard, launchCommand, LaunchType, MenuBarExtra } from "@raycast/api";
-import { useQuery } from "@tanstack/react-query";
-import { Backlog } from "backlog-js";
-import { useEffect, useState } from "react";
+import type { Keyboard } from "@raycast/api";
 
 const Command = () => {
   const spaces = useSpaces();
@@ -44,7 +45,7 @@ const Command = () => {
   return (
     <MenuBarExtra
       isLoading={isLoading}
-      icon={{ source: totalCount > 0 ? "icon-brand.svg" : { dark: "icon@dark.svg", light: "icon.svg" } }}
+      icon={{ source: totalCount > 0 ? "icon-brand.png" : { dark: "icon@dark.png", light: "icon.png" } }}
       title={totalCount === 0 ? "No new" : `${totalCount.toLocaleString()} unread`}
     >
       <MenuBarExtra.Section title="Spaces">

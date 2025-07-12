@@ -1,7 +1,7 @@
-import { getSpaceHost } from "../utils/space";
-import { useCredentials } from "./useCredentials";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Backlog } from "backlog-js";
+import { getSpaceHost } from "../utils/space";
+import { useCredentials } from "./useCredentials";
 
 export const useSpaces = () => {
   const { credentials } = useCredentials();

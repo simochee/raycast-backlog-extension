@@ -1,8 +1,9 @@
+import { Image } from "@raycast/api";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { getUserIconUrl } from "../utils/image";
 import { formatMarkdown } from "../utils/markdown";
-import { Detail, Image, List } from "@raycast/api";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import type { Detail, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 
 type Props = {
@@ -68,17 +69,13 @@ export const PullRequestDetail = ({ component: Component, project, pullRequest, 
               }}
             />
           )}
-          {pullRequest.issue && (
-            <>
-              <Component.Metadata.Separator />
-              <Component.Metadata.Link
-                title="Issue"
-                text={pullRequest.issue.issueKey}
-                target={`https://${currentSpace.host}/view/${pullRequest.issue.issueKey}`}
-              />
-              <Component.Metadata.Label title="Summary" text={pullRequest.issue.summary} />
-            </>
-          )}
+          <Component.Metadata.Separator />
+          <Component.Metadata.Link
+            title="Issue"
+            text={pullRequest.issue.issueKey}
+            target={`https://${currentSpace.host}/view/${pullRequest.issue.issueKey}`}
+          />
+          <Component.Metadata.Label title="Summary" text={pullRequest.issue.summary} />
         </Component.Metadata>
       }
     />

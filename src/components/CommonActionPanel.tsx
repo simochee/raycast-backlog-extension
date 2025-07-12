@@ -1,10 +1,10 @@
+import { Action, ActionPanel, Icon, useNavigation } from "@raycast/api";
 import { useCredentials } from "../hooks/useCredentials";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { useSpaces } from "../hooks/useSpaces";
-import type { SpaceCredentials } from "../utils/credentials";
 import { getSpaceImageUrl } from "../utils/image";
 import { SpaceForm } from "./SpaceForm";
-import { Action, ActionPanel, Icon, useNavigation } from "@raycast/api";
+import type { SpaceCredentials } from "../utils/credentials";
 
 type Props = {
   children?: React.ReactNode | Promise<React.ReactNode>;
@@ -32,7 +32,7 @@ export const CommonActionPanel = ({ children }: Props) => {
   const handleDeleteSpace = async (spaceKey: string) => {
     await removeCredential(spaceKey);
     if (currentSpace.spaceKey === spaceKey) {
-      currentSpace.setSpaceKey(sortedSpaces?.[0]?.space.spaceKey ?? "");
+      currentSpace.setSpaceKey(sortedSpaces[0]?.space.spaceKey ?? "");
     }
     pop();
   };
@@ -42,7 +42,7 @@ export const CommonActionPanel = ({ children }: Props) => {
       <>
         {children}
         <ActionPanel.Section title="Spaces">
-          {sortedSpaces && sortedSpaces.length > 0 && (
+          {sortedSpaces.length > 0 && (
             <>
               <ActionPanel.Submenu title="Manage Spaces" icon={Icon.Gear}>
                 {sortedSpaces.map(({ space: { spaceKey, name }, credential }) => (

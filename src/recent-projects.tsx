@@ -1,11 +1,11 @@
+import { List } from "@raycast/api";
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { CommonActionPanel } from "./components/CommonActionPanel";
 import { ProjectItem } from "./components/ProjectItem";
 import { SearchBarAccessory } from "./components/SearchBarAccessory";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { groupByDate } from "./utils/group";
 import { withProviders } from "./utils/providers";
-import { List } from "@raycast/api";
-import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 
 const PER_PAGE = 25;
 
@@ -22,7 +22,7 @@ const Command = () => {
         offset: pageParam,
       }),
     initialPageParam: 0,
-    getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? (pages.flat().length ?? null) : null),
+    getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
   });
 
   return (

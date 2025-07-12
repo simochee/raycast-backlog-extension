@@ -1,11 +1,11 @@
+import { List } from "@raycast/api";
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { CommonActionPanel } from "./components/CommonActionPanel";
 import { NotificationItem } from "./components/NotificationItem";
 import { SearchBarAccessory } from "./components/SearchBarAccessory";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { groupByDate } from "./utils/group";
 import { withProviders } from "./utils/providers";
-import { List } from "@raycast/api";
-import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 
 const PER_PAGE = 25;
 
@@ -25,7 +25,7 @@ const Command = () => {
   });
 
   const handleSelectionChange = async (id: string | null) => {
-    const notification = data.pages.flat().find((notification) => notification.id === Number(id));
+    const notification = data.pages.flat().find((page) => page.id === Number(id));
 
     if (notification?.resourceAlreadyRead === false) {
       await currentSpace.api.markAsReadNotification(notification.id);

@@ -1,7 +1,8 @@
+import { Color, Icon, Image } from "@raycast/api";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { getUserIconUrl } from "../utils/image";
 import { formatMarkdown } from "../utils/markdown";
-import { Color, Detail, Icon, Image, List } from "@raycast/api";
+import type { Detail, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 
 type Props = {
@@ -53,7 +54,7 @@ export const IssueDetail = ({ component: Component, issue, project, comment }: P
               icon={{ source: Icon.Calendar }}
             />
           )}
-          {project?.useDevAttributes && issue.priority.id != null && (
+          {project?.useDevAttributes && (
             <Component.Metadata.TagList title="Priority">
               <Component.Metadata.TagList.Item
                 text={issue.priority.name}

@@ -1,10 +1,10 @@
+import { Action, ActionPanel, Color, Image, List } from "@raycast/api";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { getUserIconUrl } from "../utils/image";
 import { CommonActionPanel } from "./CommonActionPanel";
 import { IssueDetail } from "./IssueDetail";
 import { ProjectDetail } from "./ProjectDetail";
 import { PullRequestDetail } from "./PullRequestDetail";
-import { Action, ActionPanel, Color, Image, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 
 type Props = {
@@ -16,7 +16,7 @@ export const NotificationItem = ({
 }: Props) => {
   const currentSpace = useCurrentSpace();
 
-  const accessories: List.Item.Accessory[] = [
+  const accessories: Array<List.Item.Accessory> = [
     {
       icon: {
         source: getUserIconUrl(currentSpace.credential, sender.id),

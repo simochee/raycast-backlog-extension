@@ -1,11 +1,41 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "backlog",
-  "title": "Backlog",
   "description": "Access your Backlog issues, projects, and notifications directly from Raycast.",
-  "author": "simochee",
-  "icon": "icon-brand.svg",
   "license": "MIT",
+  "author": "simochee",
+  "scripts": {
+    "build": "ray build",
+    "dev": "ray develop",
+    "fix-lint": "pnpm run lint-eslint --fix && pnpm run lint-prettier --write && sort-package-json",
+    "lint": "pnpm run lint-eslint && pnpm run lint-prettier",
+    "lint-eslint": "eslint .",
+    "lint-prettier": "prettier --write --log-level warn .",
+    "prepublishOnly": "echo \"\\n\\nIt seems like you are trying to publish the Raycast extension to npm.\\n\\nIf you did intend to publish it to npm, remove the \\`prepublishOnly\\` script and rerun \\`npm publish\\` again.\\nIf you wanted to publish it to the Raycast Store instead, use \\`npm run publish\\` instead.\\n\\n\" && exit 1",
+    "publish": "npx @raycast/api@latest publish"
+  },
+  "dependencies": {
+    "@raycast/api": "^1.100.3",
+    "@raycast/utils": "^1.17.0",
+    "@tanstack/query-async-storage-persister": "^5.81.5",
+    "@tanstack/react-query": "^5.81.5",
+    "@tanstack/react-query-persist-client": "^5.81.5",
+    "backlog-js": "^0.13.6",
+    "date-fns": "^4.1.0",
+    "node-emoji": "^2.2.0",
+    "valibot": "^1.1.0"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "^2.0.4",
+    "@tanstack/eslint-config": "^0.2.0",
+    "@types/node": "22.13.10",
+    "@types/react": "19.0.10",
+    "eslint": "^9.22.0",
+    "prettier": "^3.5.3",
+    "sort-package-json": "^3.4.0",
+    "typescript": "^5.8.2"
+  },
+  "icon": "icon-brand.png",
   "commands": [
     {
       "name": "notifications",
@@ -40,37 +70,10 @@
       "title": "Unread Count",
       "subtitle": "Backlog",
       "description": "Show unread notification count in menu bar",
-      "icon": "icon.svg",
+      "icon": "icon.png",
       "mode": "menu-bar",
       "interval": "3m"
     }
   ],
-  "dependencies": {
-    "@raycast/api": "^1.100.3",
-    "@raycast/utils": "^1.17.0",
-    "@tanstack/query-async-storage-persister": "^5.81.5",
-    "@tanstack/react-query": "^5.81.5",
-    "@tanstack/react-query-persist-client": "^5.81.5",
-    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
-    "backlog-js": "^0.13.6",
-    "date-fns": "^4.1.0",
-    "node-emoji": "^2.2.0",
-    "valibot": "^1.1.0"
-  },
-  "devDependencies": {
-    "@raycast/eslint-config": "^2.0.4",
-    "@types/node": "22.13.10",
-    "@types/react": "19.0.10",
-    "eslint": "^9.22.0",
-    "prettier": "^3.5.3",
-    "typescript": "^5.8.2"
-  },
-  "scripts": {
-    "build": "ray build",
-    "dev": "ray develop",
-    "fix-lint": "ray lint --fix",
-    "lint": "ray lint",
-    "prepublishOnly": "echo \"\\n\\nIt seems like you are trying to publish the Raycast extension to npm.\\n\\nIf you did intend to publish it to npm, remove the \\`prepublishOnly\\` script and rerun \\`npm publish\\` again.\\nIf you wanted to publish it to the Raycast Store instead, use \\`npm run publish\\` instead.\\n\\n\" && exit 1",
-    "publish": "npx @raycast/api@latest publish"
-  }
+  "title": "Backlog"
 }

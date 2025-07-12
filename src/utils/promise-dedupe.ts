@@ -10,7 +10,7 @@ const promiseCache = new Map<string, Promise<any>>();
  * @param args - Arguments to pass to the method
  * @returns Promise that resolves to the result
  */
-export const dedupe = async <TMethod extends (...args: any[]) => Promise<any>, TArgs extends Parameters<TMethod>>(
+export const dedupe = async <TMethod extends (...args: Array<any>) => Promise<any>, TArgs extends Parameters<TMethod>>(
   method: TMethod,
   ...args: TArgs
 ): Promise<Awaited<ReturnType<TMethod>>> => {

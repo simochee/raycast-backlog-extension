@@ -1,14 +1,14 @@
-import type { SpaceCredentials } from "../utils/credentials";
-import { getSpaceHost } from "../utils/space";
-import { ActionPanel, Action, Alert, confirmAlert, Form, showToast, Toast } from "@raycast/api";
+import { Action, ActionPanel, Alert, Form, Toast, confirmAlert, showToast } from "@raycast/api";
 import { FormValidation, useForm } from "@raycast/utils";
 import { Backlog } from "backlog-js";
 import { useMemo } from "react";
+import { getSpaceHost } from "../utils/space";
+import type { SpaceCredentials } from "../utils/credentials";
 
 type Props = {
   initialValues?: SpaceCredentials;
-  onSubmit(values: SpaceCredentials): void;
-  onDelete?(spaceKey: string): void;
+  onSubmit: (values: SpaceCredentials) => void;
+  onDelete?: (spaceKey: string) => void;
 };
 
 type FormSchema = {

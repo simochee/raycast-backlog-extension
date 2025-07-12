@@ -1,5 +1,4 @@
 {
   "printWidth": 120,
-  "singleQuote": false,
-  "plugins": ["@trivago/prettier-plugin-sort-imports"]
+  "singleQuote": false
 }

@@ -7,7 +7,7 @@ export const cache = new Cache();
  * Cache wrapper that validates and expires the cache.
  */
 export const createCache = <const T extends v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>>(
-  keyOrArray: string | string[],
+  keyOrArray: string | Array<string>,
   schema: T,
   expiresIn = 60 * 60 * 24 * 30, // 30 days
 ) => {

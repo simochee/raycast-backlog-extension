@@ -1,20 +1,20 @@
+import { Action, ActionPanel, Color, Icon, Image, List } from "@raycast/api";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { useProject } from "../hooks/useProject";
 import { getProjectImageUrl, getUserIconUrl } from "../utils/image";
 import { CommonActionPanel } from "./CommonActionPanel";
-import { Action, ActionPanel, Color, Icon, Image, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 
 type Props = {
   issue: Entity.Issue.Issue;
-  onToggleShowingDetail(): void;
+  onToggleShowingDetail: () => void;
 };
 
 export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
   const currentSpace = useCurrentSpace();
   const project = useProject(issue.projectId);
 
-  const accessories: List.Item.Accessory[] = [];
+  const accessories: Array<List.Item.Accessory> = [];
 
   // Due Date
   if (issue.dueDate) {
@@ -96,7 +96,7 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
                 text={issue.dueDate ? new Date(issue.dueDate).toLocaleDateString() : "No due date"}
                 icon={issue.dueDate ? { source: Icon.Calendar } : null}
               />
-              {project?.useDevAttributes && (
+              {project.useDevAttributes && (
                 <List.Item.Detail.Metadata.Label
                   title="Priority"
                   text={issue.priority.name}
@@ -107,7 +107,7 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
                 />
               )}
               <List.Item.Detail.Metadata.Label title="Category" text={issue.category.map((c) => c.name).join(", ")} />
-              {project?.useDevAttributes && (
+              {project.useDevAttributes && (
                 <>
                   <List.Item.Detail.Metadata.Label
                     title="Milestone"
