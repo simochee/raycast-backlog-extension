@@ -1,7 +1,8 @@
 # Backlog
 
-| [English](/README.md) | [日本語](/README.ja.md) |
-| --------------------- | ----------------------- |
+[![English edition](https://img.shields.io/badge/README-English_edition-blue)](/README.md)
+[![日本語版](https://img.shields.io/badge/README-日本語版-blue)](/README.ja.md)
+[![Install from Backlog Store](https://img.shields.io/badge/Raycast_Store-Backlog-ff6363?logo=raycast)](https://www.raycast.com/simochee/backlog)
 
 > [Backlog](https://backlog.com) を Raycast から直接操作。課題も、プロジェクトも、通知も。
 
