@@ -16,7 +16,9 @@ export const CommonActionPanel = ({ children }: Props) => {
   const currentSpace = useCurrentSpace();
 
   const spaces = useSpaces();
-  const sortedSpaces = spaces.slice().sort(({ space: { spaceKey } }) => (spaceKey === currentSpace.spaceKey ? -1 : 1));
+  const sortedSpaces = spaces
+    .slice()
+    .sort(({ space: { spaceKey } }) => (spaceKey === currentSpace.space.spaceKey ? -1 : 1));
 
   const handleAddSpace = async (values: SpaceCredentials) => {
     await addCredential(values);
@@ -31,7 +33,7 @@ export const CommonActionPanel = ({ children }: Props) => {
 
   const handleDeleteSpace = async (spaceKey: string) => {
     await removeCredential(spaceKey);
-    if (currentSpace.spaceKey === spaceKey) {
+    if (currentSpace.space.spaceKey === spaceKey) {
       currentSpace.setSpaceKey(sortedSpaces[0]?.space.spaceKey ?? "");
     }
     pop();

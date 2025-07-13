@@ -15,7 +15,7 @@ const Command = () => {
   const currentSpace = useCurrentSpace();
 
   const { data } = useSuspenseInfiniteQuery({
-    queryKey: ["recent-viewed", currentSpace.spaceKey, "issues"],
+    queryKey: ["recent-viewed", currentSpace.space.spaceKey, "issues"],
     staleTime: 1000 * 30, // 30 seconds
     gcTime: 1000 * 30, // 30 seconds
     queryFn: ({ pageParam }) =>

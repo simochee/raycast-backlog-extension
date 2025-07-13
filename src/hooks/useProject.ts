@@ -28,9 +28,9 @@ export const useProject = (projectId: number) => {
   const currentSpace = useCurrentSpace();
 
   const { data } = useSuspenseQuery({
-    queryKey: ["project", currentSpace.spaceKey, projectId],
+    queryKey: ["project", currentSpace.space.spaceKey, projectId],
     queryFn: async () => {
-      const cache = createCache([currentSpace.spaceKey, "project", projectId.toString()], schema);
+      const cache = createCache([currentSpace.space.spaceKey, "project", projectId.toString()], schema);
       const cached = cache.get();
 
       if (cached) return cached;
