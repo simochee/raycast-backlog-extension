@@ -1,44 +1,32 @@
 import { Color, LaunchType, MenuBarExtra, launchCommand } from "@raycast/api";
-import { useQuery } from "@tanstack/react-query";
-import { Backlog } from "backlog-js";
 import { useEffect, useState } from "react";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { useSpaces } from "./hooks/useSpaces";
+import type { Keyboard } from "@raycast/api";
 import { getSpaceImageUrl } from "./utils/image";
 import { withProviders } from "./utils/providers";
-import { getSpaceHost } from "./utils/space";
-import type { Keyboard } from "@raycast/api";
+import { getNotificationCount, type NotificationCountSchema } from "./utils/notification";
+import type { InferOutput } from "valibot";
 
 const Command = () => {
   const spaces = useSpaces();
   const currentSpace = useCurrentSpace();
 
-  const { data, isStale, isFetched, isFetching } = useQuery({
-    queryKey: ["unread-counts"],
-    queryFn: async () =>
-      Promise.all(
-        spaces.map(async ({ space, credential }) => {
-          const api = new Backlog({ host: getSpaceHost(credential), apiKey: credential.apiKey });
-          // @ts-expect-error invalid type definition
-          const { count } = await api.getNotificationsCount({ alreadyRead: false });
-
-          return { space, count };
-        }),
-      ),
-    staleTime: 1000 * 60 * 2, // 2 minutes
-  });
-
-  const totalCount = data?.reduce((acc, curr) => acc + curr.count, 0) ?? 0;
+  const [unreadCounts, setUnreadCounts] = useState<Array<InferOutput<typeof NotificationCountSchema>>>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const totalCount = Math.max(
+    0,
+    unreadCounts.reduce((acc, curr) => acc + curr.count, 0),
+  );
+
   useEffect(() => {
-    if (!isStale || (isFetched && !isFetching)) {
-      // Wait for the next tick to ensure the query cache is updated
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
-    }
-  }, [isStale, isFetched, isFetching]);
+    setIsLoading(true);
+
+    getNotificationCount(spaces)
+      .then(setUnreadCounts)
+      .finally(() => setIsLoading(false));
+  }, []);
 
   if (spaces.length === 0) return null;
 
@@ -50,7 +38,7 @@ const Command = () => {
     >
       <MenuBarExtra.Section title="Spaces">
         {spaces.map(({ space: { spaceKey, name }, credential }, index) => {
-          const unreadCount = data?.find(({ space }) => spaceKey === space.spaceKey)?.count;
+          const unreadCount = unreadCounts.find((item) => spaceKey === item.spaceKey)?.count;
           const shortcut: Keyboard.Shortcut | undefined =
             index === 0
               ? { modifiers: ["cmd"], key: "1" }

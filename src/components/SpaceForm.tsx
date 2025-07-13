@@ -1,7 +1,7 @@
 import { Action, ActionPanel, Alert, Form, Toast, confirmAlert, showToast } from "@raycast/api";
 import { FormValidation, useForm } from "@raycast/utils";
-import { Backlog } from "backlog-js";
 import { useMemo } from "react";
+import { getBacklogApi } from "../utils/backlog";
 import { getSpaceHost } from "../utils/space";
 import type { SpaceCredentials } from "../utils/credentials";
 
@@ -21,18 +21,20 @@ const hostRegex = /(([a-z0-9-]+)\.(backlog\.(?:com|jp)))/;
 export const SpaceForm = ({ initialValues, onSubmit, onDelete }: Props) => {
   const { handleSubmit, itemProps, values } = useForm<FormSchema>({
     async onSubmit({ spaceHost, apiKey }) {
-      const [, host, spaceKey, domain] = hostRegex.exec(spaceHost) || [];
+      const [, , spaceKey, domain] = hostRegex.exec(spaceHost) || [];
 
-      if (!host || !spaceKey || (domain !== "backlog.com" && domain !== "backlog.jp")) {
+      if (!spaceKey || (domain !== "backlog.com" && domain !== "backlog.jp")) {
         throw new Error("Invalid space host");
       }
 
+      const credential: SpaceCredentials = { spaceKey, domain, apiKey };
+
       try {
         // check if the space key and api key are valid
-        const api = new Backlog({ host, apiKey });
+        const api = getBacklogApi(credential);
         await api.getSpace();
 
-        onSubmit({ spaceKey, domain, apiKey });
+        onSubmit(credential);
       } catch {
         showToast({
           style: Toast.Style.Failure,

@@ -1,8 +1,7 @@
 import { useCachedState } from "@raycast/utils";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Backlog } from "backlog-js";
 import { useMemo } from "react";
-import { getSpaceHost } from "../utils/space";
+import { getBacklogApi } from "../utils/backlog";
 import { useCredentials } from "./useCredentials";
 
 export const useCurrentSpace = () => {
@@ -15,10 +14,7 @@ export const useCurrentSpace = () => {
     throw new Error("No credential found");
   }
 
-  const { spaceKey, apiKey, domain } = credential;
-  const host = `${spaceKey}.${domain}`;
-
-  const api = useMemo(() => new Backlog({ host: getSpaceHost(credential), apiKey }), [credential]);
+  const api = useMemo(() => getBacklogApi(credential), [credential]);
 
   const { data: space } = useSuspenseQuery({
     queryKey: ["space", credential.spaceKey],
@@ -30,5 +26,5 @@ export const useCurrentSpace = () => {
     setCurrentSpaceKey(newSpaceKey);
   };
 
-  return { credential, spaceKey, host, apiKey, api, space, setSpaceKey };
+  return { credential, api, space, setSpaceKey };
 };

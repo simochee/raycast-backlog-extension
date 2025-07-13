@@ -1,6 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Backlog } from "backlog-js";
-import { getSpaceHost } from "../utils/space";
+import { getBacklogApi } from "../utils/backlog";
 import { useCredentials } from "./useCredentials";
 
 export const useSpaces = () => {
@@ -12,7 +11,7 @@ export const useSpaces = () => {
     queryFn: () =>
       Promise.all(
         credentials.map(async (credential) => {
-          const api = new Backlog({ host: getSpaceHost(credential), apiKey: credential.apiKey });
+          const api = getBacklogApi(credential);
           const space = await api.getSpace();
           return {
             credential,
