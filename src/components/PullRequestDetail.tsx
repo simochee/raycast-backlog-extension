@@ -70,13 +70,20 @@ export const PullRequestDetail = ({ component: Component, project, pullRequest, 
               }}
             />
           )}
-          <Component.Metadata.Separator />
-          <Component.Metadata.Link
-            title="Issue"
-            text={pullRequest.issue.issueKey}
-            target={`https://${getSpaceHost(currentSpace.credential)}/view/${pullRequest.issue.issueKey}`}
-          />
-          <Component.Metadata.Label title="Summary" text={pullRequest.issue.summary} />
+          {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            pullRequest.issue && (
+              <>
+                <Component.Metadata.Separator />
+                <Component.Metadata.Link
+                  title="Issue"
+                  text={pullRequest.issue.issueKey}
+                  target={`https://${getSpaceHost(currentSpace.credential)}/view/${pullRequest.issue.issueKey}`}
+                />
+                <Component.Metadata.Label title="Summary" text={pullRequest.issue.summary} />
+              </>
+            )
+          }
         </Component.Metadata>
       }
     />

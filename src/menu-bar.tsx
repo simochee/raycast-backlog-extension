@@ -10,6 +10,8 @@ import type { Keyboard } from "@raycast/api";
 import type { InferOutput } from "valibot";
 
 const Command = () => {
+  console.log("[Menu Bar] command started");
+
   const spaces = useSpaces();
   const currentSpace = useCurrentSpace();
 
@@ -66,7 +68,13 @@ const Command = () => {
               key={spaceKey}
               title={name}
               icon={getSpaceImageUrl(credential)}
-              subtitle={unreadCount ? `${unreadCount.toLocaleString()} unread` : undefined}
+              subtitle={
+                unreadCount == null || unreadCount === 0
+                  ? undefined
+                  : unreadCount > 0
+                    ? `${unreadCount.toLocaleString()} unread`
+                    : "Failure"
+              }
               tooltip={`${name} (${spaceKey})`}
               onAction={() => {
                 currentSpace.setSpaceKey(spaceKey);

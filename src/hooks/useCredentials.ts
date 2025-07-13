@@ -8,8 +8,11 @@ import type { SpaceCredentials } from "../utils/credentials";
 const getCredentials = async () => {
   try {
     const raw = await LocalStorage.getItem<string>(CREDENTIALS_STORAGE_KEY);
+    const spaces = await v.parseAsync(v.array(CredentialsSchema), JSON.parse(raw || ""));
 
-    return v.parseAsync(v.array(CredentialsSchema), JSON.parse(raw || ""));
+    console.log("[useCredentials] spaces", spaces.map(({ spaceKey }) => spaceKey).join(", "));
+
+    return spaces;
   } catch {
     return [];
   }

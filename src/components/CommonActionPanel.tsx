@@ -4,6 +4,7 @@ import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { useSpaces } from "../hooks/useSpaces";
 import { getSpaceImageUrl } from "../utils/image";
 import { SpaceForm } from "./SpaceForm";
+import { DebugActionPanel } from "./DebugActionPanel";
 import type { SpaceCredentials } from "../utils/credentials";
 
 type Props = {
@@ -62,6 +63,7 @@ export const CommonActionPanel = ({ children }: Props) => {
           )}
           <Action.Push title="Add New Space" icon={Icon.Plus} target={<SpaceForm onSubmit={handleAddSpace} />} />
         </ActionPanel.Section>
+        {process.env.NODE_ENV === "development" && <DebugActionPanel />}
       </>
     </ActionPanel>
   );
