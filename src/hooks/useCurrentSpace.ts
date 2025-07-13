@@ -18,7 +18,7 @@ export const useCurrentSpace = () => {
 
   const { data: space } = useSuspenseQuery({
     queryKey: ["space", credential.spaceKey],
-    staleTime: 1000 * 60 * 10, // 10 minutes
+    gcTime: 1000 * 60 * 10, // 10 minutes
     queryFn: () => api.getSpace(),
   });
 

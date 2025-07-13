@@ -14,7 +14,6 @@ const Command = () => {
 
   const { data } = useSuspenseInfiniteQuery({
     queryKey: ["recent-viewed", currentSpace.space.spaceKey, "wikis"],
-    staleTime: 1000 * 30, // 30 seconds
     gcTime: 1000 * 30, // 30 seconds
     queryFn: ({ pageParam }) =>
       currentSpace.api.getRecentlyViewedWikis({

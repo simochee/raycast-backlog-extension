@@ -7,8 +7,8 @@ import { cache } from "./cache";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 30, // 30 seconds
-      gcTime: 1000 * 60 * 60 * 24, // 24 hours
+      staleTime: Infinity, // always use fresh data
+      gcTime: 1000 * 30, // 30 seconds
     },
   },
 });

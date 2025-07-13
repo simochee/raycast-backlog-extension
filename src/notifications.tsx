@@ -15,7 +15,7 @@ const Command = () => {
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery({
     queryKey: ["notifications", currentSpace.credential.spaceKey],
-    staleTime: 1000 * 30, // 30 seconds
+    gcTime: 1000 * 30, // 30 seconds
     queryFn: ({ pageParam }) =>
       currentSpace.api.getNotifications({
         count: PER_PAGE,
