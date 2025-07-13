@@ -1,7 +1,7 @@
 import * as v from "valibot";
 import { cache } from "./cache";
-import type { useSpaces } from "../hooks/useSpaces";
 import { getBacklogApi } from "./backlog";
+import type { useSpaces } from "../hooks/useSpaces";
 
 export const NotificationCountSchema = v.object({
   spaceKey: v.string(),

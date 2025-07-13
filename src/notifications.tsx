@@ -1,4 +1,4 @@
-import { launchCommand, LaunchType, List } from "@raycast/api";
+import { LaunchType, List, launchCommand } from "@raycast/api";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { CommonActionPanel } from "./components/CommonActionPanel";
 import { NotificationItem } from "./components/NotificationItem";

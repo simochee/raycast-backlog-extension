@@ -2,10 +2,11 @@ import { Color, LaunchType, MenuBarExtra, launchCommand } from "@raycast/api";
 import { useEffect, useState } from "react";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { useSpaces } from "./hooks/useSpaces";
-import type { Keyboard } from "@raycast/api";
 import { getSpaceImageUrl } from "./utils/image";
 import { withProviders } from "./utils/providers";
-import { getNotificationCount, type NotificationCountSchema } from "./utils/notification";
+import { getNotificationCount } from "./utils/notification";
+import type { NotificationCountSchema } from "./utils/notification";
+import type { Keyboard } from "@raycast/api";
 import type { InferOutput } from "valibot";
 
 const Command = () => {
