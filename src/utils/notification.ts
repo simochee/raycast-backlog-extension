@@ -1,3 +1,4 @@
+import { setTimeout } from "node:timers/promises";
 import * as v from "valibot";
 import { cache } from "./cache";
 import { getBacklogApi } from "./backlog";
@@ -52,6 +53,8 @@ export const getNotificationCount = async (
       timestamp: Date.now(),
     }),
   );
+
+  await setTimeout(500);
 
   return data;
 };

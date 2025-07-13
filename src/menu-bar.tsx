@@ -102,6 +102,7 @@ const Command = () => {
           onAction={() => launchCommand({ name: "notifications", type: LaunchType.UserInitiated })}
         />
       </MenuBarExtra.Section>
+      {isLoading && <MenuBarExtra.Section title="Fetching..." />}
     </MenuBarExtra>
   );
 };
