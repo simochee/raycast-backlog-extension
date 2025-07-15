@@ -1,3 +1,5 @@
+![Backlog](./assets/icon-brand.png)
+
 # Backlog
 
 [![English edition](https://img.shields.io/badge/README-English_edition-blue)](/README.md)
@@ -36,3 +38,10 @@
 1. **登録されたAPIキー** に表示された API キーをコピー
 
 [^1]: スペース登録画面でスペースドメインを入力すると、 API ページへのリンクが表示されます
+
+## 開発
+
+1. このリポジトリをクローンする
+1. `pnpm install` （または `npx nypm install` ）で依存関係をインストール
+1. `pnpm run dev` （または `npx nypm run dev` ）で拡張機能を Development Mode で起動
+1. `Cmd + E` を押下し Raycast で拡張機能を開く

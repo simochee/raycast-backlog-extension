@@ -1,3 +1,5 @@
+![Backlog](./assets/icon-brand.png)
+
 # Backlog
 
 [![English edition](https://img.shields.io/badge/README-English_edition-blue)](/README.md)
@@ -36,3 +38,10 @@ You can obtain your space's API key by following these steps:
 3. Copy the API key displayed in **Registered API Keys**
 
 [^1]: A link to the API page will be displayed when you enter your space domain in the space registration screen
+
+## Development
+
+1. Clone this repository
+1. Install dependencies with `pnpm install` (or `npx nypm install`)
+1. Start the extension in Development Mode with `pnpm run dev` (or `npx nypm run dev`)
+1. Press `Cmd + E` to open the extension in Raycast
