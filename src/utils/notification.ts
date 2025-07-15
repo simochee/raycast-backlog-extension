@@ -3,6 +3,7 @@ import * as v from "valibot";
 import { cache } from "./cache";
 import { getBacklogApi } from "./backlog";
 import type { useSpaces } from "../hooks/useSpaces";
+import type { useCurrentSpace } from "../hooks/useCurrentSpace";
 
 export const NotificationCountSchema = v.object({
   spaceKey: v.string(),
@@ -36,8 +37,7 @@ export const getNotificationCount = async (
   const data = await Promise.all(
     spaces.map(async ({ credential }) => {
       const api = getBacklogApi(credential);
-      // @ts-expect-error invalid type definition
-      const { count } = await api.getNotificationsCount({ resourceAlreadyRead: false });
+      const { count } = await api.getNotificationsCount({ alreadyRead: false, resourceAlreadyRead: false });
 
       return {
         spaceKey: credential.spaceKey,
@@ -78,3 +78,16 @@ export const setNotificationCount = async (spaceKey: string, setter: (count: num
 
   return true;
 };
+
+export const resetNotificationsMarkAsRead = async (
+  space: ReturnType<typeof useCurrentSpace>
+) => {
+  const hasSet = await setNotificationCount(space.space.spaceKey, () => 0);
+
+  if (!hasSet) return false;
+
+  const api = getBacklogApi(space.credential);
+  await api.resetNotificationsMarkAsRead();
+
+  return true;
+}

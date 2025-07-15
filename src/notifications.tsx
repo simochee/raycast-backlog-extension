@@ -1,12 +1,13 @@
 import { LaunchType, List, launchCommand } from "@raycast/api";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { CommonActionPanel } from "./components/CommonActionPanel";
 import { NotificationItem } from "./components/NotificationItem";
 import { SearchBarAccessory } from "./components/SearchBarAccessory";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { groupByDate } from "./utils/group";
 import { withProviders } from "./utils/providers";
-import { setNotificationCount } from "./utils/notification";
+import { resetNotificationsMarkAsRead } from "./utils/notification";
 
 const PER_PAGE = 25;
 
@@ -30,10 +31,13 @@ const Command = () => {
 
     if (notification?.resourceAlreadyRead === false) {
       await currentSpace.api.markAsReadNotification(notification.id);
-      setNotificationCount(currentSpace.credential.spaceKey, (count) => count - 1);
-      launchCommand({ name: "menu-bar", type: LaunchType.Background });
     }
   };
+
+  useEffect(() => {
+    resetNotificationsMarkAsRead(currentSpace)
+      .then(() => launchCommand({ name: "menu-bar", type: LaunchType.Background }));
+  }, [currentSpace]);
 
   return (
     <List
