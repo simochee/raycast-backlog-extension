@@ -39,6 +39,27 @@ You can obtain your space's API key by following these steps:
 
 [^1]: A link to the API page will be displayed when you enter your space domain in the space registration screen
 
+## Shortcuts
+
+- `Enter`: Open in browser
+- `Cmd + Shift + u`: Copy URL
+- `Cmd + Shift + f`: Toggle detail panel
+
+### Issues
+
+- `Cmd + c`: Copy issue key only
+- `Cmd + Shift + c`: Copy issue key and title
+
+### Projects
+
+- `Cmd + Enter`: Open project menu
+
+### Others
+
+- `Cmd + Shift + r`: Clear fetched data cache (please reopen the command)
+- `Cmd + Shift + m`: Manage registered spaces
+- `Cmd + Shift + n`: Register another space
+
 ## Development
 
 1. Clone this repository
