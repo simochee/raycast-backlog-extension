@@ -3,6 +3,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { getBacklogApi } from "../utils/backlog";
 import { useCredentials } from "./useCredentials";
+import { getSpaceHost } from "../utils/space";
 
 export const useCurrentSpace = () => {
   const { credentials } = useCredentials();
@@ -26,5 +27,15 @@ export const useCurrentSpace = () => {
     setCurrentSpaceKey(newSpaceKey);
   };
 
-  return { credential, api, space, setSpaceKey };
+  const toUrl = (path: string, searchParams?: URLSearchParams): string => {
+    const url = new URL(path, `https://${getSpaceHost(credential)}`);
+
+    if (searchParams) {
+      url.search = `?${searchParams.toString()}}`
+    }
+
+    return url.href;
+  }
+
+  return { credential, api, space, setSpaceKey, toUrl };
 };

@@ -2,7 +2,6 @@ import { Color, Icon, Image } from "@raycast/api";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { getUserIconUrl } from "../utils/image";
 import { formatMarkdown } from "../utils/markdown";
-import { getSpaceHost } from "../utils/space";
 import type { Detail, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 
@@ -26,7 +25,7 @@ export const IssueDetail = ({ component: Component, issue, project, comment }: P
           <Component.Metadata.Link
             title="Issue Key"
             text={issue.issueKey}
-            target={`https://${getSpaceHost(currentSpace.credential)}/view/${issue.issueKey}`}
+            target={currentSpace.toUrl(`/view/${issue.issueKey}`)}
           />
           <Component.Metadata.Separator />
           <Component.Metadata.Label title="Subject" text={issue.summary} />

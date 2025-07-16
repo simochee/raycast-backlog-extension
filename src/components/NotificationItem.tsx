@@ -1,7 +1,6 @@
 import { Action, ActionPanel, Color, Image, List } from "@raycast/api";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { getUserIconUrl } from "../utils/image";
-import { getSpaceHost } from "../utils/space";
 import { CommonActionPanel } from "./CommonActionPanel";
 import { IssueDetail } from "./IssueDetail";
 import { ProjectDetail } from "./ProjectDetail";
@@ -27,7 +26,7 @@ export const NotificationItem = ({
     },
   ];
   const tintColor = resourceAlreadyRead ? Color.SecondaryText : Color.Orange;
-  const url = `https://${getSpaceHost(currentSpace.credential)}/globalbar/notifications/redirect/${id}`;
+  const url = currentSpace.toUrl(`/globalbar/notifications/redirect/${id}`);
   const actions = (
     <CommonActionPanel>
       <Action.OpenInBrowser title="Open in Browser" url={url} />

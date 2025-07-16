@@ -1,7 +1,6 @@
 import { Action, ActionPanel, Icon, List } from "@raycast/api";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { getProjectImageUrl } from "../utils/image";
-import { getSpaceHost } from "../utils/space";
 import { CommonActionPanel } from "./CommonActionPanel";
 import type { Entity } from "backlog-js";
 
@@ -21,76 +20,67 @@ export const ProjectItem = ({ project }: Props) => {
         <CommonActionPanel>
           <Action.OpenInBrowser
             title="Open in Browser"
-            url={`https://${getSpaceHost(currentSpace.credential)}/projects/${project.projectKey}`}
+            url={currentSpace.toUrl(`/projects/${project.projectKey}`)}
           />
-          <ActionPanel.Section title="Actions">
+          <ActionPanel.Submenu title="Open with Project ..." shortcut={{ modifiers: ['cmd'], key: 'enter' }}>
             <Action.OpenInBrowser
               title="Create Issue"
-              url={`https://${getSpaceHost(currentSpace.credential)}/add/${project.projectKey}`}
-              shortcut={{ modifiers: ["cmd"], key: "n" }}
+              url={currentSpace.toUrl(`/add/${project.projectKey}`)}
               icon={Icon.NewDocument}
             />
             <Action.OpenInBrowser
               title="View Issues"
-              url={`https://${getSpaceHost(currentSpace.credential)}/find/${project.projectKey}`}
-              shortcut={{ modifiers: ["cmd"], key: "i" }}
+              url={currentSpace.toUrl(`/find/${project.projectKey}`)}
               icon={Icon.Document}
             />
             {project.chartEnabled && (
               <>
                 <Action.OpenInBrowser
                   title="View Board"
-                  url={`https://${getSpaceHost(currentSpace.credential)}/board/${project.projectKey}`}
-                  shortcut={{ modifiers: ["cmd"], key: "b" }}
+                  url={currentSpace.toUrl(`/board/${project.projectKey}`)}
                   icon={Icon.BarChart}
                 />
                 <Action.OpenInBrowser
                   title="View Gantt Chart"
-                  url={`https://${getSpaceHost(currentSpace.credential)}/gantt/${project.projectKey}`}
-                  shortcut={{ modifiers: ["cmd"], key: "c" }}
+                  url={currentSpace.toUrl(`/gantt/${project.projectKey}`)}
                   icon={Icon.BarChart}
                 />
               </>
             )}
             <Action.OpenInBrowser
               title="View Documents"
-              url={`https://${getSpaceHost(currentSpace.credential)}/document/${project.projectKey}`}
-              shortcut={{ modifiers: ["cmd"], key: "d" }}
+              url={currentSpace.toUrl(`/document/${project.projectKey}`)}
               icon={Icon.Book}
             />
             {project.useWiki && (
               <Action.OpenInBrowser
                 title="Open Wiki"
-                url={`https://${getSpaceHost(currentSpace.credential)}/wiki/${project.projectKey}/Home`}
-                shortcut={{ modifiers: ["cmd"], key: "v" }}
+                url={currentSpace.toUrl(`/wiki/${project.projectKey}/Home`)}
                 icon={Icon.Book}
               />
             )}
             {project.useFileSharing && (
               <Action.OpenInBrowser
                 title="Browse Files"
-                url={`https://${getSpaceHost(currentSpace.credential)}/file/${project.projectKey}`}
-                shortcut={{ modifiers: ["cmd"], key: "f" }}
+                url={currentSpace.toUrl(`/file/${project.projectKey}`)}
                 icon={Icon.Folder}
               />
             )}
             {project.useSubversion && (
               <Action.OpenInBrowser
                 title="Subversion"
-                url={`https://${getSpaceHost(currentSpace.credential)}/subversion/${project.projectKey}`}
-                shortcut={{ modifiers: ["cmd"], key: "r" }}
+                url={currentSpace.toUrl(`/subversion/${project.projectKey}`)}
                 icon={Icon.Code}
               />
             )}
             {project.useGit && (
               <Action.OpenInBrowser
                 title="Git"
-                url={`https://${getSpaceHost(currentSpace.credential)}/git/${project.projectKey}`}
-                shortcut={{ modifiers: ["cmd"], key: "g" }}
+                url={currentSpace.toUrl(`/git/${project.projectKey}`)}
                 icon={Icon.Code}
               />
             )}
-          </ActionPanel.Section>
+          </ActionPanel.Submenu>
         </CommonActionPanel>
       }
     />

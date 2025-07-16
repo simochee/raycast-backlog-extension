@@ -1,6 +1,5 @@
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { getProjectImageUrl } from "../utils/image";
-import { getSpaceHost } from "../utils/space";
 import type { Detail, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 
@@ -19,7 +18,7 @@ export const ProjectDetail = ({ component: Component, project }: Props) => {
           <Component.Metadata.Link
             title="Project Key"
             text={project.projectKey}
-            target={`https://${getSpaceHost(currentSpace.credential)}/projects/${project.projectKey}`}
+            target={currentSpace.toUrl(`/projects/${project.projectKey}`)}
           />
           <Component.Metadata.Label
             title="Name"

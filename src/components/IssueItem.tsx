@@ -2,7 +2,6 @@ import { Action, ActionPanel, Color, Icon, Image, List } from "@raycast/api";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { useProject } from "../hooks/useProject";
 import { getProjectImageUrl, getUserIconUrl } from "../utils/image";
-import { getSpaceHost } from "../utils/space";
 import { CommonActionPanel } from "./CommonActionPanel";
 import type { Entity } from "backlog-js";
 
@@ -147,7 +146,7 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
         <CommonActionPanel>
           <Action.OpenInBrowser
             title="Open in Browser"
-            url={`https://${getSpaceHost(currentSpace.credential)}/view/${issue.issueKey}`}
+            url={currentSpace.toUrl(`/view/${issue.issueKey}`)}
           />
           <Action
             title="Toggle Details"
@@ -168,7 +167,7 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
             />
             <Action.CopyToClipboard
               title="Copy Issue URL"
-              content={`https://${getSpaceHost(currentSpace.credential)}/view/${issue.issueKey}`}
+              content={currentSpace.toUrl(`/view/${issue.issueKey}`)}
               shortcut={{ modifiers: ["cmd", "shift"], key: "u" }}
             />
           </ActionPanel.Section>
