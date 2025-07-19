@@ -43,7 +43,7 @@ You can obtain your space's API key by following these steps:
 
 - `Enter`: Open in browser
 - `Cmd + Shift + u`: Copy URL
-- `Cmd + Shift + f`: Toggle detail panel
+- `Cmd + f`: Toggle detail panel
 
 ### Issues
 

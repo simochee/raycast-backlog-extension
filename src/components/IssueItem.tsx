@@ -149,7 +149,7 @@ export const IssueItem = ({ issue, actions, onToggleShowingDetail }: Props) => {
           <Action
             title="Toggle Details"
             icon={Icon.AppWindowSidebarRight}
-            shortcut={{ modifiers: ["cmd", "shift"], key: "f" }}
+            shortcut={{ modifiers: ["cmd"], key: "f" }}
             onAction={onToggleShowingDetail}
           />
           {actions}
