@@ -1,4 +1,4 @@
-import { List } from "@raycast/api";
+import { Action, List } from "@raycast/api";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { useCachedState } from "@raycast/utils";
@@ -38,19 +38,26 @@ const Command = () => {
     getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
   });
 
-  const navigationTitle = useMemo(() => {
-    const loadedCount = data.pages.flat().length;
-    const unit = loadedCount === 1 ? "issue" : "issues";
-    const target = filter === "assigneeId" ? "assigned to me" : "created by me";
-    const suffix = hasNextPage ? "loaded" : "total";
-
-    return `${loadedCount} ${target} ${unit} ${suffix}`;
-  }, [data, filter, hasNextPage]);
-
   const filteredData = useMemo(
     () => searchFromKeyword(data.pages.flat(), (issue) => `${issue.summary} ${issue.issueKey}`, searchText),
     [data, searchText],
   );
+
+  const navigationTitle = useMemo(() => {
+    const loadedCount = filteredData.length;
+    const count = loadedCount || 'No';
+    const unit = loadedCount === 1 ? "issue" : "issues";
+    const target = filter === "assigneeId" ? "assigned to me" : "created by me";
+    const suffix = loadedCount === 0 ? 'found' : hasNextPage ? "loaded" : "total";
+
+    return `${count} ${target} ${unit} ${suffix}`;
+  }, [filteredData, filter, hasNextPage]);
+
+  const searchIssueKey = useMemo(() => {
+    if (filteredData.length !== 0) return;
+
+    return /[A-Z0-9_]+-[0-9]+/.exec(searchText.toUpperCase())?.[0];
+  }, [filteredData, searchText]);
 
   const commandActions = <MyIssuesActionPanel filter={filter} onFilterChange={setFilter} />;
 
@@ -64,7 +71,16 @@ const Command = () => {
         hasMore: hasNextPage,
         pageSize: 3,
       }}
-      actions={<CommonActionPanel>{commandActions}</CommonActionPanel>}
+      actions={
+        <CommonActionPanel>
+          {searchIssueKey && (
+            <Action.OpenInBrowser
+              title={`Open ${searchIssueKey} in Browser`}
+              url={currentSpace.toUrl(`/view/${searchIssueKey}`)}
+            />
+          )}
+        </CommonActionPanel>
+      }
       searchBarAccessory={<SearchBarAccessory />}
       onSearchTextChange={setSearchText}
     >

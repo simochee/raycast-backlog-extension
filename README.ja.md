@@ -8,6 +8,8 @@
 
 > [Backlog](https://backlog.com) を Raycast から直接操作。課題も、プロジェクトも、通知も。
 
+![](metadata/backlog-1.png)
+
 ## 主な機能
 
 - メニューバーに未読の通知数を表示

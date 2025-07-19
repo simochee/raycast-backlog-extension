@@ -8,6 +8,8 @@
 
 > Access your [Backlog](https://backlog.com) issues, projects, and notifications directly from Raycast.
 
+![](metadata/backlog-1.png)
+
 ## Main Features
 
 - Display unread notification count in menu bar
