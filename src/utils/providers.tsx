@@ -4,14 +4,7 @@ import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { CredentialsProvider } from "../components/CredentialsProvider";
 import { cache } from "./cache";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: Infinity, // always use fresh data
-      gcTime: 1000 * 30, // 30 seconds
-    },
-  },
-});
+const queryClient = new QueryClient();
 const asyncStoragePersister = createAsyncStoragePersister({
   storage: {
     getItem: cache.get,

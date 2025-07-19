@@ -14,12 +14,13 @@ const Command = () => {
 
   const { data } = useSuspenseInfiniteQuery({
     queryKey: ["recent-viewed", currentSpace.space.spaceKey, "projects"],
-    gcTime: 1000 * 30, // 30 seconds
     queryFn: ({ pageParam }) =>
       currentSpace.api.getRecentlyViewedProjects({
         count: PER_PAGE,
         offset: pageParam,
       }),
+    staleTime: 1000 * 60, // 1 min
+    gcTime: 1000 * 60, // 1 min
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
   });
