@@ -47,13 +47,13 @@ const Command = () => {
     <List
       isShowingDetail
       isLoading={isFetchingNextPage}
-      searchBarAccessory={<SearchBarAccessory />}
       pagination={{
         onLoadMore: fetchNextPage,
         hasMore: hasNextPage,
         pageSize: PER_PAGE,
       }}
       actions={<CommonActionPanel />}
+      searchBarAccessory={<SearchBarAccessory />}
       onSelectionChange={handleSelectionChange}
     >
       {groupByDate("created", data.pages.flat()).map(({ label, items }) => (
