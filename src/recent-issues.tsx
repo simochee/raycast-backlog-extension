@@ -7,6 +7,7 @@ import { SearchBarAccessory } from "./components/SearchBarAccessory";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { groupByDate } from "./utils/group";
 import { withProviders } from "./utils/providers";
+import { searchFromKeyword } from "./utils/search";
 
 const PER_PAGE = 25;
 
@@ -16,21 +17,23 @@ const Command = () => {
 
   const currentSpace = useCurrentSpace();
 
-  const { data } = useSuspenseInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery({
     queryKey: ["recent-viewed", currentSpace.space.spaceKey, "issues"],
     queryFn: ({ pageParam }) =>
       currentSpace.api.getRecentlyViewedIssues({
         count: PER_PAGE,
         offset: pageParam,
       }),
-    staleTime: 1000 * 60, // 1 min
-    gcTime: 1000 * 60, // 1 min
+    staleTime: 1000 * 60 * 3, // 3 min
+    gcTime: 1000 * 60 * 3, // 3 min
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
   });
 
+  const navigationTitle = `Recent Issues - ${data.pages.flat().length} issues ${hasNextPage ? "loaded" : "total"}`;
+
   const filteredData = useMemo(
-    () => data.pages.flat().filter(({ issue }) => issue.summary.includes(searchText)),
+    () => searchFromKeyword(data.pages.flat(), ({ issue }) => `${issue.summary} ${issue.issueKey}`, searchText),
     [data, searchText],
   );
 
@@ -43,7 +46,13 @@ const Command = () => {
   return (
     <List
       isShowingDetail={isShowingDetail}
-      navigationTitle="Recent Issues"
+      navigationTitle={navigationTitle}
+      isLoading={isFetchingNextPage}
+      pagination={{
+        onLoadMore: fetchNextPage,
+        hasMore: hasNextPage,
+        pageSize: 3,
+      }}
       searchBarAccessory={<SearchBarAccessory />}
       actions={
         <CommonActionPanel>
@@ -57,16 +66,8 @@ const Command = () => {
       }
       onSearchTextChange={setSearchText}
     >
-      {groupByDate("updated", filteredData).map(({ label, items }) => (
-        <List.Section key={label} title={label}>
-          {items.map((item) => (
-            <IssueItem
-              key={item.issue.id}
-              issue={item.issue}
-              onToggleShowingDetail={() => setIsShowingDetail((v) => !v)}
-            />
-          ))}
-        </List.Section>
+      {filteredData.map((item) => (
+        <IssueItem key={item.issue.id} issue={item.issue} onToggleShowingDetail={() => setIsShowingDetail((v) => !v)} />
       ))}
     </List>
   );
