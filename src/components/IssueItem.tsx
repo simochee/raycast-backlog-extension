@@ -53,8 +53,6 @@ export const IssueItem = ({ issue, actions, isShowingDetail, onToggleShowingDeta
     tooltip: issue.assignee?.name ?? "Unassigned",
   });
 
-  console.log(issue.issueKey, JSON.stringify(issue.customFields));
-
   return (
     <List.Item
       title={issue.summary}

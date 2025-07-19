@@ -6,6 +6,7 @@ import { formatMarkdown } from "../utils/markdown";
 import { buildDueDate } from "../utils/issue";
 import type { Detail, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 type Props = {
   component: typeof List.Item.Detail | typeof Detail;
@@ -15,6 +16,7 @@ type Props = {
 };
 
 export const IssueDetail = ({ component: Component, issue, project, comment }: Props) => {
+  const currentUser = useCurrentUser();
   const currentSpace = useCurrentSpace();
   const dueDate = buildDueDate(issue?.dueDate);
 
@@ -22,7 +24,7 @@ export const IssueDetail = ({ component: Component, issue, project, comment }: P
 
   return (
     <Component
-      markdown={formatMarkdown(comment ? comment.content : issue.description)}
+      markdown={formatMarkdown(comment ? comment.content : issue.description, { currentUser })}
       metadata={
         <Component.Metadata>
           <Component.Metadata.Label title={issue.issueKey} text={issue.summary} />
@@ -92,8 +94,6 @@ export const IssueDetail = ({ component: Component, issue, project, comment }: P
           {issue.customFields.length > 0 && (
             <>
               {issue.customFields.map((field) => {
-                console.log(issue.issueKey, field.name, field.value);
-
                 if (field.value == null) return null;
 
                 if (Array.isArray(field.value)) {
