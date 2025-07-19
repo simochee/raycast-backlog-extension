@@ -27,8 +27,6 @@ const Command = () => {
     getNextPageParam: (lastPage) => (lastPage.length === PER_PAGE ? (lastPage.slice().pop()?.id ?? null) : null),
   });
 
-  console.log(`Date updated At:`, new Date(dataUpdatedAt), isStale, data.pages.length);
-
   const handleSelectionChange = async (id: string | null) => {
     const notification = data.pages.flat().find((page) => page.id === Number(id));
 
