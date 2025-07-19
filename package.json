@@ -68,6 +68,13 @@
       "mode": "view"
     },
     {
+      "name": "my-issues",
+      "title": "My Issues",
+      "subtitle": "Backlog",
+      "description": "Browse your issues",
+      "mode": "view"
+    },
+    {
       "name": "menu-bar",
       "title": "Unread Count",
       "subtitle": "Backlog",
