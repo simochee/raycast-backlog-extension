@@ -5,7 +5,7 @@ import { withProviders } from "./utils/providers";
 import { SearchBarAccessory } from "./components/SearchBarAccessory";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
-import { getRecentViewTitle, searchFromKeyword } from "./utils/search";
+import {  searchFromKeyword } from "./utils/search";
 import { IssueItem } from "./components/IssueItem";
 import { CommonActionPanel } from "./components/CommonActionPanel";
 import {  MyIssuesActionPanel } from "./components/MyIssuesActionPanel";
@@ -37,8 +37,14 @@ const Command = () => {
     getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
   });
 
-  // FIXME
-  const navigationTitle = getRecentViewTitle(data.pages.flat(), hasNextPage, "issue");
+  const navigationTitle = useMemo(() => {
+    const loadedCount = data.pages.flat().length;
+    const unit = loadedCount === 1 ? 'issue' : 'issues'
+    const target = filter === 'assigneeId' ? 'assigned to me' : 'created by me';
+    const suffix = hasNextPage ? "loaded" : "total";
+
+    return `${loadedCount} ${target} ${unit} ${suffix}`
+  }, [data, filter, hasNextPage])
 
   const filteredData = useMemo(
     () => searchFromKeyword(data.pages.flat(), (issue) => `${issue.summary} ${issue.issueKey}`, searchText),
