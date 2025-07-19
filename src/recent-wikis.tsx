@@ -17,15 +17,15 @@ const Command = () => {
     queryFn: ({ pageParam }) =>
       currentSpace.api.getRecentlyViewedWikis({
         count: PER_PAGE,
-        offset: pageParam
+        offset: pageParam,
       }),
     staleTime: 1000 * 60 * 10, // 10 min
     gcTime: 1000 * 60 * 10, // 10 min
     initialPageParam: 0,
-    getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null)
+    getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
   });
 
-  const navigationTitle = getRecentViewTitle(data.pages.flat(), hasNextPage, 'wiki');
+  const navigationTitle = getRecentViewTitle(data.pages.flat(), hasNextPage, "wiki");
 
   return (
     <List
@@ -34,7 +34,7 @@ const Command = () => {
       pagination={{
         onLoadMore: fetchNextPage,
         hasMore: hasNextPage,
-        pageSize: 3
+        pageSize: 3,
       }}
       searchBarAccessory={<SearchBarAccessory />}
       actions={<CommonActionPanel />}

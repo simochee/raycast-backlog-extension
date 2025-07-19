@@ -27,8 +27,11 @@ const Command = () => {
     getNextPageParam: (lastPage) => (lastPage.length === PER_PAGE ? (lastPage.slice().pop()?.id ?? null) : null),
   });
 
-  const loadedCount = data.pages.flat().length
-  const navigationTitle = loadedCount === 0 ? 'No notifications found' : `${loadedCount} notification${loadedCount === 1 ? '' : 's'} ${hasNextPage ? 'loaded' : 'total'}`;
+  const loadedCount = data.pages.flat().length;
+  const navigationTitle =
+    loadedCount === 0
+      ? "No notifications found"
+      : `${loadedCount} notification${loadedCount === 1 ? "" : "s"} ${hasNextPage ? "loaded" : "total"}`;
 
   const handleSelectionChange = async (id: string | null) => {
     const notification = data.pages.flat().find((page) => page.id === Number(id));

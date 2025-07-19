@@ -32,7 +32,7 @@ const Command = () => {
     [data, searchText],
   );
 
-  const navigationTitle = getRecentViewTitle(data.pages.flat(), hasNextPage, 'project');
+  const navigationTitle = getRecentViewTitle(data.pages.flat(), hasNextPage, "project");
 
   return (
     <List
@@ -41,7 +41,7 @@ const Command = () => {
       pagination={{
         onLoadMore: fetchNextPage,
         hasMore: hasNextPage,
-        pageSize: 3
+        pageSize: 3,
       }}
       searchBarAccessory={<SearchBarAccessory />}
       actions={<CommonActionPanel />}

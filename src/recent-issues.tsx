@@ -29,7 +29,7 @@ const Command = () => {
     getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
   });
 
-  const navigationTitle = getRecentViewTitle(data.pages.flat(), hasNextPage, 'issue');
+  const navigationTitle = getRecentViewTitle(data.pages.flat(), hasNextPage, "issue");
 
   const filteredData = useMemo(
     () => searchFromKeyword(data.pages.flat(), ({ issue }) => `${issue.summary} ${issue.issueKey}`, searchText),
