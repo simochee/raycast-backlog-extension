@@ -1,5 +1,6 @@
 import { Color, LaunchType, MenuBarExtra, environment, launchCommand } from "@raycast/api";
 import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { useSpaces } from "./hooks/useSpaces";
 import { getSpaceImageUrl } from "./utils/image";
@@ -8,7 +9,6 @@ import { getNotificationCount, getNotificationCountCache } from "./utils/notific
 import type { Image, Keyboard } from "@raycast/api";
 import type { NotificationCountSchema } from "./utils/notification";
 import type { InferOutput } from "valibot";
-import { useQueryClient } from "@tanstack/react-query";
 
 const Command = () => {
   console.log(`*${environment.commandName}* [Lifecycle] command started`);
