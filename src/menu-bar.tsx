@@ -1,12 +1,11 @@
-import { Color, LaunchType, MenuBarExtra, environment, launchCommand } from "@raycast/api";
+import { Color, environment, Image, Keyboard, launchCommand, LaunchType, MenuBarExtra } from "@raycast/api";
 import { useEffect, useState } from "react";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { useSpaces } from "./hooks/useSpaces";
 import { getSpaceImageUrl } from "./utils/image";
 import { withProviders } from "./utils/providers";
-import { getNotificationCount, getNotificationCountCache } from "./utils/notification";
 import type { NotificationCountSchema } from "./utils/notification";
-import type { Keyboard } from "@raycast/api";
+import { getNotificationCount, getNotificationCountCache } from "./utils/notification";
 import type { InferOutput } from "valibot";
 
 const Command = () => {
@@ -15,13 +14,19 @@ const Command = () => {
   const spaces = useSpaces();
   const currentSpace = useCurrentSpace();
 
-  const [unreadCounts, setUnreadCounts] = useState<Array<InferOutput<typeof NotificationCountSchema>>>(getNotificationCountCache()?.spaces || []);
-  const [isLoading, setIsLoading] = useState(true);
+  const [unreadCounts, setUnreadCounts] = useState<Array<InferOutput<typeof NotificationCountSchema>>>(
+    getNotificationCountCache()?.spaces || [],
+  );
+  const [isLoading, setIsLoading] = useState(false);
 
   const totalCount = Math.max(
     0,
     unreadCounts.reduce((acc, curr) => acc + curr.count, 0),
   );
+
+  const icon: Image.ImageLike = isLoading
+    ? { source: "tabler/cloud-down.svg", tintColor: Color.SecondaryText }
+    : { source: totalCount > 0 ? "icon-brand.png" : { dark: "icon@dark.png", light: "icon.png" } };
 
   useEffect(() => {
     setIsLoading(true);
@@ -36,7 +41,7 @@ const Command = () => {
   return (
     <MenuBarExtra
       isLoading={isLoading}
-      icon={{ source: totalCount > 0 ? "icon-brand.png" : { dark: "icon@dark.png", light: "icon.png" } }}
+      icon={icon}
       title={totalCount === 0 ? "No new" : `${totalCount.toLocaleString()} unread`}
     >
       <MenuBarExtra.Section title="Spaces">
@@ -67,7 +72,11 @@ const Command = () => {
             <MenuBarExtra.Item
               key={spaceKey}
               title={name}
-              icon={getSpaceImageUrl(credential)}
+              icon={
+                isLoading
+                  ? { source: "tabler/loader.svg", tintColor: Color.SecondaryText }
+                  : getSpaceImageUrl(credential)
+              }
               subtitle={
                 unreadCount == null || unreadCount === 0
                   ? undefined
@@ -110,7 +119,6 @@ const Command = () => {
           onAction={() => launchCommand({ name: "notifications", type: LaunchType.UserInitiated })}
         />
       </MenuBarExtra.Section>
-      {isLoading && <MenuBarExtra.Section title="Fetching..." />}
     </MenuBarExtra>
   );
 };
