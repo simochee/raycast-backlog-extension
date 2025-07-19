@@ -5,11 +5,11 @@ import { withProviders } from "./utils/providers";
 import { SearchBarAccessory } from "./components/SearchBarAccessory";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
-import {  searchFromKeyword } from "./utils/search";
+import { searchFromKeyword } from "./utils/search";
 import { IssueItem } from "./components/IssueItem";
 import { CommonActionPanel } from "./components/CommonActionPanel";
-import {  MyIssuesActionPanel } from "./components/MyIssuesActionPanel";
-import type {FilterKey} from "./components/MyIssuesActionPanel";
+import { MyIssuesActionPanel } from "./components/MyIssuesActionPanel";
+import type { FilterKey } from "./components/MyIssuesActionPanel";
 
 const PER_PAGE = 25;
 
@@ -19,7 +19,7 @@ const Command = () => {
 
   const [isShowingDetail, setIsShowingDetail] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const [filter, setFilter] = useState<FilterKey>('assigneeId');
+  const [filter, setFilter] = useState<FilterKey>("assigneeId");
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery({
     queryKey: ["my-issues", currentSpace.space.spaceKey, filter],
@@ -39,12 +39,12 @@ const Command = () => {
 
   const navigationTitle = useMemo(() => {
     const loadedCount = data.pages.flat().length;
-    const unit = loadedCount === 1 ? 'issue' : 'issues'
-    const target = filter === 'assigneeId' ? 'assigned to me' : 'created by me';
+    const unit = loadedCount === 1 ? "issue" : "issues";
+    const target = filter === "assigneeId" ? "assigned to me" : "created by me";
     const suffix = hasNextPage ? "loaded" : "total";
 
-    return `${loadedCount} ${target} ${unit} ${suffix}`
-  }, [data, filter, hasNextPage])
+    return `${loadedCount} ${target} ${unit} ${suffix}`;
+  }, [data, filter, hasNextPage]);
 
   const filteredData = useMemo(
     () => searchFromKeyword(data.pages.flat(), (issue) => `${issue.summary} ${issue.issueKey}`, searchText),

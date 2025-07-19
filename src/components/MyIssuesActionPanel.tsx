@@ -14,7 +14,7 @@ const FILTER_OPTIONS = [
 
 export const MyIssuesActionPanel = ({ filter, onFilterChange }: Props) => {
   return (
-    <ActionPanel.Submenu title="Filtered by ..." icon={Icon.Filter} shortcut={{ modifiers: ['cmd', 'shift'], key: 'f'}}>
+    <ActionPanel.Submenu title="Filtered by …" icon={Icon.Filter} shortcut={{ modifiers: ["cmd", "shift"], key: "f" }}>
       {FILTER_OPTIONS.map(({ label, value }, i) => (
         <Action
           key={value}
