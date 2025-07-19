@@ -1,4 +1,4 @@
-import { Color, LaunchType, MenuBarExtra, launchCommand } from "@raycast/api";
+import { Color, LaunchType, MenuBarExtra, environment, launchCommand } from "@raycast/api";
 import { useEffect, useState } from "react";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { useSpaces } from "./hooks/useSpaces";
