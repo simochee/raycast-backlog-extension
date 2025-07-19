@@ -1,3 +1,4 @@
+import { environment } from "@raycast/api";
 import { Backlog, Error } from "backlog-js";
 import { getSpaceHost } from "./space";
 import type { SpaceCredentials } from "./credentials";
@@ -11,19 +12,24 @@ export const getBacklogApi = (credential: SpaceCredentials) => {
 
       if (!/^(?:get|post|put|delete)[A-Z]/.test(methodName)) return value;
 
+      const log = (message: string, level: 'log' | 'error' = 'log') => {
+        console[level](`*${environment.commandName}* [Backlog] ${credential.spaceKey} > ${methodName}() - ${message}`);
+      }
+
+
       if (typeof value === "function") {
         return new Proxy(value, {
           async apply(targetMethod, thisArgs, argumentsList) {
             try {
-              console.log("[Backlog] %s() - pending", methodName);
+              log('pending')
               const result = await Reflect.apply(targetMethod, thisArgs, argumentsList);
-              console.log("[Backlog] %s() - ok", methodName);
+              log('ok');
               return result;
             } catch (err) {
               if (err instanceof Error.BacklogApiError) {
-                console.error("[Backlog] %s() - %s\n%s", methodName, err.status, JSON.stringify(err.response));
+                log(`${err.status}\n${JSON.stringify(err.response)}`, 'error');
               } else {
-                console.error("[Backlog] %s - error\n%s", methodName, err);
+                log(`Unknown error\n${err}`, 'error');
               }
               throw err;
             }

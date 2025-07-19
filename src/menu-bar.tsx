@@ -1,4 +1,4 @@
-import { Color, LaunchType, MenuBarExtra, launchCommand } from "@raycast/api";
+import { Color, LaunchType, MenuBarExtra, launchCommand, environment } from "@raycast/api";
 import { useEffect, useState } from "react";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { useSpaces } from "./hooks/useSpaces";
@@ -10,7 +10,7 @@ import type { Keyboard } from "@raycast/api";
 import type { InferOutput } from "valibot";
 
 const Command = () => {
-  console.log("[Menu Bar] command started");
+  console.log(`*${environment.commandName}* [Lifecycle] command started`);
 
   const spaces = useSpaces();
   const currentSpace = useCurrentSpace();
