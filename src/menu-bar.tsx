@@ -4,7 +4,7 @@ import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { useSpaces } from "./hooks/useSpaces";
 import { getSpaceImageUrl } from "./utils/image";
 import { withProviders } from "./utils/providers";
-import { getNotificationCount } from "./utils/notification";
+import { getNotificationCount, getNotificationCountCache } from "./utils/notification";
 import type { NotificationCountSchema } from "./utils/notification";
 import type { Keyboard } from "@raycast/api";
 import type { InferOutput } from "valibot";
@@ -15,7 +15,7 @@ const Command = () => {
   const spaces = useSpaces();
   const currentSpace = useCurrentSpace();
 
-  const [unreadCounts, setUnreadCounts] = useState<Array<InferOutput<typeof NotificationCountSchema>>>([]);
+  const [unreadCounts, setUnreadCounts] = useState<Array<InferOutput<typeof NotificationCountSchema>>>(getNotificationCountCache()?.spaces || []);
   const [isLoading, setIsLoading] = useState(true);
 
   const totalCount = Math.max(
