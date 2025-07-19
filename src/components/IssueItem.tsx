@@ -1,4 +1,5 @@
 import { Action, ActionPanel, Color, Icon, Image, List } from "@raycast/api";
+import { differenceInDays, format, parseISO } from "date-fns";
 import { useCurrentSpace } from "../hooks/useCurrentSpace";
 import { useProject } from "../hooks/useProject";
 import { getProjectImageUrl, getUserIconUrl } from "../utils/image";
@@ -12,28 +13,40 @@ type Props = {
   onToggleShowingDetail: () => void;
 };
 
-export const IssueItem = ({ issue, actions, isShowingDetail, onToggleShowingDetail }: Props) => {
-  const currentSpace = useCurrentSpace();
-  const project = useProject(issue.projectId);
+const buildDueDate = (date: string | undefined) => {
+  if (!date) return;
 
-  const accessories: Array<List.Item.Accessory> = [];
+  const now = new Date();
+  const dueDate = parseISO(date);
+  const diffDays = differenceInDays(dueDate, now);
 
-  // Due Date
-  if (issue.dueDate) {
-    const dueDate = new Date(issue.dueDate);
-    const diffDays = Math.ceil((dueDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
-    const color = diffDays < 0 ? Color.Red : Color.SecondaryText;
-    const value =
+  return {
+    formatted:
       diffDays === 0
         ? "Today"
         : diffDays === 1
           ? "Tomorrow"
           : diffDays === -1
             ? "Yesterday"
-            : `${["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."][dueDate.getMonth()]} ${dueDate.getDate()}`;
+            : format(dueDate, "MMM. i, yyyy"),
+    past: diffDays < 0,
+  };
+};
+
+export const IssueItem = ({ issue, actions, isShowingDetail, onToggleShowingDetail }: Props) => {
+  const currentSpace = useCurrentSpace();
+  const project = useProject(issue.projectId);
+
+  const url = currentSpace.toUrl(`/view/${issue.issueKey}`);
+
+  const accessories: Array<List.Item.Accessory> = [];
+  const dueDate = buildDueDate(issue.dueDate);
+
+  // Due Date
+  if (dueDate) {
     accessories.push({
-      text: { value, color },
-      icon: diffDays < 0 ? { source: Icon.Alarm, tintColor: Color.Red } : null,
+      text: { value: dueDate.formatted, color: dueDate.past ? Color.Red : Color.SecondaryText },
+      icon: dueDate.past ? { source: "tabler/flame.svg", tintColor: Color.Red } : null,
     });
   }
   // Status
@@ -59,6 +72,8 @@ export const IssueItem = ({ issue, actions, isShowingDetail, onToggleShowingDeta
     tooltip: issue.assignee?.name ?? "Unassigned",
   });
 
+  console.log(issue.issueKey, JSON.stringify(issue.customFields));
+
   return (
     <List.Item
       title={issue.summary}
@@ -69,18 +84,31 @@ export const IssueItem = ({ issue, actions, isShowingDetail, onToggleShowingDeta
           markdown={issue.description}
           metadata={
             <List.Item.Detail.Metadata>
-              <List.Item.Detail.Metadata.Label title="Subject" text={issue.summary} />
-              <List.Item.Detail.Metadata.Label title="Issue Key" text={issue.issueKey} />
-              <List.Item.Detail.Metadata.Label
-                title="Type"
-                text={issue.issueType.name}
-                icon={{ source: Icon.CircleFilled, tintColor: issue.issueType.color }}
-              />
-              <List.Item.Detail.Metadata.Label
-                title="Status"
-                text={issue.status.name}
-                icon={{ source: Icon.CircleFilled, tintColor: issue.status.color }}
-              />
+              <List.Item.Detail.Metadata.Label title={issue.issueKey} text={issue.summary} />
+              <List.Item.Detail.Metadata.TagList title="">
+                {dueDate && (
+                  <List.Item.Detail.Metadata.TagList.Item
+                    text={dueDate.formatted}
+                    color={dueDate.past ? Color.Red : Color.PrimaryText}
+                    icon={dueDate.past ? { source: "tabler/flame.svg", tintColor: Color.Red } : undefined}
+                  />
+                )}
+                <List.Item.Detail.Metadata.TagList.Item text={issue.issueType.name} color={issue.issueType.color} />
+                <List.Item.Detail.Metadata.TagList.Item text={issue.status.name} color={issue.status.color} />
+                {project.useDevAttributes && (
+                  <List.Item.Detail.Metadata.TagList.Item
+                    text={issue.priority.name}
+                    icon={
+                      issue.priority.id === 4
+                        ? Icon.ArrowDown
+                        : issue.priority.id === 2
+                          ? Icon.ArrowUp
+                          : Icon.ArrowRight
+                    }
+                    color={issue.priority.id === 4 ? Color.Green : issue.priority.id === 2 ? Color.Red : Color.Blue}
+                  />
+                )}
+              </List.Item.Detail.Metadata.TagList>
               <List.Item.Detail.Metadata.Label
                 title="Assignee"
                 text={issue.assignee?.name ?? "Unassigned"}
@@ -93,49 +121,74 @@ export const IssueItem = ({ issue, actions, isShowingDetail, onToggleShowingDeta
                     : null
                 }
               />
-              <List.Item.Detail.Metadata.Label
-                title="Due Date"
-                text={issue.dueDate ? new Date(issue.dueDate).toLocaleDateString() : "No due date"}
-                icon={issue.dueDate ? { source: Icon.Calendar } : null}
-              />
-              {project.useDevAttributes && (
-                <List.Item.Detail.Metadata.Label
-                  title="Priority"
-                  text={issue.priority.name}
-                  icon={{
-                    source: Icon.ArrowDown,
-                    tintColor: issue.priority.id === 4 ? Color.Green : issue.priority.id === 2 ? Color.Red : Color.Blue,
-                  }}
-                />
+              {issue.category.length > 0 && (
+                <List.Item.Detail.Metadata.TagList title="Category">
+                  {issue.category.map(({ id, name }) => (
+                    <List.Item.Detail.Metadata.TagList.Item key={id} text={name} color={Color.SecondaryText} />
+                  ))}
+                </List.Item.Detail.Metadata.TagList>
               )}
-              <List.Item.Detail.Metadata.Label title="Category" text={issue.category.map((c) => c.name).join(", ")} />
               {project.useDevAttributes && (
                 <>
-                  <List.Item.Detail.Metadata.Label
-                    title="Milestone"
-                    text={issue.milestone.map((m) => m.name).join(", ")}
-                  />
-                  <List.Item.Detail.Metadata.Label
-                    title="Version"
-                    text={issue.versions.map((v) => v.name).join(", ")}
-                  />
+                  {issue.milestone.length > 0 && (
+                    <List.Item.Detail.Metadata.TagList title="Milestone">
+                      {issue.milestone.map(({ id, name }) => (
+                        <List.Item.Detail.Metadata.TagList.Item key={id} text={name} color={Color.SecondaryText} />
+                      ))}
+                    </List.Item.Detail.Metadata.TagList>
+                  )}
+                  {issue.versions.length > 0 && (
+                    <List.Item.Detail.Metadata.TagList title="Version">
+                      {issue.versions.map(({ id, name, archived }) => (
+                        <List.Item.Detail.Metadata.TagList.Item
+                          key={id}
+                          text={name}
+                          color={archived ? "white" : Color.SecondaryText}
+                        />
+                      ))}
+                    </List.Item.Detail.Metadata.TagList>
+                  )}
                 </>
               )}
-              <List.Item.Detail.Metadata.Label title="Resolution" text={issue.resolution?.name} />
+              {issue.resolution && <List.Item.Detail.Metadata.Label title="Resolution" text={issue.resolution.name} />}
+              <List.Item.Detail.Metadata.Separator />
               {issue.customFields.length > 0 && (
                 <>
-                  <List.Item.Detail.Metadata.Separator />
                   {issue.customFields.map((field) => {
-                    const value = Array.isArray(field.value)
-                      ? field.value
-                          .sort((a, b) => a.displayOrder - b.displayOrder)
-                          .map(({ name }) => name)
-                          .join(", ")
-                      : field.fieldTypeId === 4 && field.value
-                        ? new Date(field.value).toLocaleDateString()
-                        : field.value || "";
+                    console.log(issue.issueKey, field.name, field.value);
 
-                    return <List.Item.Detail.Metadata.Label key={field.id} title={field.name} text={value} />;
+                    if (field.value == null) return null;
+
+                    if (Array.isArray(field.value)) {
+                      if (field.value.length === 0) return null;
+
+                      return (
+                        <List.Item.Detail.Metadata.TagList title={field.name}>
+                          {field.value.map(({ name }) => (
+                            <List.Item.Detail.Metadata.TagList.Item key={name} text={name} />
+                          ))}
+                        </List.Item.Detail.Metadata.TagList>
+                      );
+                    }
+
+                    if (typeof field.value === "object") {
+                      return (
+                        <List.Item.Detail.Metadata.TagList title={field.name}>
+                          <List.Item.Detail.Metadata.TagList.Item text={field.value.name} />
+                        </List.Item.Detail.Metadata.TagList>
+                      );
+                    }
+
+                    if (field.fieldTypeId === 4) {
+                      return (
+                        <List.Item.Detail.Metadata.Label
+                          title={field.name}
+                          text={format(parseISO(field.value), "MMM. i, yyyy")}
+                        />
+                      );
+                    }
+
+                    return <List.Item.Detail.Metadata.Label title={field.name} text={field.value.toString()} />;
                   })}
                 </>
               )}
@@ -167,7 +220,7 @@ export const IssueItem = ({ issue, actions, isShowingDetail, onToggleShowingDeta
             />
             <Action.CopyToClipboard
               title="Copy Issue URL"
-              content={currentSpace.toUrl(`/view/${issue.issueKey}`)}
+              content={url}
               shortcut={{ modifiers: ["cmd", "shift"], key: "u" }}
             />
           </ActionPanel.Section>

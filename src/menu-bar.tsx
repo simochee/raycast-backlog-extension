@@ -13,7 +13,7 @@ import type { InferOutput } from "valibot";
 const Command = () => {
   console.log(`*${environment.commandName}* [Lifecycle] command started`);
 
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const spaces = useSpaces();
   const currentSpace = useCurrentSpace();
 
@@ -39,13 +39,13 @@ const Command = () => {
     currentSpace.setSpaceKey(spaceKey);
 
     if (unreadCount.count > 0) {
-      await queryClient.invalidateQueries({ queryKey: ["notifications", spaceKey] })
+      await queryClient.invalidateQueries({ queryKey: ["notifications", spaceKey] });
 
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
     }
 
     await launchCommand({ name: "notifications", type: LaunchType.UserInitiated });
-  }
+  };
 
   useEffect(() => {
     setIsLoading(true);

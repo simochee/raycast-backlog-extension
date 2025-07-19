@@ -1,6 +1,7 @@
 import { List } from "@raycast/api";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
+import { useCachedState } from "@raycast/utils";
 import { withProviders } from "./utils/providers";
 import { SearchBarAccessory } from "./components/SearchBarAccessory";
 import { useCurrentUser } from "./hooks/useCurrentUser";
@@ -19,7 +20,7 @@ const Command = () => {
 
   const [isShowingDetail, setIsShowingDetail] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const [filter, setFilter] = useState<FilterKey>("assigneeId");
+  const [filter, setFilter] = useCachedState<FilterKey>("my-issues-filter", "assigneeId");
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery({
     queryKey: ["my-issues", currentSpace.space.spaceKey, filter],

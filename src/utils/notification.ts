@@ -29,16 +29,16 @@ export const getNotificationCountCache = () => {
   }
 
   return null;
-}
+};
 
 export const removeNotificationCountCache = () => {
   cache.remove(CACHE_KEY);
-}
+};
 
 export const getNotificationCount = async (
   spaces: ReturnType<typeof useSpaces>,
 ): Promise<Array<v.InferOutput<typeof NotificationCountSchema>>> => {
-  const cached = getNotificationCountCache()
+  const cached = getNotificationCountCache();
 
   if (cached) {
     const now = Date.now();
