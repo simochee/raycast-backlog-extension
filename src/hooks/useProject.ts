@@ -18,7 +18,7 @@ const schema = v.object({
   useOriginalImageSizeAtWiki: v.boolean(),
   useSubversion: v.boolean(),
   useGit: v.boolean(),
-  textFormattingRule: v.literal('backlog'),
+  textFormattingRule: v.union([v.literal("backlog"), v.literal("markdown")]),
   archived: v.boolean(),
   displayOrder: v.number(),
   useDevAttributes: v.boolean(),

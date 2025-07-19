@@ -60,9 +60,7 @@ export const IssueItem = ({ issue, actions, isShowingDetail, onToggleShowingDeta
       title={issue.summary}
       subtitle={isShowingDetail ? undefined : issue.issueKey}
       icon={getProjectImageUrl(currentSpace.credential, issue.projectId)}
-      detail={
-      <IssueDetail component={List.Item.Detail} issue={issue} project={project} />
-      }
+      detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} />}
       accessories={isShowingDetail ? undefined : accessories}
       actions={
         <CommonActionPanel>

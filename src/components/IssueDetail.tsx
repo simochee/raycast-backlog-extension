@@ -40,11 +40,7 @@ export const IssueDetail = ({ component: Component, issue, project, comment }: P
               <Component.Metadata.TagList.Item
                 text={issue.priority.name}
                 icon={
-                  issue.priority.id === 4
-                    ? Icon.ArrowDown
-                    : issue.priority.id === 2
-                      ? Icon.ArrowUp
-                      : Icon.ArrowRight
+                  issue.priority.id === 4 ? Icon.ArrowDown : issue.priority.id === 2 ? Icon.ArrowUp : Icon.ArrowRight
                 }
                 color={issue.priority.id === 4 ? Color.Green : issue.priority.id === 2 ? Color.Red : Color.Blue}
               />
@@ -56,9 +52,9 @@ export const IssueDetail = ({ component: Component, issue, project, comment }: P
             icon={
               issue.assignee
                 ? {
-                  source: getUserIconUrl(currentSpace.credential, issue.assignee.id),
-                  mask: Image.Mask.Circle,
-                }
+                    source: getUserIconUrl(currentSpace.credential, issue.assignee.id),
+                    mask: Image.Mask.Circle,
+                  }
                 : null
             }
           />
@@ -122,10 +118,7 @@ export const IssueDetail = ({ component: Component, issue, project, comment }: P
 
                 if (field.fieldTypeId === 4) {
                   return (
-                    <Component.Metadata.Label
-                      title={field.name}
-                      text={format(parseISO(field.value), "MMM. i, yyyy")}
-                    />
+                    <Component.Metadata.Label title={field.name} text={format(parseISO(field.value), "MMM. i, yyyy")} />
                   );
                 }
 
