@@ -47,8 +47,8 @@ You can obtain your space's API key by following these steps:
 
 ### Issues
 
-- `Cmd + c`: Copy issue key only
-- `Cmd + Shift + c`: Copy issue key and title
+- `Ctrl + c`: Copy issue key only
+- `Ctrl + Shift + c`: Copy issue key and title
 
 ### My Issues
 

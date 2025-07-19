@@ -76,12 +76,12 @@ export const IssueItem = ({ issue, actions, isShowingDetail, onToggleShowingDeta
             <Action.CopyToClipboard
               title="Copy Issue Key"
               content={issue.issueKey}
-              shortcut={{ modifiers: ["cmd"], key: "c" }}
+              shortcut={{ modifiers: ["ctrl"], key: "c" }}
             />
             <Action.CopyToClipboard
               title="Copy Issue Key and Subject"
               content={`${issue.issueKey} ${issue.summary}`}
-              shortcut={{ modifiers: ["cmd", "shift"], key: "c" }}
+              shortcut={{ modifiers: ["ctrl", "shift"], key: "c" }}
             />
             <Action.CopyToClipboard
               title="Copy Issue URL"
