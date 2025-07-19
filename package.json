@@ -72,8 +72,7 @@
       "title": "My Issues",
       "subtitle": "Backlog",
       "description": "Browse your issues",
-      "mode": "view",
-      "disabledByDefault": true
+      "mode": "view"
     },
     {
       "name": "menu-bar",

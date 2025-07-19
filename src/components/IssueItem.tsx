@@ -7,10 +7,11 @@ import type { Entity } from "backlog-js";
 
 type Props = {
   issue: Entity.Issue.Issue;
+  actions?: React.ReactNode;
   onToggleShowingDetail: () => void;
 };
 
-export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
+export const IssueItem = ({ issue, actions, onToggleShowingDetail }: Props) => {
   const currentSpace = useCurrentSpace();
   const project = useProject(issue.projectId);
 
@@ -151,6 +152,7 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
             shortcut={{ modifiers: ["cmd", "shift"], key: "f" }}
             onAction={onToggleShowingDetail}
           />
+          {actions}
           <ActionPanel.Section title="Actions">
             <Action.CopyToClipboard
               title="Copy Issue Key"
