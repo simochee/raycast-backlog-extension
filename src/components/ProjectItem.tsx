@@ -18,11 +18,8 @@ export const ProjectItem = ({ project }: Props) => {
       icon={getProjectImageUrl(currentSpace.credential, project.projectKey)}
       actions={
         <CommonActionPanel>
-          <Action.OpenInBrowser
-            title="Open in Browser"
-            url={currentSpace.toUrl(`/projects/${project.projectKey}`)}
-          />
-          <ActionPanel.Submenu title="Open with Project ..." shortcut={{ modifiers: ['cmd'], key: 'enter' }}>
+          <Action.OpenInBrowser title="Open in Browser" url={currentSpace.toUrl(`/projects/${project.projectKey}`)} />
+          <ActionPanel.Submenu title="Open with Project …" shortcut={{ modifiers: ["cmd"], key: "enter" }}>
             <Action.OpenInBrowser
               title="Create Issue"
               url={currentSpace.toUrl(`/add/${project.projectKey}`)}

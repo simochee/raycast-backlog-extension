@@ -79,9 +79,7 @@ export const setNotificationCount = async (spaceKey: string, setter: (count: num
   return true;
 };
 
-export const resetNotificationsMarkAsRead = async (
-  space: ReturnType<typeof useCurrentSpace>
-) => {
+export const resetNotificationsMarkAsRead = async (space: ReturnType<typeof useCurrentSpace>) => {
   const hasSet = await setNotificationCount(space.space.spaceKey, () => 0);
 
   if (!hasSet) return false;
@@ -90,4 +88,4 @@ export const resetNotificationsMarkAsRead = async (
   await api.resetNotificationsMarkAsRead();
 
   return true;
-}
+};

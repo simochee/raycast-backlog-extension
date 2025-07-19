@@ -48,7 +48,9 @@ export const PullRequestDetail = ({ component: Component, project, pullRequest, 
           <Component.Metadata.Link
             title="Number"
             text={`${project.projectKey}/${repository.name}#${pullRequest.number}`}
-            target={currentSpace.toUrl(`/git/${project.projectKey}/${repository.name}/pullRequests/${pullRequest.number}`)}
+            target={currentSpace.toUrl(
+              `/git/${project.projectKey}/${repository.name}/pullRequests/${pullRequest.number}`,
+            )}
           />
           <Component.Metadata.Separator />
           <Component.Metadata.Label title="Summary" text={pullRequest.summary} />

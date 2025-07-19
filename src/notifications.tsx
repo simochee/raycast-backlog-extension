@@ -36,12 +36,11 @@ const Command = () => {
   };
 
   useEffect(() => {
-    resetNotificationsMarkAsRead(currentSpace)
-      .then((isReset) => {
-        if (isReset) {
-          launchCommand({ name: "menu-bar", type: LaunchType.Background })
-        }
-      });
+    resetNotificationsMarkAsRead(currentSpace).then((isReset) => {
+      if (isReset) {
+        launchCommand({ name: "menu-bar", type: LaunchType.Background });
+      }
+    });
   }, [currentSpace]);
 
   return (

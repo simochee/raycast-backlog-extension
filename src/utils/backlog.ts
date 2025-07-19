@@ -13,24 +13,23 @@ export const getBacklogApi = (credential: SpaceCredentials) => {
 
       if (!/^(?:get|post|put|delete)[A-Z]/.test(methodName)) return value;
 
-      const log = (message: string, level: 'log' | 'error' = 'log') => {
+      const log = (message: string, level: "log" | "error" = "log") => {
         console[level](`*${environment.commandName}* [Backlog] ${credential.spaceKey} > ${methodName}() - ${message}`);
-      }
-
+      };
 
       if (typeof value === "function") {
         return new Proxy(value, {
           async apply(targetMethod, thisArgs, argumentsList) {
             try {
-              log('pending')
+              log("pending");
               const result = await Reflect.apply(targetMethod, thisArgs, argumentsList);
-              log('ok');
+              log("ok");
               return result;
             } catch (err) {
               if (err instanceof Error.BacklogApiError) {
-                log(`${err.status}\n${JSON.stringify(err.response)}`, 'error');
+                log(`${err.status}\n${JSON.stringify(err.response)}`, "error");
               } else {
-                log(`Unknown error\n${err}`, 'error');
+                log(`Unknown error\n${err}`, "error");
               }
               throw err;
             }

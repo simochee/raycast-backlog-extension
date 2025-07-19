@@ -1,4 +1,4 @@
-import { environment, LocalStorage } from "@raycast/api";
+import { LocalStorage, environment } from "@raycast/api";
 import { useCachedState } from "@raycast/utils";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import * as v from "valibot";
@@ -10,7 +10,10 @@ const getCredentials = async () => {
     const raw = await LocalStorage.getItem<string>(CREDENTIALS_STORAGE_KEY);
     const spaces = await v.parseAsync(v.array(CredentialsSchema), JSON.parse(raw || ""));
 
-    console.log(`*${environment.commandName}* [useCredentials] spaces`, spaces.map(({ spaceKey }) => spaceKey).join(", "));
+    console.log(
+      `*${environment.commandName}* [useCredentials] spaces`,
+      spaces.map(({ spaceKey }) => spaceKey).join(", "),
+    );
 
     return spaces;
   } catch {
