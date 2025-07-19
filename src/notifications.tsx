@@ -14,7 +14,7 @@ const PER_PAGE = 25;
 const Command = () => {
   const currentSpace = useCurrentSpace();
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, dataUpdatedAt, isStale } = useSuspenseInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery({
     queryKey: ["notifications", currentSpace.credential.spaceKey],
     queryFn: ({ pageParam }) =>
       currentSpace.api.getNotifications({

@@ -5,7 +5,8 @@ import type { SpaceCredentials } from "./credentials";
 
 export const getBacklogApi = (credential: SpaceCredentials) => {
   const api = new Backlog({ host: getSpaceHost(credential), apiKey: credential.apiKey });
-  const proxied = new Proxy(api, {
+
+  return new Proxy(api, {
     get(target, props, receiver) {
       const methodName = String(props);
       const value = Reflect.get(target, props, receiver);
@@ -40,6 +41,4 @@ export const getBacklogApi = (credential: SpaceCredentials) => {
       return value;
     },
   });
-
-  return proxied;
 };
