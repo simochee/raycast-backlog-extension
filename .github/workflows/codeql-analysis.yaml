@@ -37,17 +37,6 @@ jobs:
           config-file: .github/codeql/codeql-config.yaml
           source-root: src
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
-
       - name: Autobuild
         uses: github/codeql-action/autobuild@v3
 
