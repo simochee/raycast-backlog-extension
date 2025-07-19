@@ -8,10 +8,11 @@ import type { Entity } from "backlog-js";
 type Props = {
   issue: Entity.Issue.Issue;
   actions?: React.ReactNode;
+  isShowingDetail: boolean;
   onToggleShowingDetail: () => void;
 };
 
-export const IssueItem = ({ issue, actions, onToggleShowingDetail }: Props) => {
+export const IssueItem = ({ issue, actions, isShowingDetail, onToggleShowingDetail }: Props) => {
   const currentSpace = useCurrentSpace();
   const project = useProject(issue.projectId);
 
@@ -61,7 +62,7 @@ export const IssueItem = ({ issue, actions, onToggleShowingDetail }: Props) => {
   return (
     <List.Item
       title={issue.summary}
-      subtitle={issue.issueKey}
+      subtitle={isShowingDetail ? undefined : issue.issueKey}
       icon={getProjectImageUrl(currentSpace.credential, issue.projectId)}
       detail={
         <List.Item.Detail
@@ -142,7 +143,7 @@ export const IssueItem = ({ issue, actions, onToggleShowingDetail }: Props) => {
           }
         />
       }
-      accessories={accessories}
+      accessories={isShowingDetail ? undefined : accessories}
       actions={
         <CommonActionPanel>
           <Action.OpenInBrowser title="Open in Browser" url={currentSpace.toUrl(`/view/${issue.issueKey}`)} />

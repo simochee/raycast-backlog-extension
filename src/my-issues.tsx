@@ -72,6 +72,7 @@ const Command = () => {
           key={item.id}
           issue={item}
           actions={commandActions}
+          isShowingDetail={isShowingDetail}
           onToggleShowingDetail={() => setIsShowingDetail((v) => !v)}
         />
       ))}

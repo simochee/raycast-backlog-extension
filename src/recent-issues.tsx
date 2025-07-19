@@ -66,7 +66,7 @@ const Command = () => {
       onSearchTextChange={setSearchText}
     >
       {filteredData.map((item) => (
-        <IssueItem key={item.issue.id} issue={item.issue} onToggleShowingDetail={() => setIsShowingDetail((v) => !v)} />
+        <IssueItem key={item.issue.id} issue={item.issue} isShowingDetail={isShowingDetail} onToggleShowingDetail={() => setIsShowingDetail((v) => !v)} />
       ))}
     </List>
   );
