@@ -16,12 +16,13 @@ const Command = () => {
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery({
     queryKey: ["notifications", currentSpace.credential.spaceKey],
-    gcTime: 1000 * 30, // 30 seconds
     queryFn: ({ pageParam }) =>
       currentSpace.api.getNotifications({
         count: PER_PAGE,
         maxId: pageParam !== -1 ? pageParam : undefined,
       }),
+    staleTime: 1000 * 60, // 1 min
+    gcTime: 1000 * 60, // 1 min
     initialPageParam: -1,
     getNextPageParam: (lastPage) => (lastPage.length === PER_PAGE ? (lastPage.slice().pop()?.id ?? null) : null),
   });
@@ -35,8 +36,11 @@ const Command = () => {
   };
 
   useEffect(() => {
-    resetNotificationsMarkAsRead(currentSpace)
-      .then(() => launchCommand({ name: "menu-bar", type: LaunchType.Background }));
+    resetNotificationsMarkAsRead(currentSpace).then((isReset) => {
+      if (isReset) {
+        launchCommand({ name: "menu-bar", type: LaunchType.Background });
+      }
+    });
   }, [currentSpace]);
 
   return (

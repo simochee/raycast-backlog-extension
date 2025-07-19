@@ -144,10 +144,7 @@ export const IssueItem = ({ issue, onToggleShowingDetail }: Props) => {
       accessories={accessories}
       actions={
         <CommonActionPanel>
-          <Action.OpenInBrowser
-            title="Open in Browser"
-            url={currentSpace.toUrl(`/view/${issue.issueKey}`)}
-          />
+          <Action.OpenInBrowser title="Open in Browser" url={currentSpace.toUrl(`/view/${issue.issueKey}`)} />
           <Action
             title="Toggle Details"
             icon={Icon.AppWindowSidebarRight}

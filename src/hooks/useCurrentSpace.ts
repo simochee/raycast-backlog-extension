@@ -2,8 +2,8 @@ import { useCachedState } from "@raycast/utils";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { getBacklogApi } from "../utils/backlog";
-import { useCredentials } from "./useCredentials";
 import { getSpaceHost } from "../utils/space";
+import { useCredentials } from "./useCredentials";
 
 export const useCurrentSpace = () => {
   const { credentials } = useCredentials();
@@ -19,8 +19,9 @@ export const useCurrentSpace = () => {
 
   const { data: space } = useSuspenseQuery({
     queryKey: ["space", credential.spaceKey],
-    gcTime: 1000 * 60 * 10, // 10 minutes
     queryFn: () => api.getSpace(),
+    staleTime: 1000 * 60 * 60 * 24, // 1 day
+    gcTime: 1000 * 60 * 60 * 24, // 1 day
   });
 
   const setSpaceKey = (newSpaceKey: string) => {
@@ -31,11 +32,11 @@ export const useCurrentSpace = () => {
     const url = new URL(path, `https://${getSpaceHost(credential)}`);
 
     if (searchParams) {
-      url.search = `?${searchParams.toString()}}`
+      url.search = `?${searchParams.toString()}}`;
     }
 
     return url.href;
-  }
+  };
 
   return { credential, api, space, setSpaceKey, toUrl };
 };

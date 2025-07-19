@@ -41,6 +41,8 @@ export const useProject = (projectId: number) => {
 
       return project;
     },
+    staleTime: 1000 * 60 * 60 * 24, // 1 day
+    gcTime: 1000 * 60 * 60 * 24, // 1 day
   });
 
   return data;

@@ -24,10 +24,7 @@ export const WikiItem = ({ page }: Props) => {
       ]}
       actions={
         <CommonActionPanel>
-          <Action.OpenInBrowser
-            title="Open in Browser"
-            url={currentSpace.toUrl(`/alias/wiki/${page.id}`)}
-          />
+          <Action.OpenInBrowser title="Open in Browser" url={currentSpace.toUrl(`/alias/wiki/${page.id}`)} />
           <ActionPanel.Section title="Actions">
             <Action.CopyToClipboard
               title="Copy Wiki URL"

@@ -29,12 +29,13 @@ export const PullRequestDetail = ({ component: Component, project, pullRequest, 
 
   const { data: repository } = useSuspenseQuery({
     queryKey: ["repository", pullRequest?.repositoryId],
-    gcTime: 1000 * 60 * 60 * 3, // 3 hours
     queryFn: async () => {
       if (!pullRequest?.repositoryId) return null;
 
       return currentSpace.api.getGitRepository(project.id, `${pullRequest.repositoryId}`);
     },
+    staleTime: 1000 * 60 * 60 * 24, // 1 day
+    gcTime: 1000 * 60 * 60 * 24, // 1 day
   });
 
   if (!pullRequest || !repository) return null;
@@ -47,7 +48,9 @@ export const PullRequestDetail = ({ component: Component, project, pullRequest, 
           <Component.Metadata.Link
             title="Number"
             text={`${project.projectKey}/${repository.name}#${pullRequest.number}`}
-            target={currentSpace.toUrl(`/git/${project.projectKey}/${repository.name}/pullRequests/${pullRequest.number}`)}
+            target={currentSpace.toUrl(
+              `/git/${project.projectKey}/${repository.name}/pullRequests/${pullRequest.number}`,
+            )}
           />
           <Component.Metadata.Separator />
           <Component.Metadata.Label title="Summary" text={pullRequest.summary} />
