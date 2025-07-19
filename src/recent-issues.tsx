@@ -1,6 +1,6 @@
-import { List } from "@raycast/api";
+import { Action, List } from "@raycast/api";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { CommonActionPanel } from "./components/CommonActionPanel";
 import { IssueItem } from "./components/IssueItem";
 import { SearchBarAccessory } from "./components/SearchBarAccessory";
@@ -12,6 +12,8 @@ const PER_PAGE = 25;
 
 const Command = () => {
   const [isShowingDetail, setIsShowingDetail] = useState(false);
+  const [searchText, setSearchText] = useState("");
+
   const currentSpace = useCurrentSpace();
 
   const { data } = useSuspenseInfiniteQuery({
@@ -26,14 +28,35 @@ const Command = () => {
     getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
   });
 
+  const filteredData = useMemo(
+    () => data.pages.flat().filter(({ issue }) => issue.summary.includes(searchText)),
+    [data, searchText],
+  );
+
+  const searchIssueKey = useMemo(() => {
+    if (filteredData.length !== 0) return;
+
+    return /[A-Z0-9_]+-[0-9]+/.exec(searchText.toUpperCase())?.[0];
+  }, [filteredData, searchText]);
+
   return (
     <List
       isShowingDetail={isShowingDetail}
       navigationTitle="Recent Issues"
       searchBarAccessory={<SearchBarAccessory />}
-      actions={<CommonActionPanel />}
+      actions={
+        <CommonActionPanel>
+          {searchIssueKey && (
+            <Action.OpenInBrowser
+              title={`Open ${searchIssueKey} in Browser`}
+              url={currentSpace.toUrl(`/view/${searchIssueKey}`)}
+            />
+          )}
+        </CommonActionPanel>
+      }
+      onSearchTextChange={setSearchText}
     >
-      {groupByDate("updated", data.pages.flat()).map(({ label, items }) => (
+      {groupByDate("updated", filteredData).map(({ label, items }) => (
         <List.Section key={label} title={label}>
           {items.map((item) => (
             <IssueItem
