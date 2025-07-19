@@ -1,16 +1,19 @@
-import { Color, environment, Image, Keyboard, launchCommand, LaunchType, MenuBarExtra } from "@raycast/api";
+import { Color, LaunchType, MenuBarExtra, environment, launchCommand } from "@raycast/api";
 import { useEffect, useState } from "react";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { useSpaces } from "./hooks/useSpaces";
 import { getSpaceImageUrl } from "./utils/image";
 import { withProviders } from "./utils/providers";
-import type { NotificationCountSchema } from "./utils/notification";
 import { getNotificationCount, getNotificationCountCache } from "./utils/notification";
+import type { Image, Keyboard } from "@raycast/api";
+import type { NotificationCountSchema } from "./utils/notification";
 import type { InferOutput } from "valibot";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Command = () => {
   console.log(`*${environment.commandName}* [Lifecycle] command started`);
 
+  const queryClient = useQueryClient()
   const spaces = useSpaces();
   const currentSpace = useCurrentSpace();
 
@@ -28,6 +31,22 @@ const Command = () => {
     ? { source: "tabler/cloud-down.svg", tintColor: Color.SecondaryText }
     : { source: totalCount > 0 ? "icon-brand.png" : { dark: "icon@dark.png", light: "icon.png" } };
 
+  const openNotification = async (spaceKey: string) => {
+    const unreadCount = unreadCounts.find((item) => item.spaceKey === spaceKey);
+
+    if (!unreadCount) return;
+
+    currentSpace.setSpaceKey(spaceKey);
+
+    if (unreadCount.count > 0) {
+      await queryClient.invalidateQueries({ queryKey: ["notifications", spaceKey] })
+
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+
+    await launchCommand({ name: "notifications", type: LaunchType.UserInitiated });
+  }
+
   useEffect(() => {
     setIsLoading(true);
 
@@ -44,7 +63,7 @@ const Command = () => {
       icon={icon}
       title={totalCount === 0 ? "No new" : `${totalCount.toLocaleString()} unread`}
     >
-      <MenuBarExtra.Section title="Spaces">
+      <MenuBarExtra.Section title="Notifications">
         {spaces.map(({ space: { spaceKey, name }, credential }, index) => {
           const unreadCount = unreadCounts.find((item) => spaceKey === item.spaceKey)?.count;
           const shortcut: Keyboard.Shortcut | undefined =
@@ -85,39 +104,11 @@ const Command = () => {
                     : "Failure"
               }
               tooltip={`${name} (${spaceKey})`}
-              onAction={() => {
-                currentSpace.setSpaceKey(spaceKey);
-                launchCommand({ name: "notifications", type: LaunchType.UserInitiated });
-              }}
+              onAction={async () => openNotification(spaceKey)}
               shortcut={shortcut}
             />
           );
         })}
-      </MenuBarExtra.Section>
-      <MenuBarExtra.Section>
-        <MenuBarExtra.Item
-          title="Issues"
-          subtitle="Recent Viewed"
-          icon={{ source: "tabler/checklist.svg", tintColor: Color.SecondaryText }}
-          onAction={() => launchCommand({ name: "recent-issues", type: LaunchType.UserInitiated })}
-        />
-        <MenuBarExtra.Item
-          title="Projects"
-          subtitle="Recent Viewed"
-          icon={{ source: "tabler/buildings.svg", tintColor: Color.SecondaryText }}
-          onAction={() => launchCommand({ name: "recent-projects", type: LaunchType.UserInitiated })}
-        />
-        <MenuBarExtra.Item
-          title="Wikis"
-          subtitle="Recent Viewed"
-          icon={{ source: "tabler/article.svg", tintColor: Color.SecondaryText }}
-          onAction={() => launchCommand({ name: "recent-wikis", type: LaunchType.UserInitiated })}
-        />
-        <MenuBarExtra.Item
-          title="Notifications"
-          icon={{ source: "tabler/bell-ringing-2.svg", tintColor: Color.SecondaryText }}
-          onAction={() => launchCommand({ name: "notifications", type: LaunchType.UserInitiated })}
-        />
       </MenuBarExtra.Section>
     </MenuBarExtra>
   );
