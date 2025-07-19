@@ -27,6 +27,9 @@ const Command = () => {
     getNextPageParam: (lastPage) => (lastPage.length === PER_PAGE ? (lastPage.slice().pop()?.id ?? null) : null),
   });
 
+  const loadedCount = data.pages.flat().length
+  const navigationTitle = loadedCount === 0 ? 'No notifications found' : `${loadedCount} notification${loadedCount === 1 ? '' : 's'} ${hasNextPage ? 'loaded' : 'total'}`;
+
   const handleSelectionChange = async (id: string | null) => {
     const notification = data.pages.flat().find((page) => page.id === Number(id));
 
@@ -47,10 +50,11 @@ const Command = () => {
     <List
       isShowingDetail
       isLoading={isFetchingNextPage}
+      navigationTitle={navigationTitle}
       pagination={{
         onLoadMore: fetchNextPage,
         hasMore: hasNextPage,
-        pageSize: PER_PAGE,
+        pageSize: 3,
       }}
       actions={<CommonActionPanel />}
       searchBarAccessory={<SearchBarAccessory />}

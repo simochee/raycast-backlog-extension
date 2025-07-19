@@ -5,7 +5,6 @@ import { CommonActionPanel } from "./components/CommonActionPanel";
 import { IssueItem } from "./components/IssueItem";
 import { SearchBarAccessory } from "./components/SearchBarAccessory";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
-import { groupByDate } from "./utils/group";
 import { withProviders } from "./utils/providers";
 import { getRecentViewTitle, searchFromKeyword } from "./utils/search";
 

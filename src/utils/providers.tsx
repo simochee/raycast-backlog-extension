@@ -1,8 +1,10 @@
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, QueryErrorResetBoundary } from "@tanstack/react-query";
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { CredentialsProvider } from "../components/CredentialsProvider";
 import { cache } from "./cache";
+import { ErrorBoundary } from "react-error-boundary";
+import { Detail } from "@raycast/api";
 
 const queryClient = new QueryClient();
 const asyncStoragePersister = createAsyncStoragePersister({
@@ -19,7 +21,13 @@ persistQueryClient({ queryClient, persister: asyncStoragePersister });
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <CredentialsProvider>{children}</CredentialsProvider>
+      <QueryErrorResetBoundary>
+        {({ reset }) => (
+          <ErrorBoundary fallback={<Detail markdown='# Fatal Error' />} onReset={reset}>
+            <CredentialsProvider>{children}</CredentialsProvider>
+          </ErrorBoundary>
+        )}
+      </QueryErrorResetBoundary>
     </QueryClientProvider>
   );
 };

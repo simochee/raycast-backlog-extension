@@ -1,4 +1,4 @@
-export const searchFromKeyword = <T>(items: T[], parse: (item: T) => string, keyword: string): T[] => {
+export const searchFromKeyword = <T>(items: Array<T>, parse: (item: T) => string, keyword: string): Array<T> => {
   return items.filter((item) => {
     const text = parse(item).toLowerCase();
 
@@ -6,10 +6,10 @@ export const searchFromKeyword = <T>(items: T[], parse: (item: T) => string, key
   })
 }
 
-export const getRecentViewTitle = (items: unknown[], hasNextPage: boolean, unit: string) => {
+export const getRecentViewTitle = (items: Array<unknown>, hasNextPage: boolean, unit: string) => {
   const unitString = items.length === 1 ? unit : `${unit}s`;
 
-  if (!items.length) return `No recently viewed ${unitString}`;
+  if (!items.length) return `No recently viewed ${unitString} found`;
 
   return `${items.length} recently viewed ${unitString} ${hasNextPage ? 'loaded' : 'total'}`
 }
