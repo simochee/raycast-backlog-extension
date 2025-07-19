@@ -7,7 +7,7 @@ import { SearchBarAccessory } from "./components/SearchBarAccessory";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { groupByDate } from "./utils/group";
 import { withProviders } from "./utils/providers";
-import { searchFromKeyword } from "./utils/search";
+import { getRecentViewTitle, searchFromKeyword } from "./utils/search";
 
 const PER_PAGE = 25;
 
@@ -30,7 +30,7 @@ const Command = () => {
     getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
   });
 
-  const navigationTitle = `Recent Issues - ${data.pages.flat().length} issues ${hasNextPage ? "loaded" : "total"}`;
+  const navigationTitle = getRecentViewTitle(data.pages.flat(), hasNextPage, 'issue');
 
   const filteredData = useMemo(
     () => searchFromKeyword(data.pages.flat(), ({ issue }) => `${issue.summary} ${issue.issueKey}`, searchText),

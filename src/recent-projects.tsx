@@ -1,18 +1,20 @@
+import { useState, useMemo } from "react";
 import { List } from "@raycast/api";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { CommonActionPanel } from "./components/CommonActionPanel";
 import { ProjectItem } from "./components/ProjectItem";
 import { SearchBarAccessory } from "./components/SearchBarAccessory";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
-import { groupByDate } from "./utils/group";
 import { withProviders } from "./utils/providers";
+import { getRecentViewTitle, searchFromKeyword } from "./utils/search";
 
 const PER_PAGE = 25;
 
 const Command = () => {
   const currentSpace = useCurrentSpace();
+  const [searchText, setSearchText] = useState("");
 
-  const { data } = useSuspenseInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery({
     queryKey: ["recent-viewed", currentSpace.space.spaceKey, "projects"],
     queryFn: ({ pageParam }) =>
       currentSpace.api.getRecentlyViewedProjects({
@@ -25,14 +27,28 @@ const Command = () => {
     getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
   });
 
+  const filteredData = useMemo(
+    () => searchFromKeyword(data.pages.flat(), ({ project }) => `${project.name} ${project.projectKey}`, searchText),
+    [data, searchText],
+  );
+
+  const navigationTitle = getRecentViewTitle(data.pages.flat(), hasNextPage, 'project');
+
   return (
-    <List navigationTitle="Recent Projects" searchBarAccessory={<SearchBarAccessory />} actions={<CommonActionPanel />}>
-      {groupByDate("updated", data.pages.flat()).map(({ label, items }) => (
-        <List.Section key={label} title={label}>
-          {items.map((item) => (
-            <ProjectItem key={item.project.id} project={item.project} />
-          ))}
-        </List.Section>
+    <List
+      navigationTitle={navigationTitle}
+      isLoading={isFetchingNextPage}
+      pagination={{
+        onLoadMore: fetchNextPage,
+        hasMore: hasNextPage,
+        pageSize: 3
+      }}
+      searchBarAccessory={<SearchBarAccessory />}
+      actions={<CommonActionPanel />}
+      onSearchTextChange={setSearchText}
+    >
+      {filteredData.map((item) => (
+        <ProjectItem key={item.project.id} project={item.project} />
       ))}
     </List>
   );

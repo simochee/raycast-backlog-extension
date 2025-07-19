@@ -5,6 +5,7 @@ import { SearchBarAccessory } from "./components/SearchBarAccessory";
 import { WikiItem } from "./components/WikiItem";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { withProviders } from "./utils/providers";
+import { getRecentViewTitle } from "./utils/search";
 
 const PER_PAGE = 25;
 
@@ -24,7 +25,7 @@ const Command = () => {
     getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null)
   });
 
-  const navigationTitle = `Recent Wikis - ${data.pages.flat().length} pages ${hasNextPage ? 'loaded' : 'total'}`
+  const navigationTitle = getRecentViewTitle(data.pages.flat(), hasNextPage, 'wiki');
 
   return (
     <List
