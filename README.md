@@ -50,6 +50,10 @@ You can obtain your space's API key by following these steps:
 - `Cmd + c`: Copy issue key only
 - `Cmd + Shift + c`: Copy issue key and title
 
+### My Issues
+
+- `Cmd + Shift + f`: Change filter
+
 ### Projects
 
 - `Cmd + Enter`: Open project menu
