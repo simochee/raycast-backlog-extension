@@ -4,8 +4,8 @@ import type { Detail, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { getUserIconUrl } from "~common/utils/image";
-import { formatMarkdown } from "~common/utils/markdown";
 import { repositoryOptions } from "~common/utils/queryOptions";
+import { useMarkdown } from "~common/hooks/useMarkdown";
 
 type Props = {
   component: typeof List.Item.Detail | typeof Detail;
@@ -27,6 +27,7 @@ const getStatusColor = (status: Entity.PullRequest.Status) => {
 
 export const PullRequestDetail = ({ component: Component, project, pullRequest, comment }: Props) => {
   const currentSpace = useCurrentSpace();
+  const { formatMarkdown } = useMarkdown();
 
   const { data: repository } = useSuspenseQuery(repositoryOptions(currentSpace, project.id, pullRequest?.repositoryId));
 
@@ -34,7 +35,7 @@ export const PullRequestDetail = ({ component: Component, project, pullRequest, 
 
   return (
     <Component
-      markdown={formatMarkdown(comment ? comment.content : pullRequest.description)}
+      markdown={formatMarkdown(pullRequest, comment)}
       metadata={
         <Component.Metadata>
           <Component.Metadata.Link

@@ -13,7 +13,7 @@ type Props = {
 };
 
 export const NotificationItem = ({
-  notification: { id, sender, issue, reason, resourceAlreadyRead, comment, project, pullRequest },
+  notification: { id, sender, issue, reason, resourceAlreadyRead, comment, project, pullRequest, pullRequestComment },
 }: Props) => {
   const currentSpace = useCurrentSpace();
 
@@ -71,7 +71,7 @@ export const NotificationItem = ({
           }}
           accessories={accessories}
           actions={actions}
-          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} />}
+          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} comment={comment} />}
         />
       );
     }
@@ -103,7 +103,7 @@ export const NotificationItem = ({
           icon={{ source: ICONS.NOTIFICATION_CREATED, tintColor }}
           accessories={accessories}
           actions={actions}
-          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} />}
+          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} comment={comment} />}
         />
       );
     }
@@ -119,7 +119,7 @@ export const NotificationItem = ({
           icon={{ source: ICONS.NOTIFICATION_UPDATED, tintColor }}
           accessories={accessories}
           actions={actions}
-          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} />}
+          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} comment={comment} />}
         />
       );
     }
@@ -135,7 +135,7 @@ export const NotificationItem = ({
           icon={{ source: ICONS.NOTIFICATION_FILE_ADDED, tintColor }}
           accessories={accessories}
           actions={actions}
-          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} />}
+          detail={<IssueDetail component={List.Item.Detail} issue={issue} project={project} comment={comment} />}
         />
       );
     }
@@ -175,7 +175,7 @@ export const NotificationItem = ({
               component={List.Item.Detail}
               pullRequest={pullRequest}
               project={project}
-              comment={comment}
+              comment={pullRequestComment}
             />
           }
         />
@@ -198,7 +198,7 @@ export const NotificationItem = ({
               component={List.Item.Detail}
               project={project}
               pullRequest={pullRequest}
-              comment={comment}
+              comment={pullRequestComment}
             />
           }
         />
@@ -216,7 +216,14 @@ export const NotificationItem = ({
           icon={{ source: ICONS.NOTIFICATION_PULL_REQUEST_CREATED, tintColor }}
           accessories={accessories}
           actions={actions}
-          detail={<PullRequestDetail component={List.Item.Detail} project={project} pullRequest={pullRequest} />}
+          detail={
+            <PullRequestDetail
+              component={List.Item.Detail}
+              project={project}
+              pullRequest={pullRequest}
+              comment={pullRequestComment}
+            />
+          }
         />
       );
     }
@@ -232,7 +239,14 @@ export const NotificationItem = ({
           icon={{ source: ICONS.NOTIFICATION_PULL_REQUEST_UPDATED, tintColor }}
           accessories={accessories}
           actions={actions}
-          detail={<PullRequestDetail component={List.Item.Detail} project={project} pullRequest={pullRequest} />}
+          detail={
+            <PullRequestDetail
+              component={List.Item.Detail}
+              project={project}
+              pullRequest={pullRequest}
+              comment={pullRequestComment}
+            />
+          }
         />
       );
     }

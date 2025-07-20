@@ -12,7 +12,7 @@ export type CurrentSpace = ReturnType<typeof useCurrentSpace>;
 
 export const useCurrentSpace = () => {
   const { credentials } = useCredentials();
-  const [currentSpaceKey, setCurrentSpaceKey] = usePersistentState("current-space-key");
+  const [currentSpaceKey, setCurrentSpaceKey] = usePersistentState("current-space-key", null);
 
   const credential = credentials.find(({ spaceKey }) => spaceKey === currentSpaceKey) || credentials[0];
 
