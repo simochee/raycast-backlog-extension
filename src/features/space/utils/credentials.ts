@@ -1,4 +1,4 @@
-import { environment, LocalStorage } from "@raycast/api";
+import { LocalStorage, environment } from "@raycast/api";
 import * as v from "valibot";
 
 export const CredentialsSchema = v.object({
