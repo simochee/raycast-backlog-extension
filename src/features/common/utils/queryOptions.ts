@@ -173,16 +173,16 @@ export const repositoryOptions = (currentSpace: CurrentSpace, projectId: number,
     gcTime: CACHE_TTL.REPOSITORY,
   });
 
-export const currentSpaceKeyOptions = () =>
+export const persistentStateOptions = (key: string) =>
   queryOptions({
-    queryKey: ["current-space-key"],
+    queryKey: ["persistent-state", key],
     queryFn: async () => {
-      const spaceKey = await LocalStorage.getItem("current-space-key");
+      const value = await LocalStorage.getItem(key);
 
-      if (typeof spaceKey !== "string") {
+      if (typeof value !== "string") {
         return null;
       }
 
-      return spaceKey;
+      return value;
     },
   });

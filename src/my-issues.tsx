@@ -1,7 +1,6 @@
 import { Action, List } from "@raycast/api";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { useCachedState } from "@raycast/utils";
 import type { FilterKey } from "~issue/components/MyIssuesActionPanel";
 import { withProviders } from "~common/utils/providers";
 import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
@@ -12,6 +11,7 @@ import { CommonActionPanel } from "~common/components/CommonActionPanel";
 import { MyIssuesActionPanel } from "~issue/components/MyIssuesActionPanel";
 import { myIssuesOptions } from "~common/utils/queryOptions";
 import { useCurrentUser } from "~common/hooks/useCurrentUser";
+import { usePersistentState } from "~common/hooks/usePersistState";
 
 const Command = () => {
   const currentSpace = useCurrentSpace();
@@ -19,7 +19,7 @@ const Command = () => {
 
   const [isShowingDetail, setIsShowingDetail] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const [filter, setFilter] = useCachedState<FilterKey>("my-issues-filter", "assigneeId");
+  const [filter, setFilter] = usePersistentState<FilterKey>("my-issues-filter", "assigneeId");
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
     myIssuesOptions(currentSpace, currentUser, filter),

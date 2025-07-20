@@ -1,19 +1,18 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { LocalStorage } from "@raycast/api";
-import { useCachedState } from "@raycast/utils";
 import { useCredentials } from "./useCredentials";
 import { getBacklogApi } from "~space/utils/backlog";
 import { getSpaceHost } from "~space/utils/space";
-import { currentSpaceKeyOptions, spaceOptions } from "~common/utils/queryOptions";
+import { spaceOptions } from "~common/utils/queryOptions";
 import { DELAY } from "~common/constants/cache";
+import { usePersistentState } from "~common/hooks/usePersistState";
 
 export type CurrentSpace = ReturnType<typeof useCurrentSpace>;
 
 export const useCurrentSpace = () => {
   const { credentials } = useCredentials();
-  const { data: initialCurrentSpaceKey } = useSuspenseQuery(currentSpaceKeyOptions());
-  const [currentSpaceKey, setCurrentSpaceKey] = useCachedState("cached-current-space-key", initialCurrentSpaceKey);
+  const [currentSpaceKey, setCurrentSpaceKey] = usePersistentState("current-space-key");
 
   const credential = credentials.find(({ spaceKey }) => spaceKey === currentSpaceKey) || credentials[0];
 
