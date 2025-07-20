@@ -1,5 +1,11 @@
 import { differenceInDays, format, parseISO } from "date-fns";
 
+export const formatDate = (date: string | undefined) => {
+  if (!date) return;
+
+  return format(parseISO(date), "MMM. i, yyyy");
+};
+
 export const buildDueDate = (date: string | undefined) => {
   if (!date) return;
 
@@ -9,13 +15,7 @@ export const buildDueDate = (date: string | undefined) => {
 
   return {
     formatted:
-      diffDays === 0
-        ? "Today"
-        : diffDays === 1
-          ? "Tomorrow"
-          : diffDays === -1
-            ? "Yesterday"
-            : format(dueDate, "MMM. i, yyyy"),
+      diffDays === 0 ? "Today" : diffDays === 1 ? "Tomorrow" : diffDays === -1 ? "Yesterday" : formatDate(date),
     past: diffDays < 0,
   };
 };
