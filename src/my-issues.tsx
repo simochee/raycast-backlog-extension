@@ -2,41 +2,28 @@ import { Action, List } from "@raycast/api";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { useCachedState } from "@raycast/utils";
-import { withProviders } from "./utils/providers";
-import { SearchBarAccessory } from "./components/SearchBarAccessory";
-import { useCurrentUser } from "./hooks/useCurrentUser";
-import { useCurrentSpace } from "./hooks/useCurrentSpace";
-import { searchFromKeyword } from "./utils/search";
-import { IssueItem } from "./components/IssueItem";
-import { CommonActionPanel } from "./components/CommonActionPanel";
-import { MyIssuesActionPanel } from "./components/MyIssuesActionPanel";
-import type { FilterKey } from "./components/MyIssuesActionPanel";
-
-const PER_PAGE = 25;
+import type { FilterKey } from "~issue/components/MyIssuesActionPanel";
+import { withProviders } from "~common/utils/providers";
+import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
+import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
+import { searchFromKeyword } from "~common/utils/search";
+import { IssueItem } from "~issue/components/IssueItem";
+import { CommonActionPanel } from "~common/components/CommonActionPanel";
+import { MyIssuesActionPanel } from "~issue/components/MyIssuesActionPanel";
+import { myIssuesOptions } from "~common/utils/queryOptions";
+import { useCurrentUser } from "~common/hooks/useCurrentUser";
 
 const Command = () => {
   const currentSpace = useCurrentSpace();
-  const myself = useCurrentUser();
+  const currentUser = useCurrentUser();
 
   const [isShowingDetail, setIsShowingDetail] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [filter, setFilter] = useCachedState<FilterKey>("my-issues-filter", "assigneeId");
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery({
-    queryKey: ["my-issues", currentSpace.space.spaceKey, filter],
-    queryFn: ({ pageParam }) =>
-      currentSpace.api.getIssues({
-        [filter]: [myself.id],
-        sort: "updated",
-        order: "desc",
-        count: PER_PAGE,
-        offset: pageParam,
-      }),
-    staleTime: 1000 * 60 * 3, // 3 min
-    gcTime: 1000 * 60 * 3, // 3 min
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
+    myIssuesOptions(currentSpace, currentUser, filter),
+  );
 
   const filteredData = useMemo(
     () => searchFromKeyword(data.pages.flat(), (issue) => `${issue.summary} ${issue.issueKey}`, searchText),
@@ -45,10 +32,10 @@ const Command = () => {
 
   const navigationTitle = useMemo(() => {
     const loadedCount = filteredData.length;
-    const count = loadedCount || 'No';
+    const count = loadedCount || "No";
     const unit = loadedCount === 1 ? "issue" : "issues";
     const target = filter === "assigneeId" ? "assigned to me" : "created by me";
-    const suffix = loadedCount === 0 ? 'found' : hasNextPage ? "loaded" : "total";
+    const suffix = loadedCount === 0 ? "found" : hasNextPage ? "loaded" : "total";
 
     return `${count} ${target} ${unit} ${suffix}`;
   }, [filteredData, filter, hasNextPage]);

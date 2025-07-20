@@ -1,14 +1,16 @@
 import { Color, LaunchType, MenuBarExtra, environment, launchCommand } from "@raycast/api";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useCurrentSpace } from "./hooks/useCurrentSpace";
-import { useSpaces } from "./hooks/useSpaces";
-import { getSpaceImageUrl } from "./utils/image";
-import { withProviders } from "./utils/providers";
-import { getNotificationCount, getNotificationCountCache } from "./utils/notification";
 import type { Image, Keyboard } from "@raycast/api";
-import type { NotificationCountSchema } from "./utils/notification";
+import type { NotificationCountSchema } from "~notification/utils/notification";
 import type { InferOutput } from "valibot";
+import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
+import { useSpaces } from "~space/hooks/useSpaces";
+import { getSpaceImageUrl } from "~common/utils/image";
+import { withProviders } from "~common/utils/providers";
+import { getNotificationCount, getNotificationCountCache } from "~notification/utils/notification";
+import { DELAY } from "~common/constants/cache";
+import { notificationsOptions } from "~common/utils/queryOptions";
 
 const Command = () => {
   console.log(`*${environment.commandName}* [Lifecycle] command started`);
@@ -39,9 +41,9 @@ const Command = () => {
     currentSpace.setSpaceKey(spaceKey);
 
     if (unreadCount.count > 0) {
-      await queryClient.invalidateQueries({ queryKey: ["notifications", spaceKey] });
+      await queryClient.invalidateQueries({ queryKey: notificationsOptions(currentSpace).queryKey });
 
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, DELAY.NOTIFICATION_UPDATE));
     }
 
     await launchCommand({ name: "notifications", type: LaunchType.UserInitiated });

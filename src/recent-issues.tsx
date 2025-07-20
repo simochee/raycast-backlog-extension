@@ -1,14 +1,13 @@
 import { Action, List } from "@raycast/api";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { CommonActionPanel } from "./components/CommonActionPanel";
-import { IssueItem } from "./components/IssueItem";
-import { SearchBarAccessory } from "./components/SearchBarAccessory";
-import { useCurrentSpace } from "./hooks/useCurrentSpace";
-import { withProviders } from "./utils/providers";
-import { getRecentViewTitle, searchFromKeyword } from "./utils/search";
-
-const PER_PAGE = 25;
+import { CommonActionPanel } from "~common/components/CommonActionPanel";
+import { IssueItem } from "~issue/components/IssueItem";
+import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
+import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
+import { withProviders } from "~common/utils/providers";
+import { getRecentViewTitle, searchFromKeyword } from "~common/utils/search";
+import { recentIssuesOptions } from "~common/utils/queryOptions";
 
 const Command = () => {
   const [isShowingDetail, setIsShowingDetail] = useState(false);
@@ -16,18 +15,9 @@ const Command = () => {
 
   const currentSpace = useCurrentSpace();
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery({
-    queryKey: ["recent-viewed", currentSpace.space.spaceKey, "issues"],
-    queryFn: ({ pageParam }) =>
-      currentSpace.api.getRecentlyViewedIssues({
-        count: PER_PAGE,
-        offset: pageParam,
-      }),
-    staleTime: 1000 * 60 * 3, // 3 min
-    gcTime: 1000 * 60 * 3, // 3 min
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
+    recentIssuesOptions(currentSpace),
+  );
 
   const navigationTitle = getRecentViewTitle(data.pages.flat(), hasNextPage, "issue");
 

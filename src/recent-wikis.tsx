@@ -1,29 +1,19 @@
 import { List } from "@raycast/api";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
-import { CommonActionPanel } from "./components/CommonActionPanel";
-import { SearchBarAccessory } from "./components/SearchBarAccessory";
-import { WikiItem } from "./components/WikiItem";
-import { useCurrentSpace } from "./hooks/useCurrentSpace";
-import { withProviders } from "./utils/providers";
-import { getRecentViewTitle } from "./utils/search";
-
-const PER_PAGE = 25;
+import { CommonActionPanel } from "~common/components/CommonActionPanel";
+import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
+import { WikiItem } from "~wiki/components/WikiItem";
+import { withProviders } from "~common/utils/providers";
+import { getRecentViewTitle } from "~common/utils/search";
+import { recentWikisOptions } from "~common/utils/queryOptions";
+import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 
 const Command = () => {
   const currentSpace = useCurrentSpace();
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery({
-    queryKey: ["recent-viewed", currentSpace.space.spaceKey, "wikis"],
-    queryFn: ({ pageParam }) =>
-      currentSpace.api.getRecentlyViewedWikis({
-        count: PER_PAGE,
-        offset: pageParam,
-      }),
-    staleTime: 1000 * 60 * 10, // 10 min
-    gcTime: 1000 * 60 * 10, // 10 min
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
+    recentWikisOptions(currentSpace),
+  );
 
   const navigationTitle = getRecentViewTitle(data.pages.flat(), hasNextPage, "wiki");
 

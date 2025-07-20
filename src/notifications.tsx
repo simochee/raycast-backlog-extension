@@ -1,31 +1,21 @@
 import { LaunchType, List, launchCommand } from "@raycast/api";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { CommonActionPanel } from "./components/CommonActionPanel";
-import { NotificationItem } from "./components/NotificationItem";
-import { SearchBarAccessory } from "./components/SearchBarAccessory";
-import { useCurrentSpace } from "./hooks/useCurrentSpace";
-import { groupByDate } from "./utils/group";
-import { withProviders } from "./utils/providers";
-import { resetNotificationsMarkAsRead } from "./utils/notification";
-
-const PER_PAGE = 25;
+import { CommonActionPanel } from "~common/components/CommonActionPanel";
+import { NotificationItem } from "~notification/components/NotificationItem";
+import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
+import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
+import { groupByDate } from "~common/utils/group";
+import { withProviders } from "~common/utils/providers";
+import { resetNotificationsMarkAsRead } from "~notification/utils/notification";
+import { notificationsOptions } from "~common/utils/queryOptions";
 
 const Command = () => {
   const currentSpace = useCurrentSpace();
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery({
-    queryKey: ["notifications", currentSpace.credential.spaceKey],
-    queryFn: ({ pageParam }) =>
-      currentSpace.api.getNotifications({
-        count: PER_PAGE,
-        maxId: pageParam !== -1 ? pageParam : undefined,
-      }),
-    staleTime: 1000 * 60, // 1 min
-    gcTime: 1000 * 60, // 1 min
-    initialPageParam: -1,
-    getNextPageParam: (lastPage) => (lastPage.length === PER_PAGE ? (lastPage.slice().pop()?.id ?? null) : null),
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
+    notificationsOptions(currentSpace),
+  );
 
   const loadedCount = data.pages.flat().length;
   const navigationTitle =
