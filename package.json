@@ -8,7 +8,7 @@
     "build": "ray build",
     "dev": "ray develop",
     "fix-lint": "pnpm run lint-eslint --fix && pnpm run lint-prettier --write && sort-package-json",
-    "license": "generate-license-file --input package.json --output THIRD_PARTY_LICENSES.md",
+    "license": "generate-license-file --input package.json --output THIRD_PARTY_LICENSES",
     "lint": "pnpm run lint-eslint && pnpm run lint-prettier",
     "lint-eslint": "eslint .",
     "lint-prettier": "prettier --write --log-level warn .",
