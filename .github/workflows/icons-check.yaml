@@ -1,4 +1,4 @@
-name: License Check
+name: Icons Check
 
 on:
   push:
@@ -22,17 +22,14 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Generate license file
-        run: pnpm license
+        run: pnpm import-tabler
 
       - name: Check for license file changes
         run: |
-          if [ -n "$(git status --porcelain THIRD_PARTY_LICENSES)" ]; then
-            echo "❌ THIRD_PARTY_LICENSES has been modified"
-            echo "Please run 'pnpm license' and commit the changes"
-            echo "=== Changes detected ==="
-            git diff THIRD_PARTY_LICENSES
-            echo "=== End of changes ==="
+          if [ -n "$(git status --porcelain assets/tabler)" ]; then
+            echo "❌ assets/tabler has been modified"
+            echo "Please run 'pnpm import-tabler' and commit the changes"
             exit 1
           else
-            echo "✅ THIRD_PARTY_LICENSES is up to date"
+            echo "✅ assets/tabler is up to date"
           fi

@@ -19,3 +19,7 @@ export const buildDueDate = (date: string | undefined) => {
     past: diffDays < 0,
   };
 };
+
+export const sortByDisplayOrder = <T extends { displayOrder: number }>(items: Array<T>): Array<T> => {
+  return items.toSorted((a, b) => a.displayOrder - b.displayOrder);
+};
