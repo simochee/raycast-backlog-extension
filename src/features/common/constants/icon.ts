@@ -1,5 +1,8 @@
 export const ICONS = {
   EXTERNAL: "tabler/external-link.svg",
+  REFRESH: "tabler/refresh.svg",
+  MANAGE_SPACES: "tabler/building-cog.svg",
+  ADD_SPACE: "tabler/building-plus.svg",
   ISSUE: "tabler/list.svg",
   ISSUE_ADD: "tabler/plus.svg",
   ISSUE_EXPIRED: "tabler/flame.svg",

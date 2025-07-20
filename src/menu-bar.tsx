@@ -1,7 +1,7 @@
 import { Color, LaunchType, MenuBarExtra, environment, launchCommand } from "@raycast/api";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import type { Image, Keyboard } from "@raycast/api";
+import type { Image } from "@raycast/api";
 import type { NotificationCountSchema } from "~notification/utils/notification";
 import type { InferOutput } from "valibot";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
@@ -12,6 +12,7 @@ import { getNotificationCount, getNotificationCountCache } from "~notification/u
 import { DELAY } from "~common/constants/cache";
 import { notificationsOptions } from "~common/utils/queryOptions";
 import { ICONS } from "~common/constants/icon";
+import { indexToShortcut } from "~common/utils/shortcut";
 
 const Command = () => {
   console.log(`*${environment.commandName}* [Lifecycle] command started`);
@@ -67,28 +68,8 @@ const Command = () => {
       title={totalCount === 0 ? "No new" : `${totalCount.toLocaleString()} unread`}
     >
       <MenuBarExtra.Section title="Notifications">
-        {spaces.map(({ space: { spaceKey, name }, credential }, index) => {
+        {spaces.map(({ space: { spaceKey, name }, credential }, i) => {
           const unreadCount = unreadCounts.find((item) => spaceKey === item.spaceKey)?.count;
-          const shortcut: Keyboard.Shortcut | undefined =
-            index === 0
-              ? { modifiers: ["cmd"], key: "1" }
-              : index === 1
-                ? { modifiers: ["cmd"], key: "2" }
-                : index === 2
-                  ? { modifiers: ["cmd"], key: "3" }
-                  : index === 3
-                    ? { modifiers: ["cmd"], key: "4" }
-                    : index === 4
-                      ? { modifiers: ["cmd"], key: "5" }
-                      : index === 5
-                        ? { modifiers: ["cmd"], key: "6" }
-                        : index === 6
-                          ? { modifiers: ["cmd"], key: "7" }
-                          : index === 7
-                            ? { modifiers: ["cmd"], key: "8" }
-                            : index === 8
-                              ? { modifiers: ["cmd"], key: "9" }
-                              : undefined;
 
           return (
             <MenuBarExtra.Item
@@ -106,7 +87,7 @@ const Command = () => {
               }
               tooltip={`${name} (${spaceKey})`}
               onAction={async () => openNotification(spaceKey)}
-              shortcut={shortcut}
+              shortcut={indexToShortcut(i, ["cmd"])}
             />
           );
         })}

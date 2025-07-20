@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Alert, Color, Icon, confirmAlert, useNavigation } from "@raycast/api";
+import { Action, ActionPanel, Alert, Color, confirmAlert, useNavigation } from "@raycast/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { DebugActionPanel } from "./DebugActionPanel";
 import type { SpaceCredentials } from "~space/utils/credentials";
@@ -10,6 +10,7 @@ import { SpaceForm } from "~space/components/SpaceForm";
 import { cache } from "~common/utils/cache";
 import { ICONS } from "~common/constants/icon";
 import { DELAY } from "~common/constants/cache";
+import { indexToShortcut } from "~common/utils/shortcut";
 
 type Props = {
   children?: React.ReactNode | Promise<React.ReactNode>;
@@ -22,9 +23,6 @@ export const CommonActionPanel = ({ children }: Props) => {
   const currentSpace = useCurrentSpace();
 
   const spaces = useSpaces();
-  const sortedSpaces = spaces
-    .slice()
-    .sort(({ space: { spaceKey } }) => (spaceKey === currentSpace.space.spaceKey ? -1 : 1));
 
   const handleAddSpace = async (values: SpaceCredentials) => {
     await addCredential(values);
@@ -44,7 +42,7 @@ export const CommonActionPanel = ({ children }: Props) => {
   const handleDeleteSpace = async (spaceKey: string) => {
     await removeCredential(spaceKey);
     if (currentSpace.space.spaceKey === spaceKey) {
-      await currentSpace.setSpaceKey(sortedSpaces[0]?.space.spaceKey ?? "");
+      await currentSpace.setSpaceKey(spaces[0]?.space.spaceKey ?? "");
     }
     pop();
   };
@@ -52,7 +50,7 @@ export const CommonActionPanel = ({ children }: Props) => {
   const handleClearCache = async () => {
     if (
       await confirmAlert({
-        icon: { source: ICONS.DOWNLOADING, tintColor: Color.SecondaryText },
+        icon: { source: ICONS.REFRESH, tintColor: Color.SecondaryText },
         title: "Refresh All Data",
         message: "Are you sure you want to clear the cache?",
         primaryAction: {
@@ -71,14 +69,19 @@ export const CommonActionPanel = ({ children }: Props) => {
       <>
         {children}
         <ActionPanel.Section title="Spaces">
-          {sortedSpaces.length > 0 && (
+          {spaces.length > 0 && (
             <>
-              <ActionPanel.Submenu title="Manage Spaces" icon={Icon.Gear}>
-                {sortedSpaces.map(({ space: { spaceKey, name }, credential }) => (
+              <ActionPanel.Submenu
+                title="Manage Spaces"
+                icon={{ source: ICONS.MANAGE_SPACES, tintColor: Color.SecondaryText }}
+                shortcut={{ modifiers: ["ctrl", "shift"], key: "m" }}
+              >
+                {spaces.map(({ space: { spaceKey, name }, credential }, i) => (
                   <Action.Push
                     key={spaceKey}
-                    title={`Edit ${name} (${spaceKey})`}
+                    title={`${name} (${spaceKey})`}
                     icon={getSpaceImageUrl(credential)}
+                    shortcut={indexToShortcut(i, ["cmd"])}
                     target={
                       <SpaceForm initialValues={credential} onSubmit={handleUpdateSpace} onDelete={handleDeleteSpace} />
                     }
@@ -87,11 +90,17 @@ export const CommonActionPanel = ({ children }: Props) => {
               </ActionPanel.Submenu>
             </>
           )}
-          <Action.Push title="Add New Space" icon={Icon.Plus} target={<SpaceForm onSubmit={handleAddSpace} />} />
+          <Action.Push
+            title="Add Other Space"
+            icon={{ source: ICONS.ADD_SPACE, tintColor: Color.SecondaryText }}
+            shortcut={{ modifiers: ["ctrl", "shift"], key: "n" }}
+            target={<SpaceForm onSubmit={handleAddSpace} />}
+          />
         </ActionPanel.Section>
         <ActionPanel.Section title="Advanced">
           <Action
             title="Refresh All"
+            icon={{ source: ICONS.REFRESH, tintColor: Color.SecondaryText }}
             shortcut={{ modifiers: ["cmd", "shift"], key: "r" }}
             onAction={handleClearCache}
           />

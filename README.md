@@ -64,8 +64,8 @@ You can obtain your space's API key by following these steps:
 ### Others
 
 - `Cmd + Shift + r`: Refresh data
-- `Cmd + Shift + m`: Manage registered spaces
-- `Cmd + Shift + n`: Register another space
+- `Ctrl + Shift + m`: Manage registered spaces
+- `Ctrl + Shift + n`: Register another space
 
 ## Development
 
