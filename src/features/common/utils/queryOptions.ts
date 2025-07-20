@@ -1,9 +1,91 @@
-import { infiniteQueryOptions } from "@tanstack/react-query";
+import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
+import * as v from "valibot";
+import { createCache } from "./cache";
+import { dedupe } from "./promise-dedupe";
 import type { CurrentUser } from "~common/hooks/useCurrentUser";
 import type { CurrentSpace } from "~space/hooks/useCurrentSpace";
+import type { SpaceCredentials } from "~space/utils/credentials";
 import { CACHE_TTL } from "~common/constants/cache";
+import { getCredentials } from "~space/utils/credentials";
+import { getBacklogApi } from "~space/utils/backlog";
 
 const PER_PAGE = 25;
+
+export const credentialsOptions = () =>
+  queryOptions({
+    queryKey: ["credentials"],
+    queryFn: () => getCredentials(),
+  });
+
+export const myselfOptions = (currentSpace: CurrentSpace) =>
+  queryOptions({
+    queryKey: ["project", currentSpace.space.spaceKey, "myself"],
+    queryFn: async () => currentSpace.api.getMyself(),
+    staleTime: CACHE_TTL.USER,
+    gcTime: CACHE_TTL.USER,
+  });
+
+export const spacesOptions = (credentials: Array<SpaceCredentials>) =>
+  queryOptions({
+    queryKey: ["spaces", ...credentials.map(({ spaceKey }) => spaceKey).sort()],
+    queryFn: () =>
+      Promise.all(
+        credentials.map(async (credential) => ({
+          credential,
+          space: await getBacklogApi(credential).getSpace(),
+        })),
+      ),
+    staleTime: CACHE_TTL.SPACE,
+    gcTime: CACHE_TTL.SPACE,
+  });
+
+export const spaceOptions = (credential: SpaceCredentials) =>
+  queryOptions({
+    queryKey: ["space", credential.spaceKey],
+    queryFn: () => getBacklogApi(credential).getSpace(),
+    staleTime: CACHE_TTL.SPACE,
+    gcTime: CACHE_TTL.SPACE,
+  });
+
+export const projectOptions = (currentSpace: CurrentSpace, projectId: number) =>
+  queryOptions({
+    queryKey: ["project", currentSpace.space.spaceKey, projectId],
+    queryFn: async () => {
+      const cache = createCache(
+        [currentSpace.space.spaceKey, "project", projectId.toString()],
+        v.object({
+          id: v.number(),
+          projectKey: v.string(),
+          name: v.string(),
+          chartEnabled: v.boolean(),
+          useResolvedForChart: v.boolean(),
+          subtaskingEnabled: v.boolean(),
+          projectLeaderCanEditProjectLeader: v.boolean(),
+          useWiki: v.boolean(),
+          useFileSharing: v.boolean(),
+          useWikiTreeView: v.boolean(),
+          useOriginalImageSizeAtWiki: v.boolean(),
+          useSubversion: v.boolean(),
+          useGit: v.boolean(),
+          textFormattingRule: v.union([v.literal("backlog"), v.literal("markdown")]),
+          archived: v.boolean(),
+          displayOrder: v.number(),
+          useDevAttributes: v.boolean(),
+        }),
+      );
+      const cached = cache.get();
+
+      if (cached) return cached;
+
+      const project = await dedupe(currentSpace.api.getProject.bind(currentSpace.api), projectId);
+
+      cache.set(project);
+
+      return project;
+    },
+    staleTime: CACHE_TTL.PROJECT,
+    gcTime: CACHE_TTL.PROJECT,
+  });
 
 export const myIssuesOptions = (currentSpace: CurrentSpace, currentUser: CurrentUser, filter: string) =>
   infiniteQueryOptions({
