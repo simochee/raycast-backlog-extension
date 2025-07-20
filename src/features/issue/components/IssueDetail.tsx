@@ -7,6 +7,7 @@ import { useCurrentUser } from "~common/hooks/useCurrentUser";
 import { getUserIconUrl } from "~common/utils/image";
 import { formatMarkdown } from "~common/utils/markdown";
 import { buildDueDate } from "~issue/utils/issue";
+import { ICONS } from "~common/constants/icon";
 
 type Props = {
   component: typeof List.Item.Detail | typeof Detail;
@@ -33,7 +34,7 @@ export const IssueDetail = ({ component: Component, issue, project, comment }: P
               <Component.Metadata.TagList.Item
                 text={dueDate.formatted}
                 color={dueDate.past ? Color.Red : Color.PrimaryText}
-                icon={dueDate.past ? { source: "tabler/flame.svg", tintColor: Color.Red } : undefined}
+                icon={dueDate.past ? { source: ICONS.ISSUE_EXPIRED, tintColor: Color.Red } : undefined}
               />
             )}
             <Component.Metadata.TagList.Item text={issue.issueType.name} color={issue.issueType.color} />

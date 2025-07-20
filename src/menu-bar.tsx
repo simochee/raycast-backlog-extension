@@ -11,6 +11,7 @@ import { withProviders } from "~common/utils/providers";
 import { getNotificationCount, getNotificationCountCache } from "~notification/utils/notification";
 import { DELAY } from "~common/constants/cache";
 import { notificationsOptions } from "~common/utils/queryOptions";
+import { ICONS } from "~common/constants/icon";
 
 const Command = () => {
   console.log(`*${environment.commandName}* [Lifecycle] command started`);
@@ -30,7 +31,7 @@ const Command = () => {
   );
 
   const icon: Image.ImageLike = isLoading
-    ? { source: "tabler/cloud-down.svg", tintColor: Color.SecondaryText }
+    ? { source: ICONS.DOWNLOADING, tintColor: Color.SecondaryText }
     : { source: totalCount > 0 ? "icon-brand.png" : { dark: "icon@dark.png", light: "icon.png" } };
 
   const openNotification = async (spaceKey: string) => {
@@ -94,9 +95,7 @@ const Command = () => {
               key={spaceKey}
               title={name}
               icon={
-                isLoading
-                  ? { source: "tabler/loader.svg", tintColor: Color.SecondaryText }
-                  : getSpaceImageUrl(credential)
+                isLoading ? { source: ICONS.LOADING, tintColor: Color.SecondaryText } : getSpaceImageUrl(credential)
               }
               subtitle={
                 unreadCount == null || unreadCount === 0
