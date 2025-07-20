@@ -5,39 +5,24 @@ import { useCachedState } from "@raycast/utils";
 import type { FilterKey } from "~issue/components/MyIssuesActionPanel";
 import { withProviders } from "~common/utils/providers";
 import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
-import { useCurrentUser } from "~common/hooks/useCurrentUser";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { searchFromKeyword } from "~common/utils/search";
 import { IssueItem } from "~issue/components/IssueItem";
 import { CommonActionPanel } from "~common/components/CommonActionPanel";
 import { MyIssuesActionPanel } from "~issue/components/MyIssuesActionPanel";
-import { CACHE_TTL } from "~common/constants/cache";
-
-const PER_PAGE = 25;
+import { useQueryOptions } from "~common/hooks/useQueryOptions";
 
 const Command = () => {
   const currentSpace = useCurrentSpace();
-  const myself = useCurrentUser();
+  const queryOptions = useQueryOptions();
 
   const [isShowingDetail, setIsShowingDetail] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [filter, setFilter] = useCachedState<FilterKey>("my-issues-filter", "assigneeId");
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery({
-    queryKey: ["my-issues", currentSpace.space.spaceKey, filter],
-    queryFn: ({ pageParam }) =>
-      currentSpace.api.getIssues({
-        [filter]: [myself.id],
-        sort: "updated",
-        order: "desc",
-        count: PER_PAGE,
-        offset: pageParam,
-      }),
-    staleTime: CACHE_TTL.MY_ISSUES,
-    gcTime: CACHE_TTL.MY_ISSUES,
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
+    queryOptions.myIssues(filter),
+  );
 
   const filteredData = useMemo(
     () => searchFromKeyword(data.pages.flat(), (issue) => `${issue.summary} ${issue.issueKey}`, searchText),

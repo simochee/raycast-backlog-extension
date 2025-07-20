@@ -3,28 +3,14 @@ import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { CommonActionPanel } from "~common/components/CommonActionPanel";
 import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
 import { WikiItem } from "~wiki/components/WikiItem";
-import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { withProviders } from "~common/utils/providers";
 import { getRecentViewTitle } from "~common/utils/search";
-import { CACHE_TTL } from "~common/constants/cache";
-
-const PER_PAGE = 25;
+import { useQueryOptions } from "~common/hooks/useQueryOptions";
 
 const Command = () => {
-  const currentSpace = useCurrentSpace();
+  const queryOptions = useQueryOptions();
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery({
-    queryKey: ["recent-viewed", currentSpace.space.spaceKey, "wikis"],
-    queryFn: ({ pageParam }) =>
-      currentSpace.api.getRecentlyViewedWikis({
-        count: PER_PAGE,
-        offset: pageParam,
-      }),
-    staleTime: CACHE_TTL.RECENT_VIEWED_WIKIS,
-    gcTime: CACHE_TTL.RECENT_VIEWED_WIKIS,
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(queryOptions.recentWikis());
 
   const navigationTitle = getRecentViewTitle(data.pages.flat(), hasNextPage, "wiki");
 

@@ -8,25 +8,15 @@ import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { groupByDate } from "~common/utils/group";
 import { withProviders } from "~common/utils/providers";
 import { resetNotificationsMarkAsRead } from "~notification/utils/notification";
-import { CACHE_TTL } from "~common/constants/cache";
-
-const PER_PAGE = 25;
+import { useQueryOptions } from "~common/hooks/useQueryOptions";
 
 const Command = () => {
   const currentSpace = useCurrentSpace();
+  const queryOptions = useQueryOptions();
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery({
-    queryKey: ["notifications", currentSpace.credential.spaceKey],
-    queryFn: ({ pageParam }) =>
-      currentSpace.api.getNotifications({
-        count: PER_PAGE,
-        maxId: pageParam !== -1 ? pageParam : undefined,
-      }),
-    staleTime: CACHE_TTL.NOTIFICATIONS,
-    gcTime: CACHE_TTL.NOTIFICATIONS,
-    initialPageParam: -1,
-    getNextPageParam: (lastPage) => (lastPage.length === PER_PAGE ? (lastPage.slice().pop()?.id ?? null) : null),
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
+    queryOptions.notifications(),
+  );
 
   const loadedCount = data.pages.flat().length;
   const navigationTitle =
