@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Color, Icon, List } from "@raycast/api";
+import { Action, ActionPanel, Color, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { getProjectImageUrl } from "~common/utils/image";
