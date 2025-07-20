@@ -14,6 +14,7 @@
 
 - Display unread notification count in menu bar
 - Browse notifications sent to you
+- List issues assigned to or created by you
 - Access recently viewed issues, projects, and wikis
 - Support for multiple spaces
 
@@ -46,7 +47,6 @@ You can obtain your space's API key by following these steps:
 - `Enter`: Open in browser
 - `Cmd + Shift + u`: Copy URL
 - `Cmd + f`: Toggle detail panel
-- `Cmd + Shift + r`: Refresh data
 
 ### Issues
 
@@ -63,13 +63,13 @@ You can obtain your space's API key by following these steps:
 
 ### Others
 
-- `Cmd + Shift + r`: Clear fetched data cache (please reopen the command)
+- `Cmd + Shift + r`: Refresh data
 - `Cmd + Shift + m`: Manage registered spaces
 - `Cmd + Shift + n`: Register another space
 
 ## Development
 
 1. Clone this repository
-1. Install dependencies with `pnpm install` (or `npx nypm install`)
-1. Start the extension in Development Mode with `pnpm run dev` (or `npx nypm run dev`)
-1. Press `Cmd + E` to open the extension in Raycast
+2. Install dependencies with `pnpm install` (or `npx nypm install`)
+3. Start the extension in Development Mode with `pnpm run dev` (or `npx nypm run dev`)
+4. Press `Cmd + E` to open the extension in Raycast
