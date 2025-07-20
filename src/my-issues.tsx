@@ -66,6 +66,7 @@ const Command = () => {
               url={currentSpace.toUrl(`/view/${searchIssueKey}`)}
             />
           )}
+          {commandActions}
         </CommonActionPanel>
       }
       searchBarAccessory={<SearchBarAccessory />}
