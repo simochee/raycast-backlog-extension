@@ -2,8 +2,8 @@ import { setTimeout } from "node:timers/promises";
 import * as v from "valibot";
 import { cache } from "../../common/utils/cache";
 import { getBacklogApi } from "../../space/utils/backlog";
-import type { useSpaces } from "../../../hooks/useSpaces";
-import type { useCurrentSpace } from "../../../hooks/useCurrentSpace";
+import type { useSpaces } from "../../space/hooks/useSpaces";
+import type { useCurrentSpace } from "../../space/hooks/useCurrentSpace";
 
 export const NotificationCountSchema = v.object({
   spaceKey: v.string(),

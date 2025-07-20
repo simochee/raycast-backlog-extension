@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { CommonActionPanel } from "./features/common/components/CommonActionPanel";
 import { NotificationItem } from "./features/notification/components/NotificationItem";
 import { SearchBarAccessory } from "./features/space/components/SearchBarAccessory";
-import { useCurrentSpace } from "./hooks/useCurrentSpace";
+import { useCurrentSpace } from "./features/space/hooks/useCurrentSpace";
 import { groupByDate } from "./features/common/utils/group";
 import { withProviders } from "./features/common/utils/providers";
 import { resetNotificationsMarkAsRead } from "./features/notification/utils/notification";

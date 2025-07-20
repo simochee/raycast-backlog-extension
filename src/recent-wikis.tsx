@@ -3,7 +3,7 @@ import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { CommonActionPanel } from "./features/common/components/CommonActionPanel";
 import { SearchBarAccessory } from "./features/space/components/SearchBarAccessory";
 import { WikiItem } from "./features/wiki/components/WikiItem";
-import { useCurrentSpace } from "./hooks/useCurrentSpace";
+import { useCurrentSpace } from "./features/space/hooks/useCurrentSpace";
 import { withProviders } from "./features/common/utils/providers";
 import { getRecentViewTitle } from "./features/common/utils/search";
 

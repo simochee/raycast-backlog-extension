@@ -1,8 +1,8 @@
 import { Color, LaunchType, MenuBarExtra, environment, launchCommand } from "@raycast/api";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useCurrentSpace } from "./hooks/useCurrentSpace";
-import { useSpaces } from "./hooks/useSpaces";
+import { useCurrentSpace } from "./features/space/hooks/useCurrentSpace";
+import { useSpaces } from "./features/space/hooks/useSpaces";
 import { getSpaceImageUrl } from "./features/common/utils/image";
 import { withProviders } from "./features/common/utils/providers";
 import { getNotificationCount, getNotificationCountCache } from "./features/notification/utils/notification";

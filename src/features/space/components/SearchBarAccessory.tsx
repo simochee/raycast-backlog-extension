@@ -1,6 +1,6 @@
 import { List } from "@raycast/api";
-import { useCurrentSpace } from "../../../hooks/useCurrentSpace";
-import { useSpaces } from "../../../hooks/useSpaces";
+import { useCurrentSpace } from "../hooks/useCurrentSpace";
+import { useSpaces } from "../hooks/useSpaces";
 import { getSpaceImageUrl } from "../../common/utils/image";
 
 export const SearchBarAccessory = () => {

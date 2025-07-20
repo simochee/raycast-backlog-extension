@@ -1,7 +1,7 @@
 import { Color, Icon, Image } from "@raycast/api";
 import { format, parseISO } from "date-fns";
-import { useCurrentSpace } from "../../../hooks/useCurrentSpace";
-import { useCurrentUser } from "../../../hooks/useCurrentUser";
+import { useCurrentSpace } from "../../space/hooks/useCurrentSpace";
+import { useCurrentUser } from "../../common/hooks/useCurrentUser";
 import { getUserIconUrl } from "../../common/utils/image";
 import { formatMarkdown } from "../../common/utils/markdown";
 import { buildDueDate } from "../utils/issue";

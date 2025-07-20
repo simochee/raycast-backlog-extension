@@ -1,7 +1,7 @@
 import { Action, ActionPanel, Icon, useNavigation } from "@raycast/api";
-import { useCredentials } from "../../../hooks/useCredentials";
-import { useCurrentSpace } from "../../../hooks/useCurrentSpace";
-import { useSpaces } from "../../../hooks/useSpaces";
+import { useCredentials } from "../../space/hooks/useCredentials";
+import { useCurrentSpace } from "../../space/hooks/useCurrentSpace";
+import { useSpaces } from "../../space/hooks/useSpaces";
 import { getSpaceImageUrl } from "../utils/image";
 import { SpaceForm } from "../../space/components/SpaceForm";
 import { DebugActionPanel } from "./DebugActionPanel";

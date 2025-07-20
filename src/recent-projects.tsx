@@ -4,7 +4,7 @@ import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { CommonActionPanel } from "./features/common/components/CommonActionPanel";
 import { ProjectItem } from "./features/project/components/ProjectItem";
 import { SearchBarAccessory } from "./features/space/components/SearchBarAccessory";
-import { useCurrentSpace } from "./hooks/useCurrentSpace";
+import { useCurrentSpace } from "./features/space/hooks/useCurrentSpace";
 import { withProviders } from "./features/common/utils/providers";
 import { getRecentViewTitle, searchFromKeyword } from "./features/common/utils/search";
 

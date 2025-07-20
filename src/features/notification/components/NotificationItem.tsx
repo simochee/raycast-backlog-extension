@@ -1,5 +1,5 @@
 import { Action, ActionPanel, Color, Image, List } from "@raycast/api";
-import { useCurrentSpace } from "../../../hooks/useCurrentSpace";
+import { useCurrentSpace } from "../../space/hooks/useCurrentSpace";
 import { getUserIconUrl } from "../../common/utils/image";
 import { CommonActionPanel } from "../../common/components/CommonActionPanel";
 import { IssueDetail } from "../../issue/components/IssueDetail";

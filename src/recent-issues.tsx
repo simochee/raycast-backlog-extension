@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { CommonActionPanel } from "./features/common/components/CommonActionPanel";
 import { IssueItem } from "./features/issue/components/IssueItem";
 import { SearchBarAccessory } from "./features/space/components/SearchBarAccessory";
-import { useCurrentSpace } from "./hooks/useCurrentSpace";
+import { useCurrentSpace } from "./features/space/hooks/useCurrentSpace";
 import { withProviders } from "./features/common/utils/providers";
 import { getRecentViewTitle, searchFromKeyword } from "./features/common/utils/search";
 

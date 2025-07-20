@@ -1,4 +1,4 @@
-import { useCredentials } from "../../../hooks/useCredentials";
+import { useCredentials } from "../hooks/useCredentials";
 import { SpaceForm } from "./SpaceForm";
 
 type Props = {
