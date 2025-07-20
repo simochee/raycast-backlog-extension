@@ -5,6 +5,7 @@ import { ICONS } from "~common/constants/icon";
 import { getProjectImageUrl, getUserIconUrl } from "~common/utils/image";
 import { buildDueDate, formatDate, sortByDisplayOrder } from "~issue/utils/issue";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
+import { ISSUE_PRIORITY, ISSUE_STATUS } from "~issue/constants";
 
 type Props = {
   component: typeof List.Item.Detail.Metadata | typeof Detail.Metadata;
@@ -13,7 +14,7 @@ type Props = {
   comment: Entity.Issue.Comment | undefined;
 };
 
-export const IssueMetadata = ({ component: Component, issue, project, comment }: Props) => {
+export const IssueMetadata = ({ component: Component, issue }: Props) => {
   const currentSpace = useCurrentSpace();
 
   const stars = issue.stars.length;
@@ -41,11 +42,11 @@ export const IssueMetadata = ({ component: Component, issue, project, comment }:
         <Component.TagList.Item
           text={dueDate?.formatted || "-"}
           icon={
-            dueDate?.past && issue.status.id !== 4
+            dueDate?.past && issue.status.id !== ISSUE_STATUS.CLOSED
               ? { source: ICONS.ISSUE_EXPIRED, tintColor: Color.Red }
               : { source: ICONS.DATE_DUE, tintColor: "#fff" }
           }
-          color={dueDate?.past && issue.status.id !== 4 ? Color.Red : "#fff"}
+          color={dueDate?.past && issue.status.id !== ISSUE_STATUS.CLOSED ? Color.Red : "#fff"}
         />
         <Component.TagList.Item
           text={stars.toString()}
@@ -60,8 +61,20 @@ export const IssueMetadata = ({ component: Component, issue, project, comment }:
       <Component.TagList title="">
         <Component.TagList.Item
           text={issue.priority.name}
-          icon={issue.priority.id === 4 ? Icon.ArrowDown : issue.priority.id === 2 ? Icon.ArrowUp : Icon.ArrowRight}
-          color={issue.priority.id === 4 ? Color.Green : issue.priority.id === 2 ? Color.Red : Color.Blue}
+          icon={
+            issue.priority.id === ISSUE_PRIORITY.LOW
+              ? Icon.ArrowDown
+              : issue.priority.id === ISSUE_PRIORITY.HIGH
+                ? Icon.ArrowUp
+                : Icon.ArrowRight
+          }
+          color={
+            issue.priority.id === ISSUE_PRIORITY.LOW
+              ? Color.Green
+              : issue.priority.id === ISSUE_PRIORITY.HIGH
+                ? Color.Red
+                : Color.Blue
+          }
         />
         <Component.TagList.Item
           text={issue.assignee ? issue.assignee.name : "Unassigned"}

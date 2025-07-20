@@ -6,6 +6,7 @@ import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { getUserIconUrl } from "~common/utils/image";
 import { repositoryOptions } from "~common/utils/queryOptions";
 import { useMarkdown } from "~common/hooks/useMarkdown";
+import { PULL_REQUEST_STATUS } from "~pull-request/constants";
 
 type Props = {
   component: typeof List.Item.Detail | typeof Detail;
@@ -16,11 +17,11 @@ type Props = {
 
 const getStatusColor = (status: Entity.PullRequest.Status) => {
   switch (status.id) {
-    case 1:
+    case PULL_REQUEST_STATUS.OPEN:
       return "#ed8077";
-    case 2:
+    case PULL_REQUEST_STATUS.CLOSED:
       return "#707070";
-    case 3:
+    case PULL_REQUEST_STATUS.MERGED:
       return "#5eb5a9";
   }
 };

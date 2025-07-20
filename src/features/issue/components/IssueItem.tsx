@@ -7,6 +7,7 @@ import { getProjectImageUrl, getUserIconUrl } from "~common/utils/image";
 import { buildDueDate } from "~issue/utils/issue";
 import { CommonActionPanel } from "~common/components/CommonActionPanel";
 import { ICONS } from "~common/constants/icon";
+import { ISSUE_PRIORITY } from "~issue/constants";
 
 type Props = {
   issue: Entity.Issue.Issue;
@@ -36,9 +37,9 @@ export const IssueItem = ({ issue, actions, isShowingDetail, onToggleShowingDeta
   // Priority
   accessories.push({
     icon:
-      issue.priority.id === 4
+      issue.priority.id === ISSUE_PRIORITY.LOW
         ? { source: Icon.ArrowDown, tintColor: Color.Green }
-        : issue.priority.id === 2
+        : issue.priority.id === ISSUE_PRIORITY.HIGH
           ? { source: Icon.ArrowUp, tintColor: Color.Red }
           : { source: Icon.ArrowRight, tintColor: Color.Blue },
     tooltip: issue.priority.name,

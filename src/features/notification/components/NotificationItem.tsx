@@ -7,6 +7,7 @@ import { IssueDetail } from "~issue/components/IssueDetail";
 import { ProjectDetail } from "~project/components/ProjectDetail";
 import { PullRequestDetail } from "~pull-request/components/PullRequestDetail";
 import { ICONS } from "~common/constants/icon";
+import { NOTIFICATION_REASON } from "~issue/constants";
 
 type Props = {
   notification: Entity.Notification.Notification;
@@ -57,7 +58,7 @@ export const NotificationItem = ({
 
   switch (reason) {
     // Assigned to Issue
-    case 1: {
+    case NOTIFICATION_REASON.ASSIGNED_TO_ISSUE: {
       return (
         <List.Item
           id={`${id}`}
@@ -76,7 +77,7 @@ export const NotificationItem = ({
       );
     }
     // Issue Commented
-    case 2: {
+    case NOTIFICATION_REASON.ISSUE_COMMENTED: {
       return (
         <List.Item
           id={`${id}`}
@@ -92,7 +93,7 @@ export const NotificationItem = ({
       );
     }
     // Issue Created
-    case 3: {
+    case NOTIFICATION_REASON.ISSUE_CREATED: {
       return (
         <List.Item
           id={`${id}`}
@@ -108,7 +109,7 @@ export const NotificationItem = ({
       );
     }
     // Issue Updated
-    case 4: {
+    case NOTIFICATION_REASON.ISSUE_UPDATED: {
       return (
         <List.Item
           id={`${id}`}
@@ -124,7 +125,7 @@ export const NotificationItem = ({
       );
     }
     // File Added
-    case 5: {
+    case NOTIFICATION_REASON.FILE_ADDED: {
       return (
         <List.Item
           id={`${id}`}
@@ -140,7 +141,7 @@ export const NotificationItem = ({
       );
     }
     // Project User Added
-    case 6: {
+    case NOTIFICATION_REASON.PROJECT_USER_ADDED: {
       return (
         <List.Item
           id={`${id}`}
@@ -156,7 +157,7 @@ export const NotificationItem = ({
       );
     }
     // Assigned to Pull Request
-    case 10: {
+    case NOTIFICATION_REASON.ASSIGNED_TO_PULL_REQUEST: {
       return (
         <List.Item
           id={`${id}`}
@@ -182,7 +183,7 @@ export const NotificationItem = ({
       );
     }
     // Comment Added on Pull Request
-    case 11: {
+    case NOTIFICATION_REASON.PULL_REQUEST_COMMENTED: {
       return (
         <List.Item
           id={`${id}`}
@@ -205,7 +206,7 @@ export const NotificationItem = ({
       );
     }
     // Pull Request Added
-    case 12: {
+    case NOTIFICATION_REASON.PULL_REQUEST_CREATED: {
       return (
         <List.Item
           id={`${id}`}
@@ -219,8 +220,8 @@ export const NotificationItem = ({
           detail={
             <PullRequestDetail
               component={List.Item.Detail}
-              project={project}
               pullRequest={pullRequest}
+              project={project}
               comment={pullRequestComment}
             />
           }
@@ -228,7 +229,7 @@ export const NotificationItem = ({
       );
     }
     // Pull Request Updated
-    case 13: {
+    case NOTIFICATION_REASON.PULL_REQUEST_UPDATED: {
       return (
         <List.Item
           id={`${id}`}
@@ -242,8 +243,8 @@ export const NotificationItem = ({
           detail={
             <PullRequestDetail
               component={List.Item.Detail}
-              project={project}
               pullRequest={pullRequest}
+              project={project}
               comment={pullRequestComment}
             />
           }
