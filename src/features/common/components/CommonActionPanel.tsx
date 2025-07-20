@@ -19,23 +19,51 @@ type Props = {
 export const CommonActionPanel = ({ children }: Props) => {
   const { pop } = useNavigation();
   const queryClient = useQueryClient();
-  const { addCredential, updateCredential, removeCredential } = useCredentials();
+  const { credentials, addCredential, updateCredential, removeCredential } = useCredentials();
   const currentSpace = useCurrentSpace();
 
   const spaces = useSpaces();
 
   const handleAddSpace = async (values: SpaceCredentials) => {
+    const credential = credentials.find(({ spaceKey }) => spaceKey === values.spaceKey);
+
+    if (credential) {
+      if (
+        await confirmAlert({
+          title: "Space already exists",
+          message: "Do you want to update the space?",
+          primaryAction: {
+            title: "Cancel",
+            style: Alert.ActionStyle.Cancel,
+          },
+          dismissAction: {
+            title: "Confirm",
+            style: Alert.ActionStyle.Destructive,
+          },
+        })
+      ) {
+        return;
+      }
+
+      cache.clear();
+      await queryClient.invalidateQueries();
+    }
+
     await addCredential(values);
-
     await currentSpace.setSpaceKey(values.spaceKey);
-
     await new Promise((resolve) => setTimeout(resolve, DELAY.NOTIFICATION_UPDATE));
 
     pop();
   };
 
   const handleUpdateSpace = async (values: SpaceCredentials) => {
+    cache.clear();
+    await queryClient.invalidateQueries();
+
     await updateCredential(values);
+    await currentSpace.setSpaceKey(values.spaceKey);
+    await new Promise((resolve) => setTimeout(resolve, DELAY.NOTIFICATION_UPDATE));
+
     pop();
   };
 
