@@ -2,6 +2,8 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { CACHE_TTL } from "~common/constants/cache";
 
+export type CurrentUser = ReturnType<typeof useCurrentUser>;
+
 export const useCurrentUser = () => {
   const currentSpace = useCurrentSpace();
 

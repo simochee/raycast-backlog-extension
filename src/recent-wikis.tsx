@@ -5,12 +5,15 @@ import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
 import { WikiItem } from "~wiki/components/WikiItem";
 import { withProviders } from "~common/utils/providers";
 import { getRecentViewTitle } from "~common/utils/search";
-import { useQueryOptions } from "~common/hooks/useQueryOptions";
+import { recentWikisOptions } from "~common/utils/queryOptions";
+import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 
 const Command = () => {
-  const queryOptions = useQueryOptions();
+  const currentSpace = useCurrentSpace();
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(queryOptions.recentWikis());
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
+    recentWikisOptions(currentSpace),
+  );
 
   const navigationTitle = getRecentViewTitle(data.pages.flat(), hasNextPage, "wiki");
 

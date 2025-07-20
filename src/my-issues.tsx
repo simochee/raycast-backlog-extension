@@ -10,18 +10,19 @@ import { searchFromKeyword } from "~common/utils/search";
 import { IssueItem } from "~issue/components/IssueItem";
 import { CommonActionPanel } from "~common/components/CommonActionPanel";
 import { MyIssuesActionPanel } from "~issue/components/MyIssuesActionPanel";
-import { useQueryOptions } from "~common/hooks/useQueryOptions";
+import { myIssuesOptions } from "~common/utils/queryOptions";
+import { useCurrentUser } from "~common/hooks/useCurrentUser";
 
 const Command = () => {
   const currentSpace = useCurrentSpace();
-  const queryOptions = useQueryOptions();
+  const currentUser = useCurrentUser();
 
   const [isShowingDetail, setIsShowingDetail] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [filter, setFilter] = useCachedState<FilterKey>("my-issues-filter", "assigneeId");
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
-    queryOptions.myIssues(filter),
+    myIssuesOptions(currentSpace, currentUser, filter),
   );
 
   const filteredData = useMemo(

@@ -6,14 +6,15 @@ import { ProjectItem } from "~project/components/ProjectItem";
 import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
 import { withProviders } from "~common/utils/providers";
 import { getRecentViewTitle, searchFromKeyword } from "~common/utils/search";
-import { useQueryOptions } from "~common/hooks/useQueryOptions";
+import { recentProjectsOptions } from "~common/utils/queryOptions";
+import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 
 const Command = () => {
-  const queryOptions = useQueryOptions();
+  const currentSpace = useCurrentSpace();
   const [searchText, setSearchText] = useState("");
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
-    queryOptions.recentProjects(),
+    recentProjectsOptions(currentSpace),
   );
 
   const filteredData = useMemo(

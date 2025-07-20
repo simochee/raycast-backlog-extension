@@ -6,6 +6,8 @@ import { getBacklogApi } from "~space/utils/backlog";
 import { getSpaceHost } from "~space/utils/space";
 import { CACHE_TTL } from "~common/constants/cache";
 
+export type CurrentSpace = ReturnType<typeof useCurrentSpace>;
+
 export const useCurrentSpace = () => {
   const { credentials } = useCredentials();
   const [currentSpaceKey, setCurrentSpaceKey] = useCachedState<string | undefined>("current-space-key");

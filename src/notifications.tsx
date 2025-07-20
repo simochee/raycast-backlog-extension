@@ -8,14 +8,13 @@ import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { groupByDate } from "~common/utils/group";
 import { withProviders } from "~common/utils/providers";
 import { resetNotificationsMarkAsRead } from "~notification/utils/notification";
-import { useQueryOptions } from "~common/hooks/useQueryOptions";
+import { notificationsOptions } from "~common/utils/queryOptions";
 
 const Command = () => {
   const currentSpace = useCurrentSpace();
-  const queryOptions = useQueryOptions();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
-    queryOptions.notifications(),
+    notificationsOptions(currentSpace),
   );
 
   const loadedCount = data.pages.flat().length;

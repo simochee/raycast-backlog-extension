@@ -7,17 +7,16 @@ import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { withProviders } from "~common/utils/providers";
 import { getRecentViewTitle, searchFromKeyword } from "~common/utils/search";
-import { useQueryOptions } from "~common/hooks/useQueryOptions";
+import { recentIssuesOptions } from "~common/utils/queryOptions";
 
 const Command = () => {
   const [isShowingDetail, setIsShowingDetail] = useState(false);
   const [searchText, setSearchText] = useState("");
 
   const currentSpace = useCurrentSpace();
-  const queryOptions = useQueryOptions();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
-    queryOptions.recentIssues(),
+    recentIssuesOptions(currentSpace),
   );
 
   const navigationTitle = getRecentViewTitle(data.pages.flat(), hasNextPage, "issue");
