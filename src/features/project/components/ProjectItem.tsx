@@ -1,8 +1,9 @@
-import { Action, ActionPanel, Icon, List } from "@raycast/api";
+import { Action, ActionPanel, Color, Icon, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { getProjectImageUrl } from "~common/utils/image";
 import { CommonActionPanel } from "~common/components/CommonActionPanel";
+import { ICONS } from "~common/constants/icon";
 
 type Props = {
   project: Entity.Project.Project;
@@ -10,6 +11,70 @@ type Props = {
 
 export const ProjectItem = ({ project }: Props) => {
   const currentSpace = useCurrentSpace();
+
+  const submenuActions = [
+    {
+      title: "Add Issue",
+      url: currentSpace.toUrl(`/add/${project.projectKey}`),
+      icon: ICONS.ISSUE_ADD,
+      key: "1" as const,
+    },
+    {
+      title: "Issues",
+      url: currentSpace.toUrl(`/find/${project.projectKey}`),
+      icon: ICONS.ISSUE_LIST,
+      key: "2" as const,
+    },
+    {
+      title: "Board",
+      url: currentSpace.toUrl(`/board/${project.projectKey}`),
+      icon: ICONS.BOARD,
+      disabled: !project.chartEnabled,
+      key: "3" as const,
+    },
+    {
+      title: "Gantt Chart",
+      url: currentSpace.toUrl(`/gantt/${project.projectKey}`),
+      icon: ICONS.GANTT,
+      disabled: !project.chartEnabled,
+      key: "4" as const,
+    },
+    {
+      title: "Documents",
+      url: currentSpace.toUrl(`/document/${project.projectKey}`),
+      icon: ICONS.DOCUMENT,
+      disabled: !project.useFileSharing,
+      key: "5" as const,
+    },
+    {
+      title: "Wiki",
+      url: currentSpace.toUrl(`/wiki/${project.projectKey}/Home`),
+      icon: ICONS.WIKI,
+      disabled: !project.useWiki,
+      key: "6" as const,
+    },
+    {
+      title: "Files",
+      url: currentSpace.toUrl(`/file/${project.projectKey}`),
+      icon: ICONS.FILE_SHARING,
+      disabled: !project.useFileSharing,
+      key: "7" as const,
+    },
+    {
+      title: "Subversion",
+      url: currentSpace.toUrl(`/subversion/${project.projectKey}`),
+      icon: ICONS.SUBVERSION,
+      disabled: !project.useSubversion,
+      key: "8" as const,
+    },
+    {
+      title: "Git",
+      url: currentSpace.toUrl(`/git/${project.projectKey}`),
+      icon: ICONS.GIT,
+      disabled: !project.useGit,
+      key: "9" as const,
+    },
+  ];
 
   return (
     <List.Item
@@ -21,66 +86,20 @@ export const ProjectItem = ({ project }: Props) => {
           <Action.OpenInBrowser title="Open in Browser" url={currentSpace.toUrl(`/projects/${project.projectKey}`)} />
           <ActionPanel.Submenu
             title="Open with Project …"
-            icon={"tabler/external-link.svg"}
+            icon={ICONS.EXTERNAL}
             shortcut={{ modifiers: ["cmd"], key: "enter" }}
           >
-            <Action.OpenInBrowser
-              title="Create Issue"
-              url={currentSpace.toUrl(`/add/${project.projectKey}`)}
-              icon={Icon.NewDocument}
-            />
-            <Action.OpenInBrowser
-              title="View Issues"
-              url={currentSpace.toUrl(`/find/${project.projectKey}`)}
-              icon={Icon.Document}
-            />
-            {project.chartEnabled && (
-              <>
+            {submenuActions
+              .filter(({ disabled }) => !disabled)
+              .map(({ title, url, icon, key }) => (
                 <Action.OpenInBrowser
-                  title="View Board"
-                  url={currentSpace.toUrl(`/board/${project.projectKey}`)}
-                  icon={Icon.BarChart}
+                  key={key}
+                  title={title}
+                  url={url}
+                  icon={{ source: icon, tintColor: Color.SecondaryText }}
+                  shortcut={{ modifiers: ["cmd"], key }}
                 />
-                <Action.OpenInBrowser
-                  title="View Gantt Chart"
-                  url={currentSpace.toUrl(`/gantt/${project.projectKey}`)}
-                  icon={Icon.BarChart}
-                />
-              </>
-            )}
-            <Action.OpenInBrowser
-              title="View Documents"
-              url={currentSpace.toUrl(`/document/${project.projectKey}`)}
-              icon={Icon.Book}
-            />
-            {project.useWiki && (
-              <Action.OpenInBrowser
-                title="Open Wiki"
-                url={currentSpace.toUrl(`/wiki/${project.projectKey}/Home`)}
-                icon={Icon.Book}
-              />
-            )}
-            {project.useFileSharing && (
-              <Action.OpenInBrowser
-                title="Browse Files"
-                url={currentSpace.toUrl(`/file/${project.projectKey}`)}
-                icon={Icon.Folder}
-              />
-            )}
-            {project.useSubversion && (
-              <Action.OpenInBrowser
-                title="Subversion"
-                url={currentSpace.toUrl(`/subversion/${project.projectKey}`)}
-                icon={Icon.Code}
-              />
-            )}
-            {project.useGit && (
-              <Action.OpenInBrowser
-                title="Git"
-                url={currentSpace.toUrl(`/git/${project.projectKey}`)}
-                icon={Icon.Code}
-              />
-            )}
+              ))}
           </ActionPanel.Submenu>
         </CommonActionPanel>
       }
