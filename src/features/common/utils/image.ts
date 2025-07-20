@@ -1,5 +1,5 @@
-import { getSpaceHost } from "../../space/utils/space";
-import type { SpaceCredentials } from "../../space/utils/credentials";
+import type { SpaceCredentials } from "~space/utils/credentials";
+import { getSpaceHost } from "~space/utils/space";
 
 export const getSpaceImageUrl = (credential: SpaceCredentials) => {
   return `https://${getSpaceHost(credential)}/api/v2/space/image?apiKey=${credential.apiKey}`;

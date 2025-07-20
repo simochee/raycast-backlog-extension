@@ -1,10 +1,10 @@
 import { Image } from "@raycast/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useCurrentSpace } from "../../space/hooks/useCurrentSpace";
-import { getUserIconUrl } from "../../common/utils/image";
-import { formatMarkdown } from "../../common/utils/markdown";
 import type { Detail, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
+import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
+import { getUserIconUrl } from "~common/utils/image";
+import { formatMarkdown } from "~common/utils/markdown";
 
 type Props = {
   component: typeof List.Item.Detail | typeof Detail;

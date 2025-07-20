@@ -1,11 +1,11 @@
 import { Action, ActionPanel, Icon, useNavigation } from "@raycast/api";
-import { useCredentials } from "../../space/hooks/useCredentials";
-import { useCurrentSpace } from "../../space/hooks/useCurrentSpace";
-import { useSpaces } from "../../space/hooks/useSpaces";
-import { getSpaceImageUrl } from "../utils/image";
-import { SpaceForm } from "../../space/components/SpaceForm";
 import { DebugActionPanel } from "./DebugActionPanel";
-import type { SpaceCredentials } from "../../space/utils/credentials";
+import type { SpaceCredentials } from "~space/utils/credentials";
+import { useCredentials } from "~space/hooks/useCredentials";
+import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
+import { useSpaces } from "~space/hooks/useSpaces";
+import { getSpaceImageUrl } from "~common/utils/image";
+import { SpaceForm } from "~space/components/SpaceForm";
 
 type Props = {
   children?: React.ReactNode | Promise<React.ReactNode>;

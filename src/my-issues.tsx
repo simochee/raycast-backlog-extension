@@ -2,15 +2,15 @@ import { Action, List } from "@raycast/api";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { useCachedState } from "@raycast/utils";
-import { withProviders } from "./features/common/utils/providers";
-import { SearchBarAccessory } from "./features/space/components/SearchBarAccessory";
-import { useCurrentUser } from "./features/common/hooks/useCurrentUser";
-import { useCurrentSpace } from "./features/space/hooks/useCurrentSpace";
-import { searchFromKeyword } from "./features/common/utils/search";
-import { IssueItem } from "./features/issue/components/IssueItem";
-import { CommonActionPanel } from "./features/common/components/CommonActionPanel";
-import { MyIssuesActionPanel } from "./features/issue/components/MyIssuesActionPanel";
-import type { FilterKey } from "./features/issue/components/MyIssuesActionPanel";
+import type { FilterKey } from "~issue/components/MyIssuesActionPanel";
+import { withProviders } from "~common/utils/providers";
+import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
+import { useCurrentUser } from "~common/hooks/useCurrentUser";
+import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
+import { searchFromKeyword } from "~common/utils/search";
+import { IssueItem } from "~issue/components/IssueItem";
+import { CommonActionPanel } from "~common/components/CommonActionPanel";
+import { MyIssuesActionPanel } from "~issue/components/MyIssuesActionPanel";
 
 const PER_PAGE = 25;
 

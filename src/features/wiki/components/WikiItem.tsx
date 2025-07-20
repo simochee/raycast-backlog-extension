@@ -1,9 +1,9 @@
 import { Action, ActionPanel, Color, List } from "@raycast/api";
-import { useCurrentSpace } from "../../space/hooks/useCurrentSpace";
-import { useProject } from "../../project/hooks/useProject";
-import { getProjectImageUrl } from "../../common/utils/image";
-import { CommonActionPanel } from "../../common/components/CommonActionPanel";
 import type { Entity } from "backlog-js";
+import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
+import { useProject } from "~project/hooks/useProject";
+import { getProjectImageUrl } from "~common/utils/image";
+import { CommonActionPanel } from "~common/components/CommonActionPanel";
 
 type Props = {
   page: Entity.Wiki.WikiListItem;

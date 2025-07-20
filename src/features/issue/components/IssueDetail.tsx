@@ -1,12 +1,12 @@
 import { Color, Icon, Image } from "@raycast/api";
 import { format, parseISO } from "date-fns";
-import { useCurrentSpace } from "../../space/hooks/useCurrentSpace";
-import { useCurrentUser } from "../../common/hooks/useCurrentUser";
-import { getUserIconUrl } from "../../common/utils/image";
-import { formatMarkdown } from "../../common/utils/markdown";
-import { buildDueDate } from "../utils/issue";
 import type { Detail, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
+import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
+import { useCurrentUser } from "~common/hooks/useCurrentUser";
+import { getUserIconUrl } from "~common/utils/image";
+import { formatMarkdown } from "~common/utils/markdown";
+import { buildDueDate } from "~issue/utils/issue";
 
 type Props = {
   component: typeof List.Item.Detail | typeof Detail;

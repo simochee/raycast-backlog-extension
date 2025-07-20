@@ -12,6 +12,16 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": "src",
+    "paths": {
+      "~space/*": ["features/space/*"],
+      "~project/*": ["features/project/*"],
+      "~notification/*": ["features/notification/*"],
+      "~issue/*": ["features/issue/*"],
+      "~wiki/*": ["features/wiki/*"],
+      "~pull-request/*": ["features/pull-request/*"],
+      "~common/*": ["features/common/*"]
+    }
   }
 }

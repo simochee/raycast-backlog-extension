@@ -1,13 +1,13 @@
 import { LaunchType, List, launchCommand } from "@raycast/api";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { CommonActionPanel } from "./features/common/components/CommonActionPanel";
-import { NotificationItem } from "./features/notification/components/NotificationItem";
-import { SearchBarAccessory } from "./features/space/components/SearchBarAccessory";
-import { useCurrentSpace } from "./features/space/hooks/useCurrentSpace";
-import { groupByDate } from "./features/common/utils/group";
-import { withProviders } from "./features/common/utils/providers";
-import { resetNotificationsMarkAsRead } from "./features/notification/utils/notification";
+import { CommonActionPanel } from "~common/components/CommonActionPanel";
+import { NotificationItem } from "~notification/components/NotificationItem";
+import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
+import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
+import { groupByDate } from "~common/utils/group";
+import { withProviders } from "~common/utils/providers";
+import { resetNotificationsMarkAsRead } from "~notification/utils/notification";
 
 const PER_PAGE = 25;
 

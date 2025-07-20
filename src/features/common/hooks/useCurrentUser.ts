@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useCurrentSpace } from "../../space/hooks/useCurrentSpace";
+import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 
 export const useCurrentUser = () => {
   const currentSpace = useCurrentSpace();

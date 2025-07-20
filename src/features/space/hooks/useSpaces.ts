@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { getBacklogApi } from "../utils/backlog";
 import { useCredentials } from "./useCredentials";
+import { getBacklogApi } from "~space/utils/backlog";
 
 export const useSpaces = () => {
   const { credentials } = useCredentials();

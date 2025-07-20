@@ -1,11 +1,11 @@
 import { Action, ActionPanel, Color, Image, List } from "@raycast/api";
-import { useCurrentSpace } from "../../space/hooks/useCurrentSpace";
-import { getUserIconUrl } from "../../common/utils/image";
-import { CommonActionPanel } from "../../common/components/CommonActionPanel";
-import { IssueDetail } from "../../issue/components/IssueDetail";
-import { ProjectDetail } from "../../project/components/ProjectDetail";
-import { PullRequestDetail } from "../../pull-request/components/PullRequestDetail";
 import type { Entity } from "backlog-js";
+import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
+import { getUserIconUrl } from "~common/utils/image";
+import { CommonActionPanel } from "~common/components/CommonActionPanel";
+import { IssueDetail } from "~issue/components/IssueDetail";
+import { ProjectDetail } from "~project/components/ProjectDetail";
+import { PullRequestDetail } from "~pull-request/components/PullRequestDetail";
 
 type Props = {
   notification: Entity.Notification.Notification;

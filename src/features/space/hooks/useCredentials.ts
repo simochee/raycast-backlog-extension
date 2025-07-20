@@ -2,8 +2,8 @@ import { LocalStorage, environment } from "@raycast/api";
 import { useCachedState } from "@raycast/utils";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import * as v from "valibot";
-import { CREDENTIALS_STORAGE_KEY, CredentialsSchema } from "../utils/credentials";
-import type { SpaceCredentials } from "../utils/credentials";
+import type { SpaceCredentials } from "~space/utils/credentials";
+import { CREDENTIALS_STORAGE_KEY, CredentialsSchema } from "~space/utils/credentials";
 
 const getCredentials = async () => {
   try {

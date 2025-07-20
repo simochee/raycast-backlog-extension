@@ -1,5 +1,5 @@
-import { useCredentials } from "../hooks/useCredentials";
 import { SpaceForm } from "./SpaceForm";
+import { useCredentials } from "~space/hooks/useCredentials";
 
 type Props = {
   children: React.ReactNode;
