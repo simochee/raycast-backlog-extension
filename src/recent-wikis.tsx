@@ -4,8 +4,8 @@ import { CommonActionPanel } from "./features/common/components/CommonActionPane
 import { SearchBarAccessory } from "./features/space/components/SearchBarAccessory";
 import { WikiItem } from "./features/wiki/components/WikiItem";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
-import { withProviders } from "./utils/providers";
-import { getRecentViewTitle } from "./utils/search";
+import { withProviders } from "./features/common/utils/providers";
+import { getRecentViewTitle } from "./features/common/utils/search";
 
 const PER_PAGE = 25;
 

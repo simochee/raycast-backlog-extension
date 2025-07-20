@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import * as v from "valibot";
-import { createCache } from "../utils/cache";
-import { dedupe } from "../utils/promise-dedupe";
+import { createCache } from "../features/common/utils/cache";
+import { dedupe } from "../features/common/utils/promise-dedupe";
 import { useCurrentSpace } from "./useCurrentSpace";
 
 const schema = v.object({

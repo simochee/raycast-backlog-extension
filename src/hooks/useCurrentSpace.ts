@@ -1,8 +1,8 @@
 import { useCachedState } from "@raycast/utils";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { getBacklogApi } from "../utils/backlog";
-import { getSpaceHost } from "../utils/space";
+import { getBacklogApi } from "../features/space/utils/backlog";
+import { getSpaceHost } from "../features/space/utils/space";
 import { useCredentials } from "./useCredentials";
 
 export const useCurrentSpace = () => {

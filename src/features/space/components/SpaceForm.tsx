@@ -1,9 +1,9 @@
 import { Action, ActionPanel, Alert, Form, Toast, confirmAlert, showToast } from "@raycast/api";
 import { FormValidation, useForm } from "@raycast/utils";
 import { useMemo } from "react";
-import { getBacklogApi } from "../../../utils/backlog";
-import { getSpaceHost } from "../../../utils/space";
-import type { SpaceCredentials } from "../../../utils/credentials";
+import { getBacklogApi } from "../utils/backlog";
+import { getSpaceHost } from "../utils/space";
+import type { SpaceCredentials } from "../utils/credentials";
 
 type Props = {
   initialValues?: SpaceCredentials;

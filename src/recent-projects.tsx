@@ -5,8 +5,8 @@ import { CommonActionPanel } from "./features/common/components/CommonActionPane
 import { ProjectItem } from "./features/project/components/ProjectItem";
 import { SearchBarAccessory } from "./features/space/components/SearchBarAccessory";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
-import { withProviders } from "./utils/providers";
-import { getRecentViewTitle, searchFromKeyword } from "./utils/search";
+import { withProviders } from "./features/common/utils/providers";
+import { getRecentViewTitle, searchFromKeyword } from "./features/common/utils/search";
 
 const PER_PAGE = 25;
 

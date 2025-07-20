@@ -5,9 +5,9 @@ import { CommonActionPanel } from "./features/common/components/CommonActionPane
 import { NotificationItem } from "./features/notification/components/NotificationItem";
 import { SearchBarAccessory } from "./features/space/components/SearchBarAccessory";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
-import { groupByDate } from "./utils/group";
-import { withProviders } from "./utils/providers";
-import { resetNotificationsMarkAsRead } from "./utils/notification";
+import { groupByDate } from "./features/common/utils/group";
+import { withProviders } from "./features/common/utils/providers";
+import { resetNotificationsMarkAsRead } from "./features/notification/utils/notification";
 
 const PER_PAGE = 25;
 

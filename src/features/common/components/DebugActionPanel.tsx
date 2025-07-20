@@ -1,5 +1,5 @@
 import { Action, ActionPanel } from "@raycast/api";
-import { cache } from "../../../utils/cache";
+import { cache } from "../utils/cache";
 
 export const DebugActionPanel = () => {
   return (

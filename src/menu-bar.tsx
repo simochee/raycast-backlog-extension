@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { useSpaces } from "./hooks/useSpaces";
-import { getSpaceImageUrl } from "./utils/image";
-import { withProviders } from "./utils/providers";
-import { getNotificationCount, getNotificationCountCache } from "./utils/notification";
+import { getSpaceImageUrl } from "./features/common/utils/image";
+import { withProviders } from "./features/common/utils/providers";
+import { getNotificationCount, getNotificationCountCache } from "./features/notification/utils/notification";
 import type { Image, Keyboard } from "@raycast/api";
-import type { NotificationCountSchema } from "./utils/notification";
+import type { NotificationCountSchema } from "./features/notification/utils/notification";
 import type { InferOutput } from "valibot";
 
 const Command = () => {

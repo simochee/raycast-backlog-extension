@@ -2,9 +2,9 @@ import { Color, Icon, Image } from "@raycast/api";
 import { format, parseISO } from "date-fns";
 import { useCurrentSpace } from "../../../hooks/useCurrentSpace";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
-import { getUserIconUrl } from "../../../utils/image";
-import { formatMarkdown } from "../../../utils/markdown";
-import { buildDueDate } from "../../../utils/issue";
+import { getUserIconUrl } from "../../common/utils/image";
+import { formatMarkdown } from "../../common/utils/markdown";
+import { buildDueDate } from "../utils/issue";
 import type { Detail, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 
