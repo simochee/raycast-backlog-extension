@@ -36,6 +36,10 @@ export const useMarkdown = () => {
       return `![${text}](${currentSpace.toUrl(imageUrl)})`;
     });
 
+    markdown = markdown.replaceAll(/(.[A-Z0-9_]+-[0-9]+)/g, (_, $1) =>
+      $1.startsWith("/") ? $1 : `[${$1}](${currentSpace.toUrl(`/view/${$1}`)})`,
+    );
+
     markdown = emojify(markdown);
     markdown = markdown.replace(/\n/g, "  \n");
 
