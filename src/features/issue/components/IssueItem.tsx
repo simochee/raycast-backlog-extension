@@ -6,6 +6,7 @@ import { useProject } from "~project/hooks/useProject";
 import { getProjectImageUrl, getUserIconUrl } from "~common/utils/image";
 import { buildDueDate } from "~issue/utils/issue";
 import { CommonActionPanel } from "~common/components/CommonActionPanel";
+import { ICONS } from "~common/constants/icon";
 
 type Props = {
   issue: Entity.Issue.Issue;
@@ -27,7 +28,7 @@ export const IssueItem = ({ issue, actions, isShowingDetail, onToggleShowingDeta
   if (dueDate) {
     accessories.push({
       text: { value: dueDate.formatted, color: dueDate.past ? Color.Red : Color.SecondaryText },
-      icon: dueDate.past ? { source: "tabler/flame.svg", tintColor: Color.Red } : null,
+      icon: dueDate.past ? { source: ICONS.ISSUE_EXPIRED, tintColor: Color.Red } : null,
     });
   }
   // Status

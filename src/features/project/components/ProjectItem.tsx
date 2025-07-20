@@ -22,7 +22,7 @@ export const ProjectItem = ({ project }: Props) => {
     {
       title: "Issues",
       url: currentSpace.toUrl(`/find/${project.projectKey}`),
-      icon: ICONS.ISSUE_LIST,
+      icon: ICONS.ISSUE,
       key: "2" as const,
     },
     {
