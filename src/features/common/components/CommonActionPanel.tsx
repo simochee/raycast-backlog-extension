@@ -1,4 +1,5 @@
-import { Action, ActionPanel, Icon, useNavigation } from "@raycast/api";
+import { Action, ActionPanel, Alert, Color, Icon, confirmAlert, useNavigation } from "@raycast/api";
+import { useQueryClient } from "@tanstack/react-query";
 import { DebugActionPanel } from "./DebugActionPanel";
 import type { SpaceCredentials } from "~space/utils/credentials";
 import { useCredentials } from "~space/hooks/useCredentials";
@@ -6,6 +7,8 @@ import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { useSpaces } from "~space/hooks/useSpaces";
 import { getSpaceImageUrl } from "~common/utils/image";
 import { SpaceForm } from "~space/components/SpaceForm";
+import { cache } from "~common/utils/cache";
+import { ICONS } from "~common/constants/icon";
 
 type Props = {
   children?: React.ReactNode | Promise<React.ReactNode>;
@@ -13,6 +16,7 @@ type Props = {
 
 export const CommonActionPanel = ({ children }: Props) => {
   const { pop } = useNavigation();
+  const queryClient = useQueryClient();
   const { addCredential, updateCredential, removeCredential } = useCredentials();
   const currentSpace = useCurrentSpace();
 
@@ -40,6 +44,23 @@ export const CommonActionPanel = ({ children }: Props) => {
     pop();
   };
 
+  const handleClearCache = async () => {
+    if (
+      await confirmAlert({
+        icon: { source: ICONS.DOWNLOADING, tintColor: Color.SecondaryText },
+        title: "Refresh All Data",
+        message: "Are you sure you want to clear the cache?",
+        primaryAction: {
+          title: "Confirm",
+          style: Alert.ActionStyle.Destructive,
+        },
+      })
+    ) {
+      cache.clear();
+      await queryClient.invalidateQueries();
+    }
+  };
+
   return (
     <ActionPanel>
       <>
@@ -62,6 +83,13 @@ export const CommonActionPanel = ({ children }: Props) => {
             </>
           )}
           <Action.Push title="Add New Space" icon={Icon.Plus} target={<SpaceForm onSubmit={handleAddSpace} />} />
+        </ActionPanel.Section>
+        <ActionPanel.Section title="Advanced">
+          <Action
+            title="Refresh All"
+            shortcut={{ modifiers: ["cmd", "shift"], key: "r" }}
+            onAction={handleClearCache}
+          />
         </ActionPanel.Section>
         {process.env.NODE_ENV === "development" && <DebugActionPanel />}
       </>
