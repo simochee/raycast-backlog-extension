@@ -3,14 +3,14 @@ import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { useCachedState } from "@raycast/utils";
 import { withProviders } from "./utils/providers";
-import { SearchBarAccessory } from "./components/SearchBarAccessory";
+import { SearchBarAccessory } from "./features/space/components/SearchBarAccessory";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { searchFromKeyword } from "./utils/search";
-import { IssueItem } from "./components/IssueItem";
-import { CommonActionPanel } from "./components/CommonActionPanel";
-import { MyIssuesActionPanel } from "./components/MyIssuesActionPanel";
-import type { FilterKey } from "./components/MyIssuesActionPanel";
+import { IssueItem } from "./features/issue/components/IssueItem";
+import { CommonActionPanel } from "./features/common/components/CommonActionPanel";
+import { MyIssuesActionPanel } from "./features/issue/components/MyIssuesActionPanel";
+import type { FilterKey } from "./features/issue/components/MyIssuesActionPanel";
 
 const PER_PAGE = 25;
 
@@ -45,10 +45,10 @@ const Command = () => {
 
   const navigationTitle = useMemo(() => {
     const loadedCount = filteredData.length;
-    const count = loadedCount || 'No';
+    const count = loadedCount || "No";
     const unit = loadedCount === 1 ? "issue" : "issues";
     const target = filter === "assigneeId" ? "assigned to me" : "created by me";
-    const suffix = loadedCount === 0 ? 'found' : hasNextPage ? "loaded" : "total";
+    const suffix = loadedCount === 0 ? "found" : hasNextPage ? "loaded" : "total";
 
     return `${count} ${target} ${unit} ${suffix}`;
   }, [filteredData, filter, hasNextPage]);

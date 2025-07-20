@@ -1,9 +1,9 @@
 import { LaunchType, List, launchCommand } from "@raycast/api";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { CommonActionPanel } from "./components/CommonActionPanel";
-import { NotificationItem } from "./components/NotificationItem";
-import { SearchBarAccessory } from "./components/SearchBarAccessory";
+import { CommonActionPanel } from "./features/common/components/CommonActionPanel";
+import { NotificationItem } from "./features/notification/components/NotificationItem";
+import { SearchBarAccessory } from "./features/space/components/SearchBarAccessory";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { groupByDate } from "./utils/group";
 import { withProviders } from "./utils/providers";

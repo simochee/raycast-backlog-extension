@@ -1,5 +1,5 @@
-import { useCurrentSpace } from "../hooks/useCurrentSpace";
-import { getProjectImageUrl } from "../utils/image";
+import { useCurrentSpace } from "../../../hooks/useCurrentSpace";
+import { getProjectImageUrl } from "../../../utils/image";
 import type { Detail, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
 

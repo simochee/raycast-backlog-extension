@@ -1,7 +1,7 @@
 import { Action, ActionPanel, Icon, List } from "@raycast/api";
-import { useCurrentSpace } from "../hooks/useCurrentSpace";
-import { getProjectImageUrl } from "../utils/image";
-import { CommonActionPanel } from "./CommonActionPanel";
+import { useCurrentSpace } from "../../../hooks/useCurrentSpace";
+import { getProjectImageUrl } from "../../../utils/image";
+import { CommonActionPanel } from "../../common/components/CommonActionPanel";
 import type { Entity } from "backlog-js";
 
 type Props = {
@@ -19,7 +19,11 @@ export const ProjectItem = ({ project }: Props) => {
       actions={
         <CommonActionPanel>
           <Action.OpenInBrowser title="Open in Browser" url={currentSpace.toUrl(`/projects/${project.projectKey}`)} />
-          <ActionPanel.Submenu title="Open with Project …" icon={'tabler/external-link.svg'} shortcut={{ modifiers: ["cmd"], key: "enter" }}>
+          <ActionPanel.Submenu
+            title="Open with Project …"
+            icon={"tabler/external-link.svg"}
+            shortcut={{ modifiers: ["cmd"], key: "enter" }}
+          >
             <Action.OpenInBrowser
               title="Create Issue"
               url={currentSpace.toUrl(`/add/${project.projectKey}`)}

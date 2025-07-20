@@ -1,9 +1,9 @@
 import { Action, List } from "@raycast/api";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { CommonActionPanel } from "./components/CommonActionPanel";
-import { IssueItem } from "./components/IssueItem";
-import { SearchBarAccessory } from "./components/SearchBarAccessory";
+import { CommonActionPanel } from "./features/common/components/CommonActionPanel";
+import { IssueItem } from "./features/issue/components/IssueItem";
+import { SearchBarAccessory } from "./features/space/components/SearchBarAccessory";
 import { useCurrentSpace } from "./hooks/useCurrentSpace";
 import { withProviders } from "./utils/providers";
 import { getRecentViewTitle, searchFromKeyword } from "./utils/search";

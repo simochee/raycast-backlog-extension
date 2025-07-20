@@ -1,10 +1,10 @@
 import { Action, ActionPanel, Color, Image, List } from "@raycast/api";
-import { useCurrentSpace } from "../hooks/useCurrentSpace";
-import { getUserIconUrl } from "../utils/image";
-import { CommonActionPanel } from "./CommonActionPanel";
-import { IssueDetail } from "./IssueDetail";
-import { ProjectDetail } from "./ProjectDetail";
-import { PullRequestDetail } from "./PullRequestDetail";
+import { useCurrentSpace } from "../../../hooks/useCurrentSpace";
+import { getUserIconUrl } from "../../../utils/image";
+import { CommonActionPanel } from "../../common/components/CommonActionPanel";
+import { IssueDetail } from "../../issue/components/IssueDetail";
+import { ProjectDetail } from "../../project/components/ProjectDetail";
+import { PullRequestDetail } from "../../pull-request/components/PullRequestDetail";
 import type { Entity } from "backlog-js";
 
 type Props = {
