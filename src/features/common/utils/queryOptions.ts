@@ -159,3 +159,15 @@ export const recentWikisOptions = (currentSpace: CurrentSpace) =>
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
   });
+
+export const repositoryOptions = (currentSpace: CurrentSpace, projectId: number, repositoryId: number | undefined) =>
+  queryOptions({
+    queryKey: ["repository", projectId, repositoryId],
+    queryFn: async () => {
+      if (repositoryId == null) return null;
+
+      return currentSpace.api.getGitRepository(projectId, repositoryId.toString());
+    },
+    staleTime: CACHE_TTL.REPOSITORY,
+    gcTime: CACHE_TTL.REPOSITORY,
+  });

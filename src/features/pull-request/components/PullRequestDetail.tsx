@@ -5,7 +5,7 @@ import type { Entity } from "backlog-js";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { getUserIconUrl } from "~common/utils/image";
 import { formatMarkdown } from "~common/utils/markdown";
-import { CACHE_TTL } from "~common/constants/cache";
+import { repositoryOptions } from "~common/utils/queryOptions";
 
 type Props = {
   component: typeof List.Item.Detail | typeof Detail;
@@ -28,16 +28,7 @@ const getStatusColor = (status: Entity.PullRequest.Status) => {
 export const PullRequestDetail = ({ component: Component, project, pullRequest, comment }: Props) => {
   const currentSpace = useCurrentSpace();
 
-  const { data: repository } = useSuspenseQuery({
-    queryKey: ["repository", pullRequest?.repositoryId],
-    queryFn: async () => {
-      if (!pullRequest?.repositoryId) return null;
-
-      return currentSpace.api.getGitRepository(project.id, `${pullRequest.repositoryId}`);
-    },
-    staleTime: CACHE_TTL.REPOSITORY,
-    gcTime: CACHE_TTL.REPOSITORY,
-  });
+  const { data: repository } = useSuspenseQuery(repositoryOptions(currentSpace, project.id, pullRequest?.repositoryId));
 
   if (!pullRequest || !repository) return null;
 
