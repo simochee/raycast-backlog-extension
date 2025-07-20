@@ -1,5 +1,6 @@
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import * as v from "valibot";
+import { LocalStorage } from "@raycast/api";
 import { createCache } from "./cache";
 import { dedupe } from "./promise-dedupe";
 import type { CurrentUser } from "~common/hooks/useCurrentUser";
@@ -170,4 +171,18 @@ export const repositoryOptions = (currentSpace: CurrentSpace, projectId: number,
     },
     staleTime: CACHE_TTL.REPOSITORY,
     gcTime: CACHE_TTL.REPOSITORY,
+  });
+
+export const currentSpaceKeyOptions = () =>
+  queryOptions({
+    queryKey: ["current-space-key"],
+    queryFn: async () => {
+      const spaceKey = await LocalStorage.getItem("current-space-key");
+
+      if (typeof spaceKey !== "string") {
+        return null;
+      }
+
+      return spaceKey;
+    },
   });

@@ -39,7 +39,7 @@ const Command = () => {
 
     if (!unreadCount) return;
 
-    currentSpace.setSpaceKey(spaceKey);
+    await currentSpace.setSpaceKey(spaceKey);
 
     if (unreadCount.count > 0) {
       await queryClient.invalidateQueries({ queryKey: notificationsOptions(currentSpace).queryKey });

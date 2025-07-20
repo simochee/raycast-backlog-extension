@@ -23,7 +23,11 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
     <QueryClientProvider client={queryClient}>
       <QueryErrorResetBoundary>
         {({ reset }) => (
-          <ErrorBoundary fallback={<Detail markdown="# Fatal Error" />} onReset={reset}>
+          <ErrorBoundary
+            fallback={<Detail markdown="# Fatal Error" />}
+            onReset={reset}
+            onError={(err) => console.log("receive error!", err)}
+          >
             <CredentialsProvider>{children}</CredentialsProvider>
           </ErrorBoundary>
         )}

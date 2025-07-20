@@ -9,6 +9,7 @@ import { getSpaceImageUrl } from "~common/utils/image";
 import { SpaceForm } from "~space/components/SpaceForm";
 import { cache } from "~common/utils/cache";
 import { ICONS } from "~common/constants/icon";
+import { DELAY } from "~common/constants/cache";
 
 type Props = {
   children?: React.ReactNode | Promise<React.ReactNode>;
@@ -27,7 +28,11 @@ export const CommonActionPanel = ({ children }: Props) => {
 
   const handleAddSpace = async (values: SpaceCredentials) => {
     await addCredential(values);
-    // currentSpace.setSpaceKey(values.spaceKey);
+
+    await currentSpace.setSpaceKey(values.spaceKey);
+
+    await new Promise((resolve) => setTimeout(resolve, DELAY.NOTIFICATION_UPDATE));
+
     pop();
   };
 
@@ -39,7 +44,7 @@ export const CommonActionPanel = ({ children }: Props) => {
   const handleDeleteSpace = async (spaceKey: string) => {
     await removeCredential(spaceKey);
     if (currentSpace.space.spaceKey === spaceKey) {
-      currentSpace.setSpaceKey(sortedSpaces[0]?.space.spaceKey ?? "");
+      await currentSpace.setSpaceKey(sortedSpaces[0]?.space.spaceKey ?? "");
     }
     pop();
   };
