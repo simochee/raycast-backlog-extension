@@ -46,6 +46,7 @@
 - `Enter`: ブラウザで開く
 - `Cmd + Shift + u`: URL をコピー
 - `Cmd + f`: 詳細パネルを開閉
+- `Cmd + Shift + r`: データの再取得
 
 ### 課題
 
