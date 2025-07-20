@@ -6,6 +6,7 @@ import { WikiItem } from "~wiki/components/WikiItem";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { withProviders } from "~common/utils/providers";
 import { getRecentViewTitle } from "~common/utils/search";
+import { CACHE_TTL } from "~common/constants/cache";
 
 const PER_PAGE = 25;
 
@@ -19,8 +20,8 @@ const Command = () => {
         count: PER_PAGE,
         offset: pageParam,
       }),
-    staleTime: 1000 * 60 * 10, // 10 min
-    gcTime: 1000 * 60 * 10, // 10 min
+    staleTime: CACHE_TTL.RECENT_VIEWED_WIKIS,
+    gcTime: CACHE_TTL.RECENT_VIEWED_WIKIS,
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
   });

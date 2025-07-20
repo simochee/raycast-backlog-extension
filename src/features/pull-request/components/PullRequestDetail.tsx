@@ -5,6 +5,7 @@ import type { Entity } from "backlog-js";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { getUserIconUrl } from "~common/utils/image";
 import { formatMarkdown } from "~common/utils/markdown";
+import { CACHE_TTL } from "~common/constants/cache";
 
 type Props = {
   component: typeof List.Item.Detail | typeof Detail;
@@ -34,8 +35,8 @@ export const PullRequestDetail = ({ component: Component, project, pullRequest, 
 
       return currentSpace.api.getGitRepository(project.id, `${pullRequest.repositoryId}`);
     },
-    staleTime: 1000 * 60 * 60 * 24, // 1 day
-    gcTime: 1000 * 60 * 60 * 24, // 1 day
+    staleTime: CACHE_TTL.REPOSITORY,
+    gcTime: CACHE_TTL.REPOSITORY,
   });
 
   if (!pullRequest || !repository) return null;

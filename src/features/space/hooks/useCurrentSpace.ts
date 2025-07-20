@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { useCredentials } from "./useCredentials";
 import { getBacklogApi } from "~space/utils/backlog";
 import { getSpaceHost } from "~space/utils/space";
+import { CACHE_TTL } from "~common/constants/cache";
 
 export const useCurrentSpace = () => {
   const { credentials } = useCredentials();
@@ -20,8 +21,8 @@ export const useCurrentSpace = () => {
   const { data: space } = useSuspenseQuery({
     queryKey: ["space", credential.spaceKey],
     queryFn: () => api.getSpace(),
-    staleTime: 1000 * 60 * 60 * 24, // 1 day
-    gcTime: 1000 * 60 * 60 * 24, // 1 day
+    staleTime: CACHE_TTL.SPACE,
+    gcTime: CACHE_TTL.SPACE,
   });
 
   const setSpaceKey = (newSpaceKey: string) => {

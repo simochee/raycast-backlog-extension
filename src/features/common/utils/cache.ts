@@ -1,5 +1,6 @@
 import { Cache } from "@raycast/api";
 import * as v from "valibot";
+import { CACHE_TTL } from "~common/constants/cache";
 
 export const cache = new Cache();
 
@@ -9,7 +10,7 @@ export const cache = new Cache();
 export const createCache = <const T extends v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>>(
   keyOrArray: string | Array<string>,
   schema: T,
-  expiresIn = 1000 * 60 * 60 * 24 * 30, // 30 days
+  expiresIn = CACHE_TTL.DEFAULT,
 ) => {
   const key = Array.isArray(keyOrArray) ? keyOrArray.join("-") : keyOrArray;
 

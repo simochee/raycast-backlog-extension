@@ -3,6 +3,7 @@ import * as v from "valibot";
 import { createCache } from "~common/utils/cache";
 import { dedupe } from "~common/utils/promise-dedupe";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
+import { CACHE_TTL } from "~common/constants/cache";
 
 const schema = v.object({
   id: v.number(),
@@ -41,8 +42,8 @@ export const useProject = (projectId: number) => {
 
       return project;
     },
-    staleTime: 1000 * 60 * 60 * 24, // 1 day
-    gcTime: 1000 * 60 * 60 * 24, // 1 day
+    staleTime: CACHE_TTL.PROJECT,
+    gcTime: CACHE_TTL.PROJECT,
   });
 
   return data;

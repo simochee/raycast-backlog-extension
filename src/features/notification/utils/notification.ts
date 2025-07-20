@@ -4,6 +4,7 @@ import type { useSpaces } from "~space/hooks/useSpaces";
 import type { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { cache } from "~common/utils/cache";
 import { getBacklogApi } from "~space/utils/backlog";
+import { CACHE_TTL, DELAY } from "~common/constants/cache";
 
 export const NotificationCountSchema = v.object({
   spaceKey: v.string(),
@@ -19,7 +20,7 @@ export const CacheSchema = v.pipe(
 );
 
 const CACHE_KEY = "notification-count";
-const CACHE_TTL = 1000 * 60 * 2; // 2 minutes
+const NOTIFICATION_CACHE_TTL = CACHE_TTL.NOTIFICATION_COUNT;
 
 export const getNotificationCountCache = () => {
   const cached = v.safeParse(CacheSchema, cache.get(CACHE_KEY));
@@ -44,7 +45,7 @@ export const getNotificationCount = async (
     const now = Date.now();
     const diff = now - cached.timestamp;
 
-    if (diff < CACHE_TTL) {
+    if (diff < NOTIFICATION_CACHE_TTL) {
       return cached.spaces;
     }
   }
@@ -69,7 +70,7 @@ export const getNotificationCount = async (
     }),
   );
 
-  await setTimeout(500);
+  await setTimeout(DELAY.NOTIFICATION_UPDATE);
 
   return data;
 };

@@ -9,6 +9,7 @@ import { useSpaces } from "~space/hooks/useSpaces";
 import { getSpaceImageUrl } from "~common/utils/image";
 import { withProviders } from "~common/utils/providers";
 import { getNotificationCount, getNotificationCountCache } from "~notification/utils/notification";
+import { DELAY } from "~common/constants/cache";
 
 const Command = () => {
   console.log(`*${environment.commandName}* [Lifecycle] command started`);
@@ -41,7 +42,7 @@ const Command = () => {
     if (unreadCount.count > 0) {
       await queryClient.invalidateQueries({ queryKey: ["notifications", spaceKey] });
 
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, DELAY.NOTIFICATION_UPDATE));
     }
 
     await launchCommand({ name: "notifications", type: LaunchType.UserInitiated });

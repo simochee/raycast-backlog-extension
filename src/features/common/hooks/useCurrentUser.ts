@@ -1,5 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
+import { CACHE_TTL } from "~common/constants/cache";
 
 export const useCurrentUser = () => {
   const currentSpace = useCurrentSpace();
@@ -7,8 +8,8 @@ export const useCurrentUser = () => {
   const { data } = useSuspenseQuery({
     queryKey: ["project", currentSpace.space.spaceKey, "myself"],
     queryFn: async () => currentSpace.api.getMyself(),
-    staleTime: 1000 * 60 * 60 * 24 * 24, // 24 days
-    gcTime: 1000 * 60 * 60 * 24 * 24, // 24 days
+    staleTime: CACHE_TTL.USER,
+    gcTime: CACHE_TTL.USER,
   });
 
   return data;
