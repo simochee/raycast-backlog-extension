@@ -78,14 +78,43 @@ export const transformRecentlyViewedProject = (project: Entity.Project.RecentlyV
 export type Project = ReturnType<typeof transformProject>;
 export type RecentlyViewedProject = ReturnType<typeof transformRecentlyViewedProject>;
 
+export const transformPullRequest = (pullRequest: Entity.PullRequest.PullRequest) => {
+  return {
+    ...pick(pullRequest, ["id", "description", "number", "summary", "repositoryId", "projectId"]),
+    attachments: pullRequest.attachments.map((v) => pick(v, ["id", "name"])),
+    status: pick(pullRequest.status, ["id", "name"]),
+    assignee: pullRequest.assignee && pick(pullRequest.assignee, ["id", "name"]),
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    issue: pullRequest.issue && pick(pullRequest.issue, ["id", "issueKey", "summary"]),
+  } satisfies { [K in keyof Entity.PullRequest.PullRequest]?: unknown };
+};
+
+export type PullRequest = ReturnType<typeof transformPullRequest>;
+
+export const transformPullRequestComment = (pullRequestComment: Entity.PullRequest.Comment) => {
+  return {
+    ...pick(pullRequestComment, ["id", "content"]),
+    notifications: pullRequestComment.notifications.map(
+      ({ user }) =>
+        ({
+          user: pick(user, ["id", "name", "userId"]),
+        }) satisfies { [K in keyof Entity.CommentNotification.CommentNotification]?: unknown },
+    ),
+  } satisfies { [K in keyof Entity.PullRequest.Comment]?: unknown };
+};
+
+export type PullRequestComment = ReturnType<typeof transformPullRequestComment>;
+
 export const transformNotification = (notification: Entity.Notification.Notification) => {
   return {
-    ...pick(notification, ["id", "reason", "resourceAlreadyRead", "pullRequest", "pullRequestComment", "created"]),
+    ...pick(notification, ["id", "reason", "resourceAlreadyRead", "created"]),
     sender: pick(notification.sender, ["id", "name"]),
     issue: notification.issue && transformIssue(notification.issue),
     comment: notification.comment && transformIssueComment(notification.comment),
     project: transformProject(notification.project),
-  };
+    pullRequest: notification.pullRequest && transformPullRequest(notification.pullRequest),
+    pullRequestComment: notification.pullRequestComment && transformPullRequestComment(notification.pullRequestComment),
+  } satisfies { [K in keyof Entity.Notification.Notification]?: unknown };
 };
 
 export type Notification = ReturnType<typeof transformNotification>;
