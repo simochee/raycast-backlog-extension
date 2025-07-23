@@ -3,19 +3,15 @@ import * as v from "valibot";
 import { LocalStorage } from "@raycast/api";
 import { createCache } from "./cache";
 import { dedupe } from "./promise-dedupe";
-import {
-  transformIssue,
-  transformNotification,
-  transformProject,
-  transformRecentlyViewedIssue,
-  transformRecentlyViewedProject,
-  transformRecentlyViewedWiki,
-  transformSpace,
-  transformUser,
-} from "./transformers";
 import type { CurrentUser } from "~common/hooks/useCurrentUser";
 import type { CurrentSpace } from "~space/hooks/useCurrentSpace";
 import type { SpaceCredentials } from "~space/utils/credentials";
+import { transformIssue, transformRecentlyViewedIssue } from "~common/transformers/issue";
+import { transformNotification } from "~common/transformers/notification";
+import { transformProject, transformRecentlyViewedProject } from "~common/transformers/project";
+import { transformRecentlyViewedWiki } from "~common/transformers/wiki";
+import { transformSpace } from "~common/transformers/space";
+import { transformUser } from "~common/transformers/user";
 import { CACHE_TTL } from "~common/constants/cache";
 import { getCredentials } from "~space/utils/credentials";
 import { getBacklogApi } from "~space/utils/backlog";

@@ -1,5 +1,5 @@
 import type { Detail, List } from "@raycast/api";
-import type { Project } from "~common/utils/transformers";
+import type { Project } from "~common/transformers/project";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { getProjectImageUrl } from "~common/utils/image";
 

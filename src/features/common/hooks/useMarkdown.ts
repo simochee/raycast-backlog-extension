@@ -1,5 +1,6 @@
 import { emojify } from "node-emoji";
-import type { Issue, IssueComment, PullRequest, PullRequestComment } from "~common/utils/transformers";
+import type { Issue, IssueComment } from "~common/transformers/issue";
+import type { PullRequest, PullRequestComment } from "~common/transformers/pull-request";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 
 export const useMarkdown = () => {

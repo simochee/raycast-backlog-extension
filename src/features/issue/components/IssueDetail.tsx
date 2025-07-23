@@ -1,6 +1,7 @@
 import { IssueMetadata } from "./IssueMetadata";
 import type { Detail, List } from "@raycast/api";
-import type { Issue, IssueComment, Project } from "~common/utils/transformers";
+import type { Issue, IssueComment } from "~common/transformers/issue";
+import type { Project } from "~common/transformers/project";
 import { useMarkdown } from "~common/hooks/useMarkdown";
 
 type Props = {

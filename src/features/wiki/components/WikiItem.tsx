@@ -1,5 +1,5 @@
 import { Action, ActionPanel, Color, List } from "@raycast/api";
-import type { WikiListItem } from "~common/utils/transformers";
+import type { WikiListItem } from "~common/transformers/wiki";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { useProject } from "~project/hooks/useProject";
 import { getProjectImageUrl } from "~common/utils/image";

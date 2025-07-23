@@ -1,6 +1,7 @@
 import { Color, Icon, Image } from "@raycast/api";
 import type { Detail, List } from "@raycast/api";
-import type { Issue, IssueComment, Project } from "~common/utils/transformers";
+import type { Issue, IssueComment } from "~common/transformers/issue";
+import type { Project } from "~common/transformers/project";
 import { ICONS } from "~common/constants/icon";
 import { getProjectImageUrl, getUserIconUrl } from "~common/utils/image";
 import { buildDueDate, formatDate, sortByDisplayOrder } from "~issue/utils/issue";
