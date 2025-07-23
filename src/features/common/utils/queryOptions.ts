@@ -5,6 +5,7 @@ import { createCache } from "./cache";
 import { dedupe } from "./promise-dedupe";
 import {
   transformIssue,
+  transformNotification,
   transformProject,
   transformRecentlyViewedIssue,
   transformRecentlyViewedProject,
@@ -98,11 +99,14 @@ export const myIssuesOptions = (currentSpace: CurrentSpace, currentUser: Current
 export const notificationsOptions = (currentSpace: CurrentSpace) =>
   infiniteQueryOptions({
     queryKey: ["notifications", currentSpace.credential.spaceKey],
-    queryFn: ({ pageParam }) =>
-      currentSpace.api.getNotifications({
+    queryFn: async ({ pageParam }) => {
+      const notifications = await currentSpace.api.getNotifications({
         count: PER_PAGE,
         maxId: pageParam !== -1 ? pageParam : undefined,
-      }),
+      });
+
+      return notifications.map(transformNotification);
+    },
     staleTime: CACHE_TTL.NOTIFICATIONS,
     gcTime: CACHE_TTL.NOTIFICATIONS,
     initialPageParam: -1,

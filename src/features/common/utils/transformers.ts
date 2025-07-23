@@ -43,7 +43,7 @@ export const transformIssueComment = (comment: Entity.Issue.Comment) => {
     notifications: comment.notifications.map(
       ({ user }) =>
         ({
-          user: pick(user, ["id", "name"]),
+          user: pick(user, ["id", "name", "userId"]),
         }) satisfies { [K in keyof Entity.CommentNotification.CommentNotification]?: unknown },
     ),
   } satisfies { [K in keyof Entity.Issue.Comment]?: unknown };
@@ -77,3 +77,15 @@ export const transformRecentlyViewedProject = (project: Entity.Project.RecentlyV
 
 export type Project = ReturnType<typeof transformProject>;
 export type RecentlyViewedProject = ReturnType<typeof transformRecentlyViewedProject>;
+
+export const transformNotification = (notification: Entity.Notification.Notification) => {
+  return {
+    ...pick(notification, ["id", "reason", "resourceAlreadyRead", "pullRequest", "pullRequestComment", "created"]),
+    sender: pick(notification.sender, ["id", "name"]),
+    issue: notification.issue && transformIssue(notification.issue),
+    comment: notification.comment && transformIssueComment(notification.comment),
+    project: transformProject(notification.project),
+  };
+};
+
+export type Notification = ReturnType<typeof transformNotification>;

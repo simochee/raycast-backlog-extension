@@ -1,7 +1,7 @@
 import { emojify } from "node-emoji";
 import type { Entity } from "backlog-js";
+import type { Issue, IssueComment } from "~common/utils/transformers";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
-import type { Issue } from "~common/utils/transformers";
 
 export const useMarkdown = () => {
   const currentSpace = useCurrentSpace();
@@ -13,7 +13,7 @@ export const useMarkdown = () => {
           Entity.PullRequest.PullRequest,
           "id" | "repositoryId" | "projectId" | "number" | "description" | "attachments"
         >,
-    comment: Pick<Entity.Issue.Comment | Entity.PullRequest.Comment, "content" | "notifications"> | undefined,
+    comment: Pick<IssueComment | Entity.PullRequest.Comment, "content" | "notifications"> | undefined,
   ) => {
     let markdown = comment?.content || issue.description;
 

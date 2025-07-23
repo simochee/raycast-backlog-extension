@@ -1,14 +1,13 @@
 import { IssueMetadata } from "./IssueMetadata";
 import type { Detail, List } from "@raycast/api";
-import type { Entity } from "backlog-js";
-import type { Issue, Project } from "~common/utils/transformers";
+import type { Issue, IssueComment, Project } from "~common/utils/transformers";
 import { useMarkdown } from "~common/hooks/useMarkdown";
 
 type Props = {
   component: typeof List.Item.Detail | typeof Detail;
   issue: Issue | undefined;
   project: Project | undefined;
-  comment?: Entity.Issue.Comment;
+  comment?: IssueComment;
 };
 
 export const IssueDetail = ({ component: Component, issue, project, comment }: Props) => {
