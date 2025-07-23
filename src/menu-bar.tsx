@@ -25,12 +25,10 @@ const Command = () => {
     space,
     credential,
     count: results[i]?.data?.count || 0,
-    isLoading: !results[i]?.isFetched || false,
-    hasError: results[i]?.isError || false,
+    isLoading: results[i]?.isLoading || results[i]?.isPending || false,
+    error: results[i]?.error || null,
   }));
   const isPending = unreadCounts.some(({ isLoading }) => isLoading);
-
-  console.log("[menu-bar]", { isPending, unreadCounts: JSON.stringify(results) });
 
   const totalCount = Math.max(
     0,
@@ -66,7 +64,7 @@ const Command = () => {
       title={totalCount === 0 ? "No new" : `${totalCount.toLocaleString()} unread`}
     >
       <MenuBarExtra.Section title="Notifications">
-        {unreadCounts.map(({ space: { spaceKey, name }, credential, count, isLoading, hasError }, i) => {
+        {unreadCounts.map(({ space: { spaceKey, name }, credential, count, isLoading, error }, i) => {
           return (
             <MenuBarExtra.Item
               key={spaceKey}
@@ -74,7 +72,7 @@ const Command = () => {
               icon={
                 isLoading ? { source: ICONS.LOADING, tintColor: Color.SecondaryText } : getSpaceImageUrl(credential)
               }
-              subtitle={hasError ? "Failure" : count > 0 ? `${count.toLocaleString()} unread` : ""}
+              subtitle={error ? "Failure" : count > 0 ? `${count.toLocaleString()} unread` : ""}
               tooltip={`${name} (${spaceKey})`}
               onAction={async () => openNotification(spaceKey)}
               shortcut={indexToShortcut(i, ["cmd"])}
