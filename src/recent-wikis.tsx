@@ -11,14 +11,16 @@ import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 const Command = () => {
   const currentSpace = useCurrentSpace();
 
-  const { data, fetchNextPage, hasNextPage, isFetching } = useSuspenseInfiniteQuery(recentWikisOptions(currentSpace));
+  const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useSuspenseInfiniteQuery(
+    recentWikisOptions(currentSpace),
+  );
 
   const navigationTitle = getRecentViewTitle(data.pages.flat(), hasNextPage, "wiki");
 
   return (
     <List
       navigationTitle={navigationTitle}
-      isLoading={isFetching}
+      isLoading={isFetching || isFetchingNextPage}
       pagination={{
         onLoadMore: fetchNextPage,
         hasMore: hasNextPage,

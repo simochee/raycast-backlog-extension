@@ -15,7 +15,9 @@ const Command = () => {
 
   const currentSpace = useCurrentSpace();
 
-  const { data, fetchNextPage, hasNextPage, isFetching } = useSuspenseInfiniteQuery(recentIssuesOptions(currentSpace));
+  const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useSuspenseInfiniteQuery(
+    recentIssuesOptions(currentSpace),
+  );
 
   const navigationTitle = getRecentViewTitle(data.pages.flat(), hasNextPage, "issue");
 
@@ -34,7 +36,7 @@ const Command = () => {
     <List
       isShowingDetail={isShowingDetail}
       navigationTitle={navigationTitle}
-      isLoading={isFetching}
+      isLoading={isFetching || isFetchingNextPage}
       pagination={{
         onLoadMore: fetchNextPage,
         hasMore: hasNextPage,

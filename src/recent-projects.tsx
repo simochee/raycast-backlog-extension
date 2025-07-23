@@ -13,7 +13,7 @@ const Command = () => {
   const currentSpace = useCurrentSpace();
   const [searchText, setSearchText] = useState("");
 
-  const { data, fetchNextPage, hasNextPage, isFetching } = useSuspenseInfiniteQuery(
+  const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useSuspenseInfiniteQuery(
     recentProjectsOptions(currentSpace),
   );
 
@@ -27,7 +27,7 @@ const Command = () => {
   return (
     <List
       navigationTitle={navigationTitle}
-      isLoading={isFetching}
+      isLoading={isFetching || isFetchingNextPage}
       pagination={{
         onLoadMore: fetchNextPage,
         hasMore: hasNextPage,
