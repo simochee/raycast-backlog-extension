@@ -88,6 +88,7 @@ export const CommonActionPanel = ({ children }: Props) => {
       })
     ) {
       cache.clear();
+      await queryClient.resetQueries();
       await queryClient.invalidateQueries();
     }
   };
