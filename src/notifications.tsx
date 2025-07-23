@@ -13,9 +13,7 @@ import { notificationsOptions } from "~common/utils/queryOptions";
 const Command = () => {
   const currentSpace = useCurrentSpace();
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
-    notificationsOptions(currentSpace),
-  );
+  const { data, fetchNextPage, hasNextPage, isFetching } = useSuspenseInfiniteQuery(notificationsOptions(currentSpace));
 
   const loadedCount = data.pages.flat().length;
   const navigationTitle =
@@ -42,7 +40,7 @@ const Command = () => {
   return (
     <List
       isShowingDetail
-      isLoading={isFetchingNextPage}
+      isLoading={isFetching}
       navigationTitle={navigationTitle}
       pagination={{
         onLoadMore: fetchNextPage,

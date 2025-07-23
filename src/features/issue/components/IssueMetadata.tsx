@@ -83,7 +83,7 @@ export const IssueMetadata = ({ component: Component, issue }: Props) => {
               ? { source: getUserIconUrl(currentSpace.credential, issue.assignee.id), mask: Image.Mask.Circle }
               : undefined
           }
-          color="#fff"
+          color="#ffd700"
         />
       </Component.TagList>
       {issue.category.length > 0 ||
@@ -94,24 +94,24 @@ export const IssueMetadata = ({ component: Component, issue }: Props) => {
               <Component.TagList.Item
                 key={id}
                 text={name}
-                icon={{ source: ICONS.CATEGORY, tintColor: Color.Magenta }}
-                color={Color.Magenta}
+                icon={{ source: ICONS.CATEGORY, tintColor: "#ba55d3" }}
+                color={"#ba55d3"}
               />
             ))}
             {sortByDisplayOrder(issue.milestone).map(({ id, name }) => (
               <Component.TagList.Item
                 key={id}
                 text={name}
-                icon={{ source: ICONS.MILESTONE, tintColor: Color.Blue }}
-                color={Color.Blue}
+                icon={{ source: ICONS.MILESTONE, tintColor: "#4682b4" }}
+                color={"#4682b4"}
               />
             ))}
             {sortByDisplayOrder(issue.versions).map(({ id, name, archived }) => (
               <Component.TagList.Item
                 key={id}
                 text={name}
-                icon={{ source: ICONS.VERSION, tintColor: archived ? Color.SecondaryText : Color.Green }}
-                color={archived ? Color.SecondaryText : Color.Green}
+                icon={{ source: ICONS.VERSION, tintColor: archived ? Color.SecondaryText : "#ffb6ca" }}
+                color={archived ? Color.SecondaryText : "#ffb6ca"}
               />
             ))}
           </Component.TagList>
@@ -119,12 +119,26 @@ export const IssueMetadata = ({ component: Component, issue }: Props) => {
       {(issue.estimatedHours != null || issue.actualHours != null || issue.resolution != null) && (
         <Component.TagList title="">
           {issue.estimatedHours != null && (
-            <Component.TagList.Item text={`${issue.estimatedHours} hours`} icon={ICONS.ESTIMATED_HOURS} />
+            <Component.TagList.Item
+              text={`${issue.estimatedHours} hours`}
+              icon={{ source: ICONS.ESTIMATED_HOURS, tintColor: "#ffdab9" }}
+              color="#ffdab9"
+            />
           )}
           {issue.actualHours != null && (
-            <Component.TagList.Item text={`${issue.actualHours} hours`} icon={ICONS.ACTUAL_HOURS} />
+            <Component.TagList.Item
+              text={`${issue.actualHours} hours`}
+              icon={{ source: ICONS.ACTUAL_HOURS, tintColor: "#20b2aa" }}
+              color="#20b2aa"
+            />
           )}
-          {issue.resolution != null && <Component.TagList.Item text={issue.resolution.name} icon={ICONS.RESOLUTION} />}
+          {issue.resolution != null && (
+            <Component.TagList.Item
+              text={issue.resolution.name}
+              icon={{ source: ICONS.RESOLUTION, tintColor: "#a9a9a9" }}
+              color="#a9a9a9"
+            />
+          )}
         </Component.TagList>
       )}
       <Component.Separator />

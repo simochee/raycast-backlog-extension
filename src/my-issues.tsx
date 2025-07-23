@@ -21,7 +21,7 @@ const Command = () => {
   const [searchText, setSearchText] = useState("");
   const [filter, setFilter] = usePersistentState<FilterKey>("my-issues-filter", "assigneeId");
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
+  const { data, fetchNextPage, hasNextPage, isFetching } = useSuspenseInfiniteQuery(
     myIssuesOptions(currentSpace, currentUser, filter),
   );
 
@@ -52,7 +52,7 @@ const Command = () => {
     <List
       navigationTitle={navigationTitle}
       isShowingDetail={isShowingDetail}
-      isLoading={isFetchingNextPage}
+      isLoading={isFetching}
       pagination={{
         onLoadMore: fetchNextPage,
         hasMore: hasNextPage,
