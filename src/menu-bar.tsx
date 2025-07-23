@@ -41,14 +41,15 @@ const Command = () => {
 
   const openNotification = async (spaceKey: string) => {
     const unreadCount = unreadCounts.find(({ space }) => space.spaceKey === spaceKey);
+    const targetSpace = spaces.find(({ space }) => space.spaceKey === spaceKey);
 
-    if (!unreadCount) return;
+    if (!unreadCount || !targetSpace) return;
 
     await currentSpace.setSpaceKey(spaceKey);
 
     if (unreadCount.count > 0) {
-      await queryClient.invalidateQueries({ queryKey: notificationsOptions(currentSpace).queryKey });
-
+      await queryClient.resetQueries({ queryKey: notificationsOptions(targetSpace.credential).queryKey });
+      await queryClient.invalidateQueries({ queryKey: notificationCountOptions(targetSpace.credential).queryKey });
       await new Promise((resolve) => setTimeout(resolve, DELAY.NOTIFICATION_UPDATE));
     }
 

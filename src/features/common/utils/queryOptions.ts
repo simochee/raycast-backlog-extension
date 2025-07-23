@@ -118,11 +118,11 @@ export const myIssuesOptions = (currentSpace: CurrentSpace, currentUser: Current
     getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
   });
 
-export const notificationsOptions = (currentSpace: CurrentSpace) =>
+export const notificationsOptions = (credential: SpaceCredentials) =>
   infiniteQueryOptions({
-    queryKey: ["notifications", currentSpace.credential.spaceKey],
+    queryKey: ["notifications", credential.spaceKey],
     queryFn: async ({ pageParam }) => {
-      const notifications = await currentSpace.api.getNotifications({
+      const notifications = await getBacklogApi(credential).getNotifications({
         count: PER_PAGE,
         maxId: pageParam !== -1 ? pageParam : undefined,
       });

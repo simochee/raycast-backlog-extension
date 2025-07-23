@@ -15,7 +15,7 @@ const Command = () => {
   const currentSpace = useCurrentSpace();
 
   const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useSuspenseInfiniteQuery(
-    notificationsOptions(currentSpace),
+    notificationsOptions(currentSpace.credential),
   );
 
   const loadedCount = data.pages.flat().length;
@@ -29,6 +29,19 @@ const Command = () => {
 
     if (notification?.resourceAlreadyRead === false) {
       await currentSpace.api.markAsReadNotification(notification.id);
+      queryClient.setQueryData(
+        notificationsOptions(currentSpace.credential).queryKey,
+        (infiniteData) =>
+          infiniteData && {
+            ...infiniteData,
+            pages: infiniteData.pages.map((page) =>
+              page.map((item) => ({
+                ...item,
+                resourceAlreadyRead: item.id === notification.id ? true : item.resourceAlreadyRead,
+              })),
+            ),
+          },
+      );
     }
   };
 
