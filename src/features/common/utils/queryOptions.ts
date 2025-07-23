@@ -9,6 +9,7 @@ import {
   transformProject,
   transformRecentlyViewedIssue,
   transformRecentlyViewedProject,
+  transformRecentlyViewedWiki,
 } from "./transformers";
 import type { CurrentUser } from "~common/hooks/useCurrentUser";
 import type { CurrentSpace } from "~space/hooks/useCurrentSpace";
@@ -150,11 +151,14 @@ export const recentProjectsOptions = (currentSpace: CurrentSpace) =>
 export const recentWikisOptions = (currentSpace: CurrentSpace) =>
   infiniteQueryOptions({
     queryKey: ["recent-viewed", currentSpace.space.spaceKey, "wikis"],
-    queryFn: ({ pageParam }) =>
-      currentSpace.api.getRecentlyViewedWikis({
+    queryFn: async ({ pageParam }) => {
+      const wikis = await currentSpace.api.getRecentlyViewedWikis({
         count: PER_PAGE,
         offset: pageParam,
-      }),
+      });
+
+      return wikis.map(transformRecentlyViewedWiki);
+    },
     staleTime: CACHE_TTL.RECENT_VIEWED_WIKIS,
     gcTime: CACHE_TTL.RECENT_VIEWED_WIKIS,
     initialPageParam: 0,
