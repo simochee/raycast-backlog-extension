@@ -25,14 +25,55 @@ export const transformIssue = (issue: Entity.Issue.Issue) => {
     milestone: issue.milestone.map((v) => pick(v, ["id", "name", "displayOrder"])),
     versions: issue.versions.map((v) => pick(v, ["id", "name", "displayOrder", "archived"])),
     customFields: issue.customFields.map((v) => pick(v, ["id", "fieldTypeId", "name", "value"])),
-  };
+  } satisfies { [K in keyof Entity.Issue.Issue]?: unknown };
 };
 
 export const transformRecentlyViewedIssue = (RecentlyViewedIssue: Entity.Issue.RecentlyViewedIssue) => {
   return {
     issue: transformIssue(RecentlyViewedIssue.issue),
-  };
+  } satisfies { [K in keyof Entity.Issue.RecentlyViewedIssue]?: unknown };
 };
 
 export type Issue = ReturnType<typeof transformIssue>;
 export type RecentlyViewedIssue = ReturnType<typeof transformRecentlyViewedIssue>;
+
+export const transformIssueComment = (comment: Entity.Issue.Comment) => {
+  return {
+    ...pick(comment, ["id", "content"]),
+    notifications: comment.notifications.map(
+      ({ user }) =>
+        ({
+          user: pick(user, ["id", "name"]),
+        }) satisfies { [K in keyof Entity.CommentNotification.CommentNotification]?: unknown },
+    ),
+  } satisfies { [K in keyof Entity.Issue.Comment]?: unknown };
+};
+
+export type IssueComment = ReturnType<typeof transformIssueComment>;
+
+export const transformProject = (project: Entity.Project.Project) => {
+  return {
+    ...pick(project, [
+      "id",
+      "name",
+      "projectKey",
+      "useDevAttributes",
+      "chartEnabled",
+      "useFileSharing",
+      "useWiki",
+      "useSubversion",
+      "useGit",
+      "archived",
+      "displayOrder",
+    ]),
+  };
+};
+
+export const transformRecentlyViewedProject = (project: Entity.Project.RecentlyViewedProject) => {
+  return {
+    project: transformProject(project.project),
+  } satisfies { [K in keyof Entity.Project.RecentlyViewedProject]?: unknown };
+};
+
+export type Project = ReturnType<typeof transformProject>;
+export type RecentlyViewedProject = ReturnType<typeof transformRecentlyViewedProject>;

@@ -1,5 +1,5 @@
 import { Action, ActionPanel, Color, List } from "@raycast/api";
-import type { Entity } from "backlog-js";
+import type { Project } from "~common/utils/transformers";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { getProjectImageUrl } from "~common/utils/image";
 import { CommonActionPanel } from "~common/components/CommonActionPanel";
@@ -7,7 +7,7 @@ import { ICONS } from "~common/constants/icon";
 import { indexToShortcut } from "~common/utils/shortcut";
 
 type Props = {
-  project: Entity.Project.Project;
+  project: Project;
 };
 
 export const ProjectItem = ({ project }: Props) => {

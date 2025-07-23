@@ -3,7 +3,12 @@ import * as v from "valibot";
 import { LocalStorage } from "@raycast/api";
 import { createCache } from "./cache";
 import { dedupe } from "./promise-dedupe";
-import { transformIssue, transformRecentlyViewedIssue } from "./transformers";
+import {
+  transformIssue,
+  transformProject,
+  transformRecentlyViewedIssue,
+  transformRecentlyViewedProject,
+} from "./transformers";
 import type { CurrentUser } from "~common/hooks/useCurrentUser";
 import type { CurrentSpace } from "~space/hooks/useCurrentSpace";
 import type { SpaceCredentials } from "~space/utils/credentials";
@@ -46,16 +51,10 @@ export const projectOptions = (currentSpace: CurrentSpace, projectId: number) =>
           projectKey: v.string(),
           name: v.string(),
           chartEnabled: v.boolean(),
-          useResolvedForChart: v.boolean(),
-          subtaskingEnabled: v.boolean(),
-          projectLeaderCanEditProjectLeader: v.boolean(),
           useWiki: v.boolean(),
           useFileSharing: v.boolean(),
-          useWikiTreeView: v.boolean(),
-          useOriginalImageSizeAtWiki: v.boolean(),
           useSubversion: v.boolean(),
           useGit: v.boolean(),
-          textFormattingRule: v.union([v.literal("backlog"), v.literal("markdown")]),
           archived: v.boolean(),
           displayOrder: v.number(),
           useDevAttributes: v.boolean(),
@@ -66,10 +65,11 @@ export const projectOptions = (currentSpace: CurrentSpace, projectId: number) =>
       if (cached) return cached;
 
       const project = await dedupe(currentSpace.api.getProject.bind(currentSpace.api), projectId);
+      const transformed = transformProject(project);
 
-      cache.set(project);
+      cache.set(transformed);
 
-      return project;
+      return transformed;
     },
     staleTime: CACHE_TTL.PROJECT,
     gcTime: CACHE_TTL.PROJECT,
@@ -129,11 +129,14 @@ export const recentIssuesOptions = (currentSpace: CurrentSpace) =>
 export const recentProjectsOptions = (currentSpace: CurrentSpace) =>
   infiniteQueryOptions({
     queryKey: ["recent-viewed", currentSpace.space.spaceKey, "projects"],
-    queryFn: ({ pageParam }) =>
-      currentSpace.api.getRecentlyViewedProjects({
+    queryFn: async ({ pageParam }) => {
+      const projects = await currentSpace.api.getRecentlyViewedProjects({
         count: PER_PAGE,
         offset: pageParam,
-      }),
+      });
+
+      return projects.map(transformRecentlyViewedProject);
+    },
     staleTime: CACHE_TTL.RECENT_VIEWED_PROJECTS,
     gcTime: CACHE_TTL.RECENT_VIEWED_PROJECTS,
     initialPageParam: 0,

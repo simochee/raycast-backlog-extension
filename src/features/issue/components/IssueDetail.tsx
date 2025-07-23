@@ -1,13 +1,13 @@
 import { IssueMetadata } from "./IssueMetadata";
 import type { Detail, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
-import type { Issue } from "~common/utils/transformers";
+import type { Issue, Project } from "~common/utils/transformers";
 import { useMarkdown } from "~common/hooks/useMarkdown";
 
 type Props = {
   component: typeof List.Item.Detail | typeof Detail;
   issue: Issue | undefined;
-  project: Entity.Project.Project | undefined;
+  project: Project | undefined;
   comment?: Entity.Issue.Comment;
 };
 
