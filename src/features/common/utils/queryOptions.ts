@@ -7,7 +7,7 @@ import type { CurrentUser } from "~common/hooks/useCurrentUser";
 import type { CurrentSpace } from "~space/hooks/useCurrentSpace";
 import type { SpaceCredentials } from "~space/utils/credentials";
 import { transformIssue, transformRecentlyViewedIssue } from "~common/transformers/issue";
-import { transformNotification } from "~common/transformers/notification";
+import { transformNotification, transformNotificationCount } from "~common/transformers/notification";
 import { transformProject, transformRecentlyViewedProject } from "~common/transformers/project";
 import { transformRecentlyViewedWiki } from "~common/transformers/wiki";
 import { transformSpace } from "~common/transformers/space";
@@ -34,6 +34,21 @@ export const myselfOptions = (currentSpace: CurrentSpace) =>
     },
     staleTime: CACHE_TTL.USER,
     gcTime: CACHE_TTL.USER,
+  });
+
+export const notificationCountOptions = (credential: SpaceCredentials) =>
+  queryOptions({
+    queryKey: ["notification-count", credential.spaceKey],
+    queryFn: async () => {
+      const notificationsCount = await getBacklogApi(credential).getNotificationsCount({
+        alreadyRead: false,
+        resourceAlreadyRead: false,
+      });
+
+      return transformNotificationCount(notificationsCount);
+    },
+    staleTime: CACHE_TTL.NOTIFICATION_COUNT,
+    gcTime: CACHE_TTL.NOTIFICATION_COUNT,
   });
 
 export const spaceOptions = (credential: SpaceCredentials) =>

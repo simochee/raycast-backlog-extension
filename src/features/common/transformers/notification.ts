@@ -16,4 +16,11 @@ export const transformNotification = (notification: Entity.Notification.Notifica
   } satisfies { [K in keyof Entity.Notification.Notification]?: unknown };
 };
 
+export const transformNotificationCount = (notificationCount: Entity.Notification.NotificationCount) => {
+  return {
+    ...pick(notificationCount, ["count"]),
+  };
+};
+
 export type Notification = ReturnType<typeof transformNotification>;
+export type NotificationCount = ReturnType<typeof transformNotificationCount>;

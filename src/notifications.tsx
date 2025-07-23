@@ -1,5 +1,5 @@
 import { LaunchType, List, launchCommand } from "@raycast/api";
-import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
+import { useQueryClient, useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { CommonActionPanel } from "~common/components/CommonActionPanel";
 import { NotificationItem } from "~notification/components/NotificationItem";
@@ -7,10 +7,11 @@ import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { groupByDate } from "~common/utils/group";
 import { withProviders } from "~common/utils/providers";
-import { resetNotificationsMarkAsRead } from "~notification/utils/notification";
-import { notificationsOptions } from "~common/utils/queryOptions";
+import { notificationCountOptions, notificationsOptions } from "~common/utils/queryOptions";
+import { DELAY } from "~common/constants/cache";
 
 const Command = () => {
+  const queryClient = useQueryClient();
   const currentSpace = useCurrentSpace();
 
   const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useSuspenseInfiniteQuery(
@@ -32,12 +33,22 @@ const Command = () => {
   };
 
   useEffect(() => {
-    resetNotificationsMarkAsRead(currentSpace).then((isReset) => {
-      if (isReset) {
-        launchCommand({ name: "menu-bar", type: LaunchType.Background });
-      }
-    });
-  }, [currentSpace]);
+    if (isFetching) return;
+
+    const { queryKey } = notificationCountOptions(currentSpace.credential);
+    const queryData = queryClient.getQueryData(queryKey);
+
+    if (!queryData || queryData.count === 0) return;
+
+    queryClient.setQueryData(queryKey, { count: 0 });
+    queryClient.invalidateQueries({ queryKey });
+
+    setTimeout(() => {
+      currentSpace.api
+        .resetNotificationsMarkAsRead()
+        .finally(() => launchCommand({ name: "menu-bar", type: LaunchType.Background }));
+    }, DELAY.NOTIFICATION_UPDATE);
+  }, [currentSpace, isFetching]);
 
   return (
     <List
