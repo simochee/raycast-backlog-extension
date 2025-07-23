@@ -142,3 +142,11 @@ export const transformUser = (myself: Entity.User.User) => {
 };
 
 export type User = ReturnType<typeof transformUser>;
+
+export const transformSpace = (space: Entity.Space.Space) => {
+  return {
+    ...pick(space, ["spaceKey", "name"]),
+  } satisfies { [K in keyof Entity.Space.Space]?: unknown };
+};
+
+export type Space = ReturnType<typeof transformSpace>;

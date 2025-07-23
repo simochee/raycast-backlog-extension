@@ -10,6 +10,7 @@ import {
   transformRecentlyViewedIssue,
   transformRecentlyViewedProject,
   transformRecentlyViewedWiki,
+  transformSpace,
   transformUser,
 } from "./transformers";
 import type { CurrentUser } from "~common/hooks/useCurrentUser";
@@ -42,7 +43,11 @@ export const myselfOptions = (currentSpace: CurrentSpace) =>
 export const spaceOptions = (credential: SpaceCredentials) =>
   queryOptions({
     queryKey: ["space", credential.spaceKey],
-    queryFn: () => getBacklogApi(credential).getSpace(),
+    queryFn: async () => {
+      const space = await getBacklogApi(credential).getSpace();
+
+      return transformSpace(space);
+    },
     staleTime: CACHE_TTL.SPACE,
     gcTime: CACHE_TTL.SPACE,
   });
