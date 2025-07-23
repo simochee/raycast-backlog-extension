@@ -26,20 +26,6 @@ export const myselfOptions = (currentSpace: CurrentSpace) =>
     gcTime: CACHE_TTL.USER,
   });
 
-export const spacesOptions = (credentials: Array<SpaceCredentials>) =>
-  queryOptions({
-    queryKey: ["spaces", ...credentials.map(({ spaceKey }) => spaceKey).sort()],
-    queryFn: () =>
-      Promise.all(
-        credentials.map(async (credential) => ({
-          credential,
-          space: await getBacklogApi(credential).getSpace(),
-        })),
-      ),
-    staleTime: CACHE_TTL.SPACE,
-    gcTime: CACHE_TTL.SPACE,
-  });
-
 export const spaceOptions = (credential: SpaceCredentials) =>
   queryOptions({
     queryKey: ["space", credential.spaceKey],
