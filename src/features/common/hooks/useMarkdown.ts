@@ -1,13 +1,14 @@
 import { emojify } from "node-emoji";
 import type { Entity } from "backlog-js";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
+import type { Issue } from "~common/utils/transformers";
 
 export const useMarkdown = () => {
   const currentSpace = useCurrentSpace();
 
   const formatMarkdown = (
     issue:
-      | Pick<Entity.Issue.Issue, "id" | "description" | "attachments">
+      | Issue
       | Pick<
           Entity.PullRequest.PullRequest,
           "id" | "repositoryId" | "projectId" | "number" | "description" | "attachments"

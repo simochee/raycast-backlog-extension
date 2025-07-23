@@ -1,6 +1,7 @@
 import { Color, Icon, Image } from "@raycast/api";
 import type { Detail, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
+import type { Issue } from "~common/utils/transformers";
 import { ICONS } from "~common/constants/icon";
 import { getProjectImageUrl, getUserIconUrl } from "~common/utils/image";
 import { buildDueDate, formatDate, sortByDisplayOrder } from "~issue/utils/issue";
@@ -9,7 +10,7 @@ import { ISSUE_PRIORITY, ISSUE_STATUS } from "~issue/constants";
 
 type Props = {
   component: typeof List.Item.Detail.Metadata | typeof Detail.Metadata;
-  issue: Entity.Issue.Issue;
+  issue: Issue;
   project: Entity.Project.Project | undefined;
   comment: Entity.Issue.Comment | undefined;
 };

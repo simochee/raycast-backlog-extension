@@ -40,7 +40,6 @@ export const ProjectItem = ({ project }: Props) => {
       title: "Documents",
       url: currentSpace.toUrl(`/document/${project.projectKey}`),
       icon: ICONS.DOCUMENT,
-      disabled: !project.useFileSharing,
     },
     {
       title: "Wiki",

@@ -3,6 +3,7 @@ import * as v from "valibot";
 import { LocalStorage } from "@raycast/api";
 import { createCache } from "./cache";
 import { dedupe } from "./promise-dedupe";
+import { transformIssue, transformRecentlyViewedIssue } from "./transformers";
 import type { CurrentUser } from "~common/hooks/useCurrentUser";
 import type { CurrentSpace } from "~space/hooks/useCurrentSpace";
 import type { SpaceCredentials } from "~space/utils/credentials";
@@ -77,14 +78,17 @@ export const projectOptions = (currentSpace: CurrentSpace, projectId: number) =>
 export const myIssuesOptions = (currentSpace: CurrentSpace, currentUser: CurrentUser, filter: string) =>
   infiniteQueryOptions({
     queryKey: ["my-issues", currentSpace.space.spaceKey, currentUser.id, filter],
-    queryFn: ({ pageParam }) =>
-      currentSpace.api.getIssues({
+    queryFn: async ({ pageParam }) => {
+      const issues = await currentSpace.api.getIssues({
         [filter]: [currentUser.id],
         sort: "updated",
         order: "desc",
         count: PER_PAGE,
         offset: pageParam,
-      }),
+      });
+
+      return issues.map(transformIssue);
+    },
     staleTime: CACHE_TTL.MY_ISSUES,
     gcTime: CACHE_TTL.MY_ISSUES,
     initialPageParam: 0,
@@ -108,11 +112,14 @@ export const notificationsOptions = (currentSpace: CurrentSpace) =>
 export const recentIssuesOptions = (currentSpace: CurrentSpace) =>
   infiniteQueryOptions({
     queryKey: ["recent-viewed", currentSpace.space.spaceKey, "issues"],
-    queryFn: ({ pageParam }) =>
-      currentSpace.api.getRecentlyViewedIssues({
+    queryFn: async ({ pageParam }) => {
+      const issues = await currentSpace.api.getRecentlyViewedIssues({
         count: PER_PAGE,
         offset: pageParam,
-      }),
+      });
+
+      return issues.map(transformRecentlyViewedIssue);
+    },
     staleTime: CACHE_TTL.RECENT_VIEWED_ISSUES,
     gcTime: CACHE_TTL.RECENT_VIEWED_ISSUES,
     initialPageParam: 0,
