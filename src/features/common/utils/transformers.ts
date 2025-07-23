@@ -134,3 +134,11 @@ export const transformRecentlyViewedWiki = (wikiListItem: Entity.Wiki.RecentlyVi
 
 export type WikiListItem = ReturnType<typeof transformWikiListItem>;
 export type RecentlyViewedWiki = ReturnType<typeof transformRecentlyViewedWiki>;
+
+export const transformUser = (myself: Entity.User.User) => {
+  return {
+    ...pick(myself, ["id"]),
+  } satisfies { [K in keyof Entity.User.User]?: unknown };
+};
+
+export type User = ReturnType<typeof transformUser>;
