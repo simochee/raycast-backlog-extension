@@ -2,6 +2,8 @@ import { Image } from "@raycast/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import type { Detail, List } from "@raycast/api";
 import type { Entity } from "backlog-js";
+import type { Project } from "~common/transformers/project";
+import type { PullRequest, PullRequestComment } from "~common/transformers/pull-request";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { getUserIconUrl } from "~common/utils/image";
 import { repositoryOptions } from "~common/utils/queryOptions";
@@ -10,9 +12,9 @@ import { PULL_REQUEST_STATUS } from "~pull-request/constants";
 
 type Props = {
   component: typeof List.Item.Detail | typeof Detail;
-  project: Entity.Project.Project;
-  pullRequest?: Entity.PullRequest.PullRequest;
-  comment?: Entity.PullRequest.Comment;
+  project: Project;
+  pullRequest?: PullRequest;
+  comment?: PullRequestComment;
 };
 
 const getStatusColor = (status: Entity.PullRequest.Status) => {

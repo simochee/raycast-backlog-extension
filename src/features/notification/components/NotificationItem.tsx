@@ -1,5 +1,5 @@
 import { Action, ActionPanel, Color, Image, List } from "@raycast/api";
-import type { Entity } from "backlog-js";
+import type { Notification } from "~common/transformers/notification";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { getUserIconUrl } from "~common/utils/image";
 import { CommonActionPanel } from "~common/components/CommonActionPanel";
@@ -10,7 +10,7 @@ import { ICONS } from "~common/constants/icon";
 import { NOTIFICATION_REASON } from "~issue/constants";
 
 type Props = {
-  notification: Entity.Notification.Notification;
+  notification: Notification;
 };
 
 export const NotificationItem = ({

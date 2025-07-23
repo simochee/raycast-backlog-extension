@@ -6,6 +6,12 @@ import { dedupe } from "./promise-dedupe";
 import type { CurrentUser } from "~common/hooks/useCurrentUser";
 import type { CurrentSpace } from "~space/hooks/useCurrentSpace";
 import type { SpaceCredentials } from "~space/utils/credentials";
+import { transformIssue, transformRecentlyViewedIssue } from "~common/transformers/issue";
+import { transformNotification } from "~common/transformers/notification";
+import { transformProject, transformRecentlyViewedProject } from "~common/transformers/project";
+import { transformRecentlyViewedWiki } from "~common/transformers/wiki";
+import { transformSpace } from "~common/transformers/space";
+import { transformUser } from "~common/transformers/user";
 import { CACHE_TTL } from "~common/constants/cache";
 import { getCredentials } from "~space/utils/credentials";
 import { getBacklogApi } from "~space/utils/backlog";
@@ -21,7 +27,11 @@ export const credentialsOptions = () =>
 export const myselfOptions = (currentSpace: CurrentSpace) =>
   queryOptions({
     queryKey: ["project", currentSpace.space.spaceKey, "myself"],
-    queryFn: async () => currentSpace.api.getMyself(),
+    queryFn: async () => {
+      const user = await currentSpace.api.getMyself();
+
+      return transformUser(user);
+    },
     staleTime: CACHE_TTL.USER,
     gcTime: CACHE_TTL.USER,
   });
@@ -29,7 +39,11 @@ export const myselfOptions = (currentSpace: CurrentSpace) =>
 export const spaceOptions = (credential: SpaceCredentials) =>
   queryOptions({
     queryKey: ["space", credential.spaceKey],
-    queryFn: () => getBacklogApi(credential).getSpace(),
+    queryFn: async () => {
+      const space = await getBacklogApi(credential).getSpace();
+
+      return transformSpace(space);
+    },
     staleTime: CACHE_TTL.SPACE,
     gcTime: CACHE_TTL.SPACE,
   });
@@ -45,16 +59,10 @@ export const projectOptions = (currentSpace: CurrentSpace, projectId: number) =>
           projectKey: v.string(),
           name: v.string(),
           chartEnabled: v.boolean(),
-          useResolvedForChart: v.boolean(),
-          subtaskingEnabled: v.boolean(),
-          projectLeaderCanEditProjectLeader: v.boolean(),
           useWiki: v.boolean(),
           useFileSharing: v.boolean(),
-          useWikiTreeView: v.boolean(),
-          useOriginalImageSizeAtWiki: v.boolean(),
           useSubversion: v.boolean(),
           useGit: v.boolean(),
-          textFormattingRule: v.union([v.literal("backlog"), v.literal("markdown")]),
           archived: v.boolean(),
           displayOrder: v.number(),
           useDevAttributes: v.boolean(),
@@ -65,10 +73,11 @@ export const projectOptions = (currentSpace: CurrentSpace, projectId: number) =>
       if (cached) return cached;
 
       const project = await dedupe(currentSpace.api.getProject.bind(currentSpace.api), projectId);
+      const transformed = transformProject(project);
 
-      cache.set(project);
+      cache.set(transformed);
 
-      return project;
+      return transformed;
     },
     staleTime: CACHE_TTL.PROJECT,
     gcTime: CACHE_TTL.PROJECT,
@@ -77,14 +86,17 @@ export const projectOptions = (currentSpace: CurrentSpace, projectId: number) =>
 export const myIssuesOptions = (currentSpace: CurrentSpace, currentUser: CurrentUser, filter: string) =>
   infiniteQueryOptions({
     queryKey: ["my-issues", currentSpace.space.spaceKey, currentUser.id, filter],
-    queryFn: ({ pageParam }) =>
-      currentSpace.api.getIssues({
+    queryFn: async ({ pageParam }) => {
+      const issues = await currentSpace.api.getIssues({
         [filter]: [currentUser.id],
         sort: "updated",
         order: "desc",
         count: PER_PAGE,
         offset: pageParam,
-      }),
+      });
+
+      return issues.map(transformIssue);
+    },
     staleTime: CACHE_TTL.MY_ISSUES,
     gcTime: CACHE_TTL.MY_ISSUES,
     initialPageParam: 0,
@@ -94,11 +106,14 @@ export const myIssuesOptions = (currentSpace: CurrentSpace, currentUser: Current
 export const notificationsOptions = (currentSpace: CurrentSpace) =>
   infiniteQueryOptions({
     queryKey: ["notifications", currentSpace.credential.spaceKey],
-    queryFn: ({ pageParam }) =>
-      currentSpace.api.getNotifications({
+    queryFn: async ({ pageParam }) => {
+      const notifications = await currentSpace.api.getNotifications({
         count: PER_PAGE,
         maxId: pageParam !== -1 ? pageParam : undefined,
-      }),
+      });
+
+      return notifications.map(transformNotification);
+    },
     staleTime: CACHE_TTL.NOTIFICATIONS,
     gcTime: CACHE_TTL.NOTIFICATIONS,
     initialPageParam: -1,
@@ -108,11 +123,14 @@ export const notificationsOptions = (currentSpace: CurrentSpace) =>
 export const recentIssuesOptions = (currentSpace: CurrentSpace) =>
   infiniteQueryOptions({
     queryKey: ["recent-viewed", currentSpace.space.spaceKey, "issues"],
-    queryFn: ({ pageParam }) =>
-      currentSpace.api.getRecentlyViewedIssues({
+    queryFn: async ({ pageParam }) => {
+      const issues = await currentSpace.api.getRecentlyViewedIssues({
         count: PER_PAGE,
         offset: pageParam,
-      }),
+      });
+
+      return issues.map(transformRecentlyViewedIssue);
+    },
     staleTime: CACHE_TTL.RECENT_VIEWED_ISSUES,
     gcTime: CACHE_TTL.RECENT_VIEWED_ISSUES,
     initialPageParam: 0,
@@ -122,11 +140,14 @@ export const recentIssuesOptions = (currentSpace: CurrentSpace) =>
 export const recentProjectsOptions = (currentSpace: CurrentSpace) =>
   infiniteQueryOptions({
     queryKey: ["recent-viewed", currentSpace.space.spaceKey, "projects"],
-    queryFn: ({ pageParam }) =>
-      currentSpace.api.getRecentlyViewedProjects({
+    queryFn: async ({ pageParam }) => {
+      const projects = await currentSpace.api.getRecentlyViewedProjects({
         count: PER_PAGE,
         offset: pageParam,
-      }),
+      });
+
+      return projects.map(transformRecentlyViewedProject);
+    },
     staleTime: CACHE_TTL.RECENT_VIEWED_PROJECTS,
     gcTime: CACHE_TTL.RECENT_VIEWED_PROJECTS,
     initialPageParam: 0,
@@ -136,11 +157,14 @@ export const recentProjectsOptions = (currentSpace: CurrentSpace) =>
 export const recentWikisOptions = (currentSpace: CurrentSpace) =>
   infiniteQueryOptions({
     queryKey: ["recent-viewed", currentSpace.space.spaceKey, "wikis"],
-    queryFn: ({ pageParam }) =>
-      currentSpace.api.getRecentlyViewedWikis({
+    queryFn: async ({ pageParam }) => {
+      const wikis = await currentSpace.api.getRecentlyViewedWikis({
         count: PER_PAGE,
         offset: pageParam,
-      }),
+      });
+
+      return wikis.map(transformRecentlyViewedWiki);
+    },
     staleTime: CACHE_TTL.RECENT_VIEWED_WIKIS,
     gcTime: CACHE_TTL.RECENT_VIEWED_WIKIS,
     initialPageParam: 0,

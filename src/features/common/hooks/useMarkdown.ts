@@ -1,19 +1,12 @@
 import { emojify } from "node-emoji";
-import type { Entity } from "backlog-js";
+import type { Issue, IssueComment } from "~common/transformers/issue";
+import type { PullRequest, PullRequestComment } from "~common/transformers/pull-request";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 
 export const useMarkdown = () => {
   const currentSpace = useCurrentSpace();
 
-  const formatMarkdown = (
-    issue:
-      | Pick<Entity.Issue.Issue, "id" | "description" | "attachments">
-      | Pick<
-          Entity.PullRequest.PullRequest,
-          "id" | "repositoryId" | "projectId" | "number" | "description" | "attachments"
-        >,
-    comment: Pick<Entity.Issue.Comment | Entity.PullRequest.Comment, "content" | "notifications"> | undefined,
-  ) => {
+  const formatMarkdown = (issue: Issue | PullRequest, comment: IssueComment | PullRequestComment | undefined) => {
     let markdown = comment?.content || issue.description;
 
     for (const notification of comment?.notifications || []) {
