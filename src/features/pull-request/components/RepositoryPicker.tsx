@@ -1,22 +1,21 @@
 import { Action, Color, Icon, List, useNavigation } from "@raycast/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useMyPullRequests } from "../hooks/useMyPullRequests";
 import type { Project } from "~common/transformers/project";
-import type { Repository } from "~common/transformers/repository";
 import { CommonActionPanel } from "~common/components/CommonActionPanel";
 import { withProviders } from "~common/utils/providers";
 import { repositoriesOptions } from "~common/utils/queryOptions";
 import { sortByDisplayOrder } from "~issue/utils/issue";
 import { ProjectDrilldown } from "~project/components/ProjectDrilldown";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
-import { useState } from "react";
-import { useMyPullRequests } from "../hooks/useMyPullRequests";
+import { getProjectImageUrl } from "~common/utils/image";
 
 type PickerProps = {
   project: Project;
 };
 
 const Picker = withProviders(({ project }: PickerProps) => {
-  const [selectedRepositories, { toggle }] = useMyPullRequests();
+  const { selectedRepositories, toggleSelectedRepository } = useMyPullRequests();
 
   const currentSpace = useCurrentSpace();
 
@@ -25,9 +24,7 @@ const Picker = withProviders(({ project }: PickerProps) => {
   return (
     <List>
       {sortByDisplayOrder(repositories).map(({ id, name, projectId, description }) => {
-        const isSelected = selectedRepositories.some(
-          (selectedRepository) => selectedRepository.projectId === projectId && selectedRepository.repositoryId === id,
-        );
+        const isSelected = selectedRepositories.some((selectedRepository) => selectedRepository.repositoryId === id);
 
         return (
           <List.Item
@@ -39,12 +36,13 @@ const Picker = withProviders(({ project }: PickerProps) => {
                 ? { source: Icon.CheckCircle, tintColor: Color.Green }
                 : { source: Icon.Circle, tintColor: Color.SecondaryText }
             }
+            accessories={[{ icon: getProjectImageUrl(currentSpace.credential, project.id) }]}
             actions={
               <CommonActionPanel>
                 <Action
                   title={isSelected ? "Remove" : "Add"}
                   onAction={() =>
-                    toggle({
+                    toggleSelectedRepository({
                       projectId,
                       projectKey: project.projectKey,
                       repositoryId: id,
@@ -61,8 +59,8 @@ const Picker = withProviders(({ project }: PickerProps) => {
   );
 });
 
-export const RepositoryPicker = () => {
-  const [selectedRepositories] = useMyPullRequests();
+export const RepositoryPicker = withProviders(() => {
+  const { selectedRepositories } = useMyPullRequests();
   const navigation = useNavigation();
 
   return (
@@ -77,4 +75,4 @@ export const RepositoryPicker = () => {
       onSelect={(project) => navigation.push(<Picker project={project} />)}
     />
   );
-};
+});

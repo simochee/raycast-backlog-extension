@@ -1,4 +1,5 @@
 import { Action, ActionPanel, Color, Icon } from "@raycast/api";
+import { indexToShortcut } from "~common/utils/shortcut";
 
 export type FilterKey = "createdUserId" | "assigneeId";
 
@@ -27,7 +28,7 @@ export const MyIssuesActionPanel = ({ filter, onFilterChange }: Props) => {
                   tintColor: Color.SecondaryText,
                 }
           }
-          shortcut={{ modifiers: ["cmd"], key: i === 0 ? "1" : "2" }}
+          shortcut={indexToShortcut(i)}
           onAction={() => onFilterChange(value)}
         />
       ))}

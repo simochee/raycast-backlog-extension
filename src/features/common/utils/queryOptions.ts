@@ -16,6 +16,7 @@ import { CACHE_TTL } from "~common/constants/cache";
 import { getCredentials } from "~space/utils/credentials";
 import { getBacklogApi } from "~space/utils/backlog";
 import { transformRepository } from "~common/transformers/repository";
+import { transformPullRequest } from "~common/transformers/pull-request";
 
 const PER_PAGE = 25;
 
@@ -221,6 +222,33 @@ export const repositoryOptions = (currentSpace: CurrentSpace, projectId: number,
     },
     staleTime: CACHE_TTL.REPOSITORY,
     gcTime: CACHE_TTL.REPOSITORY,
+  });
+
+export const myPullRequestsOptions = (
+  currentSpace: CurrentSpace,
+  projectId: number | undefined,
+  repositoryId: number | undefined,
+  currentUser: CurrentUser,
+  filter: string,
+) =>
+  queryOptions({
+    queryKey: ["pull-requests", projectId, repositoryId, currentUser.id, filter],
+    queryFn: async () => {
+      if (projectId == null || repositoryId == null) return null;
+
+      const pullRequests = await currentSpace.api.getPullRequests(projectId, repositoryId.toString(), {
+        [filter]: [currentUser.id],
+        statusId: [1],
+        // @ts-expect-error
+        sort: "updated",
+        order: "desc",
+      });
+
+      return pullRequests.map(transformPullRequest);
+    },
+    enabled: projectId != null && repositoryId != null,
+    staleTime: CACHE_TTL.PULL_REQUESTS,
+    gcTime: CACHE_TTL.PULL_REQUESTS,
   });
 
 export const persistentStateOptions = (key: string) =>

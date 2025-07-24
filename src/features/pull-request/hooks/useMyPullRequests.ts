@@ -11,25 +11,54 @@ const itemSchema = v.object({
 
 const listSchema = v.array(itemSchema);
 
-export const useMyPullRequests = () => {
-  const [selectedRepositories, setRepositories] = usePersistentState("my-pull-requests-repositories", null);
-  const parsed = v.safeParse(v.pipe(v.string(), v.parseJson(), listSchema), selectedRepositories);
-  const repositories = parsed.success ? parsed.output : [];
+const useRepositoriesState = () => {
+  const [repositories, setRepositories] = usePersistentState("my-pull-requests-repositories", null);
+  const parsed = v.safeParse(v.pipe(v.string(), v.parseJson(), listSchema), repositories);
 
-  const toggle = useCallback(
+  return [parsed.success ? parsed.output : [], setRepositories] as const;
+};
+
+const useCurrentRepository = () => {
+  const [currentRepository, setCurrentRepository] = usePersistentState("my-pull-requests-current-repository", null);
+  const parsed = v.safeParse(
+    v.pipe(
+      v.string(),
+      v.transform((input) => Number.parseInt(input, 10)),
+      v.integer(),
+    ),
+    currentRepository,
+  );
+
+  return [parsed.success ? parsed.output : null, setCurrentRepository] as const;
+};
+
+export const useMyPullRequests = () => {
+  const [selectedRepositories, setRepositories] = useRepositoriesState();
+  const [currentRepositoryId, changeCurrentRepositoryId] = useCurrentRepository();
+
+  const currentRepository =
+    selectedRepositories.find((repository) => repository.repositoryId === currentRepositoryId) ||
+    selectedRepositories[0];
+
+  const toggleSelectedRepository = useCallback(
     async (repository: v.InferOutput<typeof itemSchema>) => {
-      const newValue = repositories.some(
+      const newValue = selectedRepositories.some(
         (item) => item.projectId === repository.projectId && item.repositoryId === repository.repositoryId,
       )
-        ? repositories.filter(
+        ? selectedRepositories.filter(
             (item) => item.projectId !== repository.projectId && item.repositoryId !== repository.repositoryId,
           )
-        : repositories.concat(repository);
+        : selectedRepositories.concat(repository);
 
       await setRepositories(JSON.stringify(newValue));
     },
-    [repositories],
+    [selectedRepositories],
   );
 
-  return [repositories, { toggle }] as const;
+  return {
+    selectedRepositories,
+    currentRepository,
+    changeCurrentRepositoryId: (id: number) => changeCurrentRepositoryId(id.toString()),
+    toggleSelectedRepository,
+  };
 };
