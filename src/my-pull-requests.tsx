@@ -75,8 +75,8 @@ const Command = () => {
 
   return (
     <List
-      searchBarPlaceholder={`Search ${currentRepository?.projectKey}/${currentRepository?.repositoryName}`}
-      navigationTitle={`${currentRepository?.projectKey}/${currentRepository?.repositoryName}`}
+      searchBarPlaceholder={`Search ${currentRepository.projectKey}/${currentRepository.repositoryName}`}
+      navigationTitle={`${currentRepository.projectKey}/${currentRepository.repositoryName}`}
       actions={<CommonActionPanel>{commonActions}</CommonActionPanel>}
     >
       {pullRequests?.map((pullRequest) => {

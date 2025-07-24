@@ -1,5 +1,5 @@
-import type { Entity } from "backlog-js";
 import { pick } from "es-toolkit";
+import type { Entity } from "backlog-js";
 
 export const transformRepository = (repository: Entity.Git.GitRepository) => {
   return {
