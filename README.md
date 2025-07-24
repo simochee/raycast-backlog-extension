@@ -61,11 +61,18 @@ You can obtain your space's API key by following these steps:
 
 - `Cmd + Enter`: Open project menu
 
+### Pull Requests
+
+- `Cmd + n`: Create pull request
+- `Cmd + s`: Move repository
+- `Cmd + Shift + f`: Change filter
+- `Cmd + Shift + p`: Select movable repository
+
 ### Others
 
 - `Cmd + Shift + r`: Refresh data
-- `Ctrl + Shift + m`: Manage registered spaces
-- `Ctrl + Shift + n`: Register another space
+- `Cmd + Shift + m`: Manage registered spaces
+- `Cmd + Shift + n`: Register another space
 
 ## Development
 

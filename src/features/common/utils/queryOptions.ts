@@ -15,6 +15,7 @@ import { transformUser } from "~common/transformers/user";
 import { CACHE_TTL } from "~common/constants/cache";
 import { getCredentials } from "~space/utils/credentials";
 import { getBacklogApi } from "~space/utils/backlog";
+import { transformRepository } from "~common/transformers/repository";
 
 const PER_PAGE = 25;
 
@@ -169,6 +170,18 @@ export const recentProjectsOptions = (currentSpace: CurrentSpace) =>
     getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
   });
 
+export const projectsOptions = (currentSpace: CurrentSpace, archived = false) =>
+  queryOptions({
+    queryKey: ["projects", currentSpace.space.spaceKey, archived],
+    queryFn: async () => {
+      const projects = await currentSpace.api.getProjects({ archived });
+
+      return projects.map(transformProject);
+    },
+    staleTime: CACHE_TTL.PROJECT,
+    gcTime: CACHE_TTL.PROJECT,
+  });
+
 export const recentWikisOptions = (currentSpace: CurrentSpace) =>
   infiniteQueryOptions({
     queryKey: ["recent-viewed", currentSpace.space.spaceKey, "wikis"],
@@ -186,13 +199,25 @@ export const recentWikisOptions = (currentSpace: CurrentSpace) =>
     getNextPageParam: (lastPage, pages) => (lastPage.length === PER_PAGE ? pages.flat().length : null),
   });
 
+export const repositoriesOptions = (currentSpace: CurrentSpace, projectId: number) =>
+  queryOptions({
+    queryKey: ["repositories", currentSpace.space.spaceKey, projectId],
+    queryFn: async () => {
+      const repositories = await currentSpace.api.getGitRepositories(projectId);
+
+      return repositories.map(transformRepository);
+    },
+  });
+
 export const repositoryOptions = (currentSpace: CurrentSpace, projectId: number, repositoryId: number | undefined) =>
   queryOptions({
     queryKey: ["repository", projectId, repositoryId],
     queryFn: async () => {
       if (repositoryId == null) return null;
 
-      return currentSpace.api.getGitRepository(projectId, repositoryId.toString());
+      const repository = await currentSpace.api.getGitRepository(projectId, repositoryId.toString());
+
+      return transformRepository(repository);
     },
     staleTime: CACHE_TTL.REPOSITORY,
     gcTime: CACHE_TTL.REPOSITORY,
