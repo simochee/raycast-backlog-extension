@@ -59,15 +59,35 @@ const Command = () => {
           />
         ))}
       </ActionPanel.Submenu>
-      <ActionPanel.Submenu title="Select Repository" shortcut={{ modifiers: ["cmd", "shift"], key: "p" }}>
-        {selectedRepositories.map(({ projectKey, repositoryId, repositoryName }) => (
-          <Action
-            key={repositoryId}
-            title={`${projectKey}/${repositoryName}`}
-            onAction={() => changeCurrentRepositoryId(repositoryId)}
+      {currentRepository && (
+        <ActionPanel.Section>
+          <Action.OpenInBrowser
+            title="Open list in Browser"
+            url={currentSpace.toUrl(
+              `/git/${currentRepository.projectKey}/${currentRepository.repositoryName}/pullRequests?q.statusId=1&q.${filter}=${currentUser.id}`,
+            )}
+            shortcut={{ modifiers: ["cmd"], key: "o" }}
           />
-        ))}
-      </ActionPanel.Submenu>
+          <Action.OpenInBrowser
+            title="Create Pull Request"
+            url={currentSpace.toUrl(
+              `/git/${currentRepository.projectKey}/${currentRepository.repositoryName}/pullRequests/add`,
+            )}
+            shortcut={{ modifiers: ["cmd"], key: "n" }}
+          />
+        </ActionPanel.Section>
+      )}
+      <ActionPanel.Section>
+        <ActionPanel.Submenu title="Select Repository" shortcut={{ modifiers: ["cmd", "shift"], key: "p" }}>
+          {selectedRepositories.map(({ projectKey, repositoryId, repositoryName }) => (
+            <Action
+              key={repositoryId}
+              title={`${projectKey}/${repositoryName}`}
+              onAction={() => changeCurrentRepositoryId(repositoryId)}
+            />
+          ))}
+        </ActionPanel.Submenu>
+      </ActionPanel.Section>
     </>
   );
 
