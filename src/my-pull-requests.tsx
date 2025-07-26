@@ -12,6 +12,7 @@ import { useCurrentUser } from "~common/hooks/useCurrentUser";
 import { usePersistentState } from "~common/hooks/usePersistState";
 import { ICONS } from "~common/constants/icon";
 import { indexToShortcut } from "~common/utils/shortcut";
+import { useMemo } from "react";
 
 const FILTER_OPTIONS = [
   { label: "Assigned to me", value: "assigneeId" as const },
@@ -37,6 +38,16 @@ const Command = () => {
     ),
   );
   const { data: projects } = useSuspenseQuery(projectsOptions(currentSpace));
+
+  const navigationTitle = useMemo(() => {
+    const loadedCount = pullRequests?.length || 0;
+    const count = loadedCount || "No";
+    const unit = loadedCount === 1 ? "pull request" : "pull requests";
+    const target = filter === "assigneeId" ? "assigned to me" : "created by me";
+    const suffix = loadedCount === 0 ? "found" : false ? "loaded" : "total";
+
+    return `${count} ${target} ${unit} ${suffix}`;
+  }, [pullRequests, filter]);
 
   const commonActions = (
     <>
@@ -64,7 +75,7 @@ const Command = () => {
           <Action.OpenInBrowser
             title="Open list in Browser"
             url={currentSpace.toUrl(
-              `/git/${currentRepository.projectKey}/${currentRepository.repositoryName}/pullRequests?q.statusId=1&q.${filter}=${currentUser.id}`,
+              `/git/${currentRepository.projectKey}/${currentRepository.repositoryName}/pullRequests?q.statusId=1&q.${filter === "assigneeId" ? "assignerId" : filter}=${currentUser.id}`,
             )}
             shortcut={{ modifiers: ["cmd"], key: "o" }}
           />
@@ -96,7 +107,7 @@ const Command = () => {
   return (
     <List
       searchBarPlaceholder={`Search ${currentRepository.projectKey}/${currentRepository.repositoryName}`}
-      navigationTitle={`${currentRepository.projectKey}/${currentRepository.repositoryName}`}
+      navigationTitle={navigationTitle}
       actions={<CommonActionPanel>{commonActions}</CommonActionPanel>}
     >
       {pullRequests?.map((pullRequest) => {
