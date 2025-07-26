@@ -3,10 +3,21 @@ import type { Entity } from "backlog-js";
 
 export const transformPullRequest = (pullRequest: Entity.PullRequest.PullRequest) => {
   return {
-    ...pick(pullRequest, ["id", "description", "number", "summary", "repositoryId", "projectId"]),
+    ...pick(pullRequest, [
+      "id",
+      "description",
+      "number",
+      "summary",
+      "repositoryId",
+      "projectId",
+      "base",
+      "branch",
+      "updated",
+    ]),
     attachments: pullRequest.attachments.map((v) => pick(v, ["id", "name"])),
     status: pick(pullRequest.status, ["id", "name"]),
     assignee: pullRequest.assignee && pick(pullRequest.assignee, ["id", "name"]),
+    createdUser: pick(pullRequest.createdUser, ["id", "name"]),
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     issue: pullRequest.issue && pick(pullRequest.issue, ["id", "issueKey", "summary"]),
   } satisfies { [K in keyof Entity.PullRequest.PullRequest]?: unknown };

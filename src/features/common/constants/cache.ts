@@ -12,6 +12,9 @@ export const CACHE_TTL = {
   // Repository data - rarely changes
   REPOSITORY: 1000 * 60 * 60 * 24,
 
+  // Pull request data - changes frequently
+  PULL_REQUESTS: 1000 * 60 * 3,
+
   // Recent viewed data - changes frequently
   RECENT_VIEWED_ISSUES: 1000 * 60 * 3,
   RECENT_VIEWED_PROJECTS: 1000 * 60,

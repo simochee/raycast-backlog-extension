@@ -80,6 +80,13 @@
       "mode": "view"
     },
     {
+      "name": "my-pull-requests",
+      "title": "My Pull Requests",
+      "subtitle": "Backlog",
+      "description": "Browse your pull requests",
+      "mode": "view"
+    },
+    {
       "name": "menu-bar",
       "title": "Unread Count",
       "subtitle": "Backlog",
