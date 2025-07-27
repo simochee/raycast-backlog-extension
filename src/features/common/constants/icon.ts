@@ -6,6 +6,7 @@ type TablerIcon =
   | `tabler/outline/${keyof typeof tablerNodesOutline}.svg`;
 
 export const ICONS = {
+  ERROR: "tabler/outline/alert-square-rounded.svg",
   EXTERNAL: "tabler/outline/external-link.svg",
   REFRESH: "tabler/outline/refresh.svg",
   MANAGE_SPACES: "tabler/outline/building-cog.svg",
