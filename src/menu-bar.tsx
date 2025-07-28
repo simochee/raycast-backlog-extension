@@ -71,9 +71,13 @@ const Command = () => {
               key={spaceKey}
               title={name}
               icon={
-                isLoading ? { source: ICONS.LOADING, tintColor: Color.SecondaryText } : getSpaceImageUrl(credential)
+                error
+                  ? { source: ICONS.ERROR, tintColor: Color.SecondaryText }
+                  : isLoading
+                    ? { source: ICONS.LOADING, tintColor: Color.SecondaryText }
+                    : getSpaceImageUrl(credential)
               }
-              subtitle={error ? "Failure" : count > 0 ? `${count.toLocaleString()} unread` : ""}
+              subtitle={error ? error.message : count > 0 ? `${count.toLocaleString()} unread` : ""}
               tooltip={`${name} (${spaceKey})`}
               onAction={async () => openNotification(spaceKey)}
               shortcut={indexToShortcut(i, ["cmd"])}
