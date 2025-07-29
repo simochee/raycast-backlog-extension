@@ -2,6 +2,14 @@ import { environment } from "@raycast/api";
 import { Backlog, Error } from "backlog-js";
 import { getSpaceHost } from "./space";
 import type { SpaceCredentials } from "./credentials";
+import * as v from "valibot";
+
+const BacklogApiErrorSchema = v.object({
+  _status: v.number(),
+  _body: v.object({
+    errors: v.array(v.object({ message: v.string() })),
+  }),
+});
 
 export const getBacklogApi = (credential: SpaceCredentials) => {
   const api = new Backlog({ host: getSpaceHost(credential), apiKey: credential.apiKey });
@@ -13,7 +21,7 @@ export const getBacklogApi = (credential: SpaceCredentials) => {
 
       if (!/^(?:get|post|put|delete)[A-Z]/.test(methodName)) return value;
 
-      const log = (message: string, level: "log" | "error" = "log") => {
+      const log = (message: string, level: "log" | "warn" | "error" = "log") => {
         console[level](`*${environment.commandName}* [Backlog] ${credential.spaceKey} > ${methodName}() - ${message}`);
       };
 
@@ -26,8 +34,17 @@ export const getBacklogApi = (credential: SpaceCredentials) => {
               log("ok");
               return result;
             } catch (err) {
-              if (err instanceof Error.BacklogApiError) {
-                log(`${err.status}\n${JSON.stringify(err.response)}`, "error");
+              const parsed = v.safeParse(BacklogApiErrorSchema, err);
+
+              if (parsed.success) {
+                if (typeof err === "object" && err != null) {
+                  // @ts-expect-error
+                  err.name = "BacklogApiError";
+                  // @ts-expect-error
+                  err.message = parsed.output._body.errors.map(({ message }) => message).join("\n\n");
+                }
+
+                log(`${parsed.output._status}\n${JSON.stringify(parsed.output._body)}`, "warn");
               } else {
                 log(`Unknown error\n${err}`, "error");
               }
