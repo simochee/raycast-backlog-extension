@@ -6,17 +6,17 @@ import { dedupe } from "./promise-dedupe";
 import type { CurrentUser } from "~common/hooks/useCurrentUser";
 import type { CurrentSpace } from "~space/hooks/useCurrentSpace";
 import type { SpaceCredentials } from "~space/utils/credentials";
-import { transformIssue, transformRecentlyViewedIssue } from "~common/transformers/issue";
-import { transformNotification, transformNotificationCount } from "~common/transformers/notification";
-import { transformProject, transformRecentlyViewedProject } from "~common/transformers/project";
-import { transformRecentlyViewedWiki } from "~common/transformers/wiki";
-import { transformSpace } from "~common/transformers/space";
-import { transformUser } from "~common/transformers/user";
+import { transformIssue, transformRecentlyViewedIssue } from "~transformer/issue";
+import { transformNotification, transformNotificationCount } from "~transformer/notification";
+import { transformProject, transformRecentlyViewedProject } from "~transformer/project";
+import { transformRecentlyViewedWiki } from "~transformer/wiki";
+import { transformSpace } from "~transformer/space";
+import { transformUser } from "~transformer/user";
 import { CACHE_TTL } from "~common/constants/cache";
 import { getCredentials } from "~space/utils/credentials";
 import { getBacklogApi } from "~space/utils/backlog";
-import { transformRepository } from "~common/transformers/repository";
-import { transformPullRequest } from "~common/transformers/pull-request";
+import { transformRepository } from "~transformer/repository";
+import { transformPullRequest } from "~transformer/pull-request";
 
 const PER_PAGE = 25;
 

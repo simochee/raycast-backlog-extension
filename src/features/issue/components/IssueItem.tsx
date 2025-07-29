@@ -1,6 +1,6 @@
 import { Action, ActionPanel, Color, Icon, Image, List } from "@raycast/api";
 import { IssueDetail } from "./IssueDetail";
-import type { Issue } from "~common/transformers/issue";
+import type { Issue } from "~transformer/issue";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { useProject } from "~project/hooks/useProject";
 import { getProjectImageUrl, getUserIconUrl } from "~common/utils/image";

@@ -1,7 +1,7 @@
 import { Action, Color, Icon, List, useNavigation } from "@raycast/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMyPullRequests } from "../hooks/useMyPullRequests";
-import type { Project } from "~common/transformers/project";
+import type { Project } from "~transformer/project";
 import { CommonActionPanel } from "~common/components/CommonActionPanel";
 import { withProviders } from "~common/utils/providers";
 import { repositoriesOptions } from "~common/utils/queryOptions";

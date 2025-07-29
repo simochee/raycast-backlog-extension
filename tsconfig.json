@@ -21,7 +21,8 @@
       "~issue/*": ["features/issue/*"],
       "~wiki/*": ["features/wiki/*"],
       "~pull-request/*": ["features/pull-request/*"],
-      "~common/*": ["features/common/*"]
+      "~common/*": ["features/common/*"],
+      "~transformer/*": ["features/transformer/*"]
     }
   }
 }

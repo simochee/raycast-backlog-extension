@@ -1,5 +1,5 @@
 import { Action, ActionPanel, Color, Image, List } from "@raycast/api";
-import type { Notification } from "~common/transformers/notification";
+import type { Notification } from "~transformer/notification";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { getUserIconUrl } from "~common/utils/image";
 import { CommonActionPanel } from "~common/components/CommonActionPanel";

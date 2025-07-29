@@ -1,6 +1,6 @@
 import { Action, Icon, List } from "@raycast/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import type { Project } from "~common/transformers/project";
+import type { Project } from "~transformer/project";
 import { CommonActionPanel } from "~common/components/CommonActionPanel";
 import { getProjectImageUrl } from "~common/utils/image";
 import { projectsOptions } from "~common/utils/queryOptions";
