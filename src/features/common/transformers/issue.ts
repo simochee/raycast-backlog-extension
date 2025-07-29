@@ -1,6 +1,13 @@
 import { pick } from "es-toolkit";
 import type { Entity } from "backlog-js";
 
+export const transformStar = (star: Entity.Star.Star) => {
+  return {
+    ...pick(star, ["id"]),
+    presenter: pick(star.presenter, ["id"]),
+  } satisfies { [K in keyof Entity.Star.Star]?: unknown };
+};
+
 export const transformIssue = (issue: Entity.Issue.Issue) => {
   return {
     ...pick(issue, [
@@ -19,7 +26,7 @@ export const transformIssue = (issue: Entity.Issue.Issue) => {
     issueType: pick(issue.issueType, ["id", "name", "color"]),
     assignee: issue.assignee && pick(issue.assignee, ["id", "name"]),
     resolution: issue.resolution && pick(issue.resolution, ["id", "name"]),
-    stars: issue.stars.map((v) => pick(v, ["id"])),
+    stars: issue.stars.map(transformStar),
     attachments: issue.attachments.map((v) => pick(v, ["id", "name"])),
     category: issue.category.map((v) => pick(v, ["id", "name", "displayOrder"])),
     milestone: issue.milestone.map((v) => pick(v, ["id", "name", "displayOrder"])),
@@ -43,6 +50,7 @@ export const transformIssueComment = (comment: Entity.Issue.Comment) => {
           user: pick(user, ["id", "name", "userId"]),
         }) satisfies { [K in keyof Entity.CommentNotification.CommentNotification]?: unknown },
     ),
+    stars: comment.stars.map(transformStar),
   } satisfies { [K in keyof Entity.Issue.Comment]?: unknown };
 };
 

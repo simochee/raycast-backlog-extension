@@ -13,6 +13,7 @@ import { usePersistentState } from "~common/hooks/usePersistState";
 import { ICONS } from "~common/constants/icon";
 import { indexToShortcut } from "~common/utils/shortcut";
 import { useMemo } from "react";
+import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
 
 const FILTER_OPTIONS = [
   { label: "Assigned to me", value: "assigneeId" as const },
@@ -51,7 +52,12 @@ const Command = () => {
 
   const commonActions = (
     <>
-      <Action.Push title="Select Repository" target={<RepositoryPicker />} />
+      <Action.Push
+        title="Select Repository"
+        icon={ICONS.REPOSITORY_SELECT}
+        target={<RepositoryPicker />}
+        shortcut={{ modifiers: ["cmd", "shift"], key: "r" }}
+      />
       <ActionPanel.Submenu title="Filter" shortcut={{ modifiers: ["cmd", "shift"], key: "f" }}>
         {FILTER_OPTIONS.map(({ label, value }, i) => (
           <Action
@@ -102,10 +108,19 @@ const Command = () => {
     </>
   );
 
-  if (!currentRepository) return null;
+  if (!currentRepository)
+    return (
+      <List
+        searchBarAccessory={<SearchBarAccessory />}
+        actions={<CommonActionPanel>{commonActions}</CommonActionPanel>}
+      >
+        <List.EmptyView />
+      </List>
+    );
 
   return (
     <List
+      searchBarAccessory={<SearchBarAccessory />}
       searchBarPlaceholder={`Search ${currentRepository.projectKey}/${currentRepository.repositoryName}`}
       navigationTitle={navigationTitle}
       actions={<CommonActionPanel>{commonActions}</CommonActionPanel>}

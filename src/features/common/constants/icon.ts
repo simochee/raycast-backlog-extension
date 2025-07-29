@@ -48,4 +48,5 @@ export const ICONS = {
   ACTUAL_HOURS: "tabler/outline/clock-check.svg",
   RESOLUTION: "tabler/outline/bulb.svg",
   PULL_REQUEST_BRANCH: "tabler/outline/git-branch.svg",
+  REPOSITORY_SELECT: "tabler/outline/selector.svg",
 } satisfies Record<string, TablerIcon>;

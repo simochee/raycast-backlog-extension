@@ -7,6 +7,7 @@ import { getProjectImageUrl, getUserIconUrl } from "~common/utils/image";
 import { buildDueDate, formatDate, sortByDisplayOrder } from "~issue/utils/issue";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { ISSUE_PRIORITY, ISSUE_STATUS } from "~issue/constants";
+import { useCurrentUser } from "~common/hooks/useCurrentUser";
 
 type Props = {
   component: typeof List.Item.Detail.Metadata | typeof Detail.Metadata;
@@ -15,10 +16,12 @@ type Props = {
   comment: IssueComment | undefined;
 };
 
-export const IssueMetadata = ({ component: Component, issue }: Props) => {
+export const IssueMetadata = ({ component: Component, issue, comment }: Props) => {
+  const currentUser = useCurrentUser();
   const currentSpace = useCurrentSpace();
 
-  const stars = issue.stars.length;
+  const stars = comment ? comment.stars : issue.stars;
+  const starCount = stars.length;
   const dueDate = buildDueDate(issue.dueDate);
 
   return (
@@ -50,13 +53,14 @@ export const IssueMetadata = ({ component: Component, issue }: Props) => {
           color={dueDate?.past && issue.status.id !== ISSUE_STATUS.CLOSED ? Color.Red : "#fff"}
         />
         <Component.TagList.Item
-          text={stars.toString()}
-          icon={
-            stars === 0
-              ? { source: ICONS.STAR_EMPTY, tintColor: "#fff" }
-              : { source: ICONS.STAR_FILLED, tintColor: Color.Yellow }
-          }
-          color={stars === 0 ? "#fff" : Color.Yellow}
+          text={starCount.toString()}
+          icon={{
+            source: stars.some(({ presenter }) => presenter.id === currentUser.id)
+              ? ICONS.STAR_FILLED
+              : ICONS.STAR_EMPTY,
+            tintColor: starCount === 0 ? "#fff" : Color.Yellow,
+          }}
+          color={starCount === 0 ? "#fff" : Color.Yellow}
         />
       </Component.TagList>
       <Component.TagList title="">

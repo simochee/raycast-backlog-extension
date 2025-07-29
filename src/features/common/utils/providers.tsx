@@ -21,17 +21,7 @@ persistQueryClient({ queryClient, persister: asyncStoragePersister });
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <QueryErrorResetBoundary>
-        {({ reset }) => (
-          <ErrorBoundary
-            fallback={<Detail markdown="# Fatal Error" />}
-            onReset={reset}
-            onError={(err) => console.log("receive error!", err)}
-          >
-            <CredentialsProvider>{children}</CredentialsProvider>
-          </ErrorBoundary>
-        )}
-      </QueryErrorResetBoundary>
+      <CredentialsProvider>{children}</CredentialsProvider>
     </QueryClientProvider>
   );
 };

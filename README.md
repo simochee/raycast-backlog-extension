@@ -47,6 +47,7 @@ You can obtain your space's API key by following these steps:
 - `Enter`: Open in browser
 - `Cmd + Shift + u`: Copy URL
 - `Cmd + f`: Toggle detail panel
+- `Cmd + s`: Add star
 
 ### Issues
 
@@ -64,7 +65,7 @@ You can obtain your space's API key by following these steps:
 ### Pull Requests
 
 - `Cmd + n`: Create pull request
-- `Cmd + s`: Move repository
+- `Cmd + Shift + r`: Move repository
 - `Cmd + Shift + f`: Change filter
 - `Cmd + Shift + p`: Select movable repository
 
