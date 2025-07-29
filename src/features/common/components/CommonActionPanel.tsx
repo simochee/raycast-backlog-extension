@@ -1,79 +1,21 @@
-import { Action, ActionPanel, Alert, Color, confirmAlert, useNavigation } from "@raycast/api";
+import { Action, ActionPanel, Alert, Color, confirmAlert } from "@raycast/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { DebugActionPanel } from "./DebugActionPanel";
-import type { SpaceCredentials } from "~space/utils/credentials";
-import { useCredentials } from "~space/hooks/useCredentials";
-import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { useSpaces } from "~space/hooks/useSpaces";
 import { getSpaceImageUrl } from "~common/utils/image";
-import { SpaceForm } from "~space/components/SpaceForm";
 import { cache } from "~common/utils/cache";
 import { ICONS } from "~common/constants/icon";
-import { DELAY } from "~common/constants/cache";
 import { indexToShortcut } from "~common/utils/shortcut";
+import { AddSpaceForm } from "~space/components/AddSpaceForm";
+import { UpdateSpaceForm } from "~space/components/UpdateSpaceForm";
 
 type Props = {
   children?: React.ReactNode | Promise<React.ReactNode>;
 };
 
 export const CommonActionPanel = ({ children }: Props) => {
-  const { pop } = useNavigation();
   const queryClient = useQueryClient();
-  const { credentials, addCredential, updateCredential, removeCredential } = useCredentials();
-  const currentSpace = useCurrentSpace();
-
   const spaces = useSpaces();
-
-  const handleAddSpace = async (values: SpaceCredentials) => {
-    const credential = credentials.find(({ spaceKey }) => spaceKey === values.spaceKey);
-
-    if (credential) {
-      if (
-        await confirmAlert({
-          title: "Space already exists",
-          message: "Do you want to update the space?",
-          primaryAction: {
-            title: "Cancel",
-            style: Alert.ActionStyle.Cancel,
-          },
-          dismissAction: {
-            title: "Confirm",
-            style: Alert.ActionStyle.Destructive,
-          },
-        })
-      ) {
-        return;
-      }
-
-      cache.clear();
-      await queryClient.invalidateQueries();
-    }
-
-    await addCredential(values);
-    await currentSpace.setSpaceKey(values.spaceKey);
-    await new Promise((resolve) => setTimeout(resolve, DELAY.NOTIFICATION_UPDATE));
-
-    pop();
-  };
-
-  const handleUpdateSpace = async (values: SpaceCredentials) => {
-    cache.clear();
-    await queryClient.invalidateQueries();
-
-    await updateCredential(values);
-    await currentSpace.setSpaceKey(values.spaceKey);
-    await new Promise((resolve) => setTimeout(resolve, DELAY.NOTIFICATION_UPDATE));
-
-    pop();
-  };
-
-  const handleDeleteSpace = async (spaceKey: string) => {
-    await removeCredential(spaceKey);
-    if (currentSpace.space.spaceKey === spaceKey) {
-      await currentSpace.setSpaceKey(spaces[0]?.space.spaceKey ?? "");
-    }
-    pop();
-  };
 
   const handleClearCache = async () => {
     if (
@@ -111,9 +53,7 @@ export const CommonActionPanel = ({ children }: Props) => {
                     title={`${name} (${spaceKey})`}
                     icon={getSpaceImageUrl(credential)}
                     shortcut={indexToShortcut(i, ["cmd"])}
-                    target={
-                      <SpaceForm initialValues={credential} onSubmit={handleUpdateSpace} onDelete={handleDeleteSpace} />
-                    }
+                    target={<UpdateSpaceForm credential={credential} />}
                   />
                 ))}
               </ActionPanel.Submenu>
@@ -123,7 +63,7 @@ export const CommonActionPanel = ({ children }: Props) => {
             title="Add Other Space"
             icon={{ source: ICONS.ADD_SPACE, tintColor: Color.SecondaryText }}
             shortcut={{ modifiers: ["ctrl", "shift"], key: "n" }}
-            target={<SpaceForm onSubmit={handleAddSpace} />}
+            target={<AddSpaceForm />}
           />
         </ActionPanel.Section>
         <ActionPanel.Section title="Advanced">

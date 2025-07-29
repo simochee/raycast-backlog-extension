@@ -1,4 +1,4 @@
-import { Color, LaunchType, MenuBarExtra, environment, launchCommand } from "@raycast/api";
+import { Color, Icon, LaunchType, MenuBarExtra, environment, launchCommand } from "@raycast/api";
 import { useQueries, useQueryClient } from "@tanstack/react-query";
 import type { Image } from "@raycast/api";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
@@ -85,6 +85,52 @@ const Command = () => {
             />
           );
         })}
+      </MenuBarExtra.Section>
+      <MenuBarExtra.Section title="Spaces">
+        <MenuBarExtra.Item
+          title="Add Space"
+          icon={ICONS.ADD_SPACE}
+          onAction={() =>
+            launchCommand({ name: "notifications", type: LaunchType.UserInitiated, arguments: { action: "add-space" } })
+          }
+        />
+        <MenuBarExtra.Submenu title="Update Spaces" icon={ICONS.MANAGE_SPACES}>
+          {spaces.map(({ space: { spaceKey, name }, credential }) => (
+            <MenuBarExtra.Item
+              key={spaceKey}
+              title={name}
+              subtitle={spaceKey}
+              icon={getSpaceImageUrl(credential)}
+              onAction={() =>
+                launchCommand({
+                  name: "notifications",
+                  type: LaunchType.UserInitiated,
+                  arguments: { action: "update-space", credential: JSON.stringify(credential) },
+                })
+              }
+            />
+          ))}
+        </MenuBarExtra.Submenu>
+        <MenuBarExtra.Submenu title="Switch Space" icon={ICONS.SWITCH_SPACE}>
+          {spaces.map(({ space: { spaceKey, name }, credential }) => (
+            <MenuBarExtra.Item
+              key={spaceKey}
+              title={name}
+              subtitle={spaceKey}
+              icon={
+                currentSpace.space.spaceKey === spaceKey
+                  ? {
+                      source: Icon.CheckCircle,
+                      tintColor: Color.Green,
+                    }
+                  : {
+                      source: getSpaceImageUrl(credential),
+                    }
+              }
+              onAction={() => currentSpace.setSpaceKey(spaceKey)}
+            />
+          ))}
+        </MenuBarExtra.Submenu>
       </MenuBarExtra.Section>
     </MenuBarExtra>
   );

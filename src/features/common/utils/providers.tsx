@@ -1,8 +1,6 @@
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
-import { QueryClient, QueryClientProvider, QueryErrorResetBoundary } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
-import { ErrorBoundary } from "react-error-boundary";
-import { Detail } from "@raycast/api";
 import { cache } from "./cache";
 import { CredentialsProvider } from "~space/components/CredentialsProvider";
 

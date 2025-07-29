@@ -49,4 +49,5 @@ export const ICONS = {
   RESOLUTION: "tabler/outline/bulb.svg",
   PULL_REQUEST_BRANCH: "tabler/outline/git-branch.svg",
   REPOSITORY_SELECT: "tabler/outline/selector.svg",
+  SWITCH_SPACE: "tabler/outline/switch-horizontal.svg",
 } satisfies Record<string, TablerIcon>;
