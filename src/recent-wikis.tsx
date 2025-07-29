@@ -5,7 +5,7 @@ import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
 import { WikiItem } from "~wiki/components/WikiItem";
 import { withProviders } from "~common/utils/providers";
 import { getRecentViewTitle } from "~common/utils/search";
-import { recentWikisOptions } from "~common/utils/queryOptions";
+import { recentWikisOptions } from "~query/wiki";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 
 const Command = () => {

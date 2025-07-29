@@ -7,7 +7,7 @@ import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { withProviders } from "~common/utils/providers";
 import { getRecentViewTitle, searchFromKeyword } from "~common/utils/search";
-import { recentIssuesOptions } from "~common/utils/queryOptions";
+import { recentIssuesOptions } from "~query/issue";
 
 const Command = () => {
   const [isShowingDetail, setIsShowingDetail] = useState(false);

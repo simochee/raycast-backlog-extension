@@ -1,7 +1,7 @@
 import { LocalStorage } from "@raycast/api";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { DELAY } from "~common/constants/cache";
-import { persistentStateOptions } from "~common/utils/queryOptions";
+import { persistentStateOptions } from "~query/utils";
 
 export const usePersistentState = <TValue extends string, TFallbackValue extends string | null = TValue>(
   key: string,

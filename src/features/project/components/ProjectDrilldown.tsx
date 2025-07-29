@@ -3,7 +3,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import type { Project } from "~transformer/project";
 import { CommonActionPanel } from "~common/components/CommonActionPanel";
 import { getProjectImageUrl } from "~common/utils/image";
-import { projectsOptions } from "~common/utils/queryOptions";
+import { projectsOptions } from "~query/project";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
 

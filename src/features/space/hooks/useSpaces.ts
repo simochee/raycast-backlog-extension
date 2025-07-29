@@ -1,6 +1,6 @@
 import { useSuspenseQueries } from "@tanstack/react-query";
 import { useCredentials } from "./useCredentials";
-import { spaceOptions } from "~common/utils/queryOptions";
+import { spaceOptions } from "~query/space";
 
 export const useSpaces = () => {
   const { credentials } = useCredentials();

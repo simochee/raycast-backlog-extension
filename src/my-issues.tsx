@@ -9,7 +9,7 @@ import { searchFromKeyword } from "~common/utils/search";
 import { IssueItem } from "~issue/components/IssueItem";
 import { CommonActionPanel } from "~common/components/CommonActionPanel";
 import { MyIssuesActionPanel } from "~issue/components/MyIssuesActionPanel";
-import { myIssuesOptions } from "~common/utils/queryOptions";
+import { myIssuesOptions } from "~query/issue";
 import { useCurrentUser } from "~common/hooks/useCurrentUser";
 import { usePersistentState } from "~common/hooks/usePersistState";
 

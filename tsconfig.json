@@ -22,7 +22,8 @@
       "~wiki/*": ["features/wiki/*"],
       "~pull-request/*": ["features/pull-request/*"],
       "~common/*": ["features/common/*"],
-      "~transformer/*": ["features/transformer/*"]
+      "~transformer/*": ["features/transformer/*"],
+      "~query/*": ["features/query/*"]
     }
   }
 }

@@ -7,7 +7,8 @@ import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { groupByDate } from "~common/utils/group";
 import { withProviders } from "~common/utils/providers";
-import { notificationCountOptions, notificationsOptions } from "~common/utils/queryOptions";
+import { notificationCountOptions } from "~query/space";
+import { notificationsOptions } from "~query/notification";
 import { DELAY } from "~common/constants/cache";
 
 const Command = () => {

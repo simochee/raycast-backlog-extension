@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
-import { projectOptions } from "~common/utils/queryOptions";
+import { projectOptions } from "~query/project";
 
 export const useProject = (projectId: number) => {
   const currentSpace = useCurrentSpace();

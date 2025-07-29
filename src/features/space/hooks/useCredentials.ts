@@ -3,7 +3,7 @@ import { useCachedState } from "@raycast/utils";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import type { SpaceCredentials } from "~space/utils/credentials";
 import { CREDENTIALS_STORAGE_KEY } from "~space/utils/credentials";
-import { credentialsOptions } from "~common/utils/queryOptions";
+import { credentialsOptions } from "~query/auth";
 
 export const useCredentials = () => {
   const { data: initialCredentials } = useSuspenseQuery(credentialsOptions());

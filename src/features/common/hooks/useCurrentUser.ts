@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
-import { myselfOptions } from "~common/utils/queryOptions";
+import { myselfOptions } from "~query/auth";
 
 export type CurrentUser = ReturnType<typeof useCurrentUser>;
 

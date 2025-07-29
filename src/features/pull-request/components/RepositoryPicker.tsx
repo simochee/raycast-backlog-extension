@@ -4,7 +4,7 @@ import { useMyPullRequests } from "../hooks/useMyPullRequests";
 import type { Project } from "~transformer/project";
 import { CommonActionPanel } from "~common/components/CommonActionPanel";
 import { withProviders } from "~common/utils/providers";
-import { repositoriesOptions } from "~common/utils/queryOptions";
+import { repositoriesOptions } from "~query/repository";
 import { sortByDisplayOrder } from "~issue/utils/issue";
 import { ProjectDrilldown } from "~project/components/ProjectDrilldown";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";

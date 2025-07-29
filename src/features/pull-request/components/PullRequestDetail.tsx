@@ -6,7 +6,7 @@ import type { Project } from "~transformer/project";
 import type { PullRequest, PullRequestComment } from "~transformer/pull-request";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { getUserIconUrl } from "~common/utils/image";
-import { repositoryOptions } from "~common/utils/queryOptions";
+import { repositoryOptions } from "~query/repository";
 import { useMarkdown } from "~common/hooks/useMarkdown";
 import { PULL_REQUEST_STATUS } from "~pull-request/constants";
 

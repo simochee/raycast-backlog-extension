@@ -6,7 +6,8 @@ import { useSpaces } from "~space/hooks/useSpaces";
 import { getSpaceImageUrl } from "~common/utils/image";
 import { withProviders } from "~common/utils/providers";
 import { DELAY } from "~common/constants/cache";
-import { notificationCountOptions, notificationsOptions } from "~common/utils/queryOptions";
+import { notificationCountOptions } from "~query/space";
+import { notificationsOptions } from "~query/notification";
 import { ICONS } from "~common/constants/icon";
 import { indexToShortcut } from "~common/utils/shortcut";
 

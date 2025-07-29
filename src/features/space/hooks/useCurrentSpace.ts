@@ -4,7 +4,7 @@ import { LocalStorage } from "@raycast/api";
 import { useCredentials } from "./useCredentials";
 import { getBacklogApi } from "~space/utils/backlog";
 import { getSpaceHost } from "~space/utils/space";
-import { spaceOptions } from "~common/utils/queryOptions";
+import { spaceOptions } from "~query/space";
 import { DELAY } from "~common/constants/cache";
 import { usePersistentState } from "~common/hooks/usePersistState";
 

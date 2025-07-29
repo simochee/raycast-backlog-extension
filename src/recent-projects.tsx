@@ -6,7 +6,7 @@ import { ProjectItem } from "~project/components/ProjectItem";
 import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
 import { withProviders } from "~common/utils/providers";
 import { getRecentViewTitle, searchFromKeyword } from "~common/utils/search";
-import { recentProjectsOptions } from "~common/utils/queryOptions";
+import { recentProjectsOptions } from "~query/project";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 
 const Command = () => {
