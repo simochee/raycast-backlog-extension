@@ -13,11 +13,8 @@ export const credentialsOptions = () =>
 export const myselfOptions = (currentSpace: CurrentSpace) =>
   queryOptions({
     queryKey: ["project", currentSpace.space.spaceKey, "myself"],
-    queryFn: async () => {
-      const user = await currentSpace.api.getMyself();
-
-      return transformUser(user);
-    },
+    queryFn: () => currentSpace.api.getMyself(),
+    select: transformUser,
     staleTime: CACHE_TTL.USER,
     gcTime: CACHE_TTL.USER,
   });

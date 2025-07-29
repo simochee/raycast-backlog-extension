@@ -9,14 +9,15 @@ const PER_PAGE = 25;
 export const notificationsOptions = (credential: SpaceCredentials) =>
   infiniteQueryOptions({
     queryKey: ["notifications", credential.spaceKey],
-    queryFn: async ({ pageParam }) => {
-      const notifications = await getBacklogApi(credential).getNotifications({
+    queryFn: ({ pageParam }) =>
+      getBacklogApi(credential).getNotifications({
         count: PER_PAGE,
         maxId: pageParam !== -1 ? pageParam : undefined,
-      });
-
-      return notifications.map(transformNotification);
-    },
+      }),
+    select: ({ pages, pageParams }) => ({
+      pageParams,
+      pages: pages.map((page) => page.map(transformNotification)),
+    }),
     staleTime: CACHE_TTL.NOTIFICATIONS,
     gcTime: CACHE_TTL.NOTIFICATIONS,
     initialPageParam: -1,

@@ -8,14 +8,12 @@ import { getBacklogApi } from "~space/utils/backlog";
 export const notificationCountOptions = (credential: SpaceCredentials) =>
   queryOptions({
     queryKey: ["notification-count", credential.spaceKey],
-    queryFn: async () => {
-      const notificationsCount = await getBacklogApi(credential).getNotificationsCount({
+    queryFn: () =>
+      getBacklogApi(credential).getNotificationsCount({
         alreadyRead: false,
         resourceAlreadyRead: false,
-      });
-
-      return transformNotificationCount(notificationsCount);
-    },
+      }),
+    select: transformNotificationCount,
     staleTime: CACHE_TTL.NOTIFICATION_COUNT,
     gcTime: CACHE_TTL.NOTIFICATION_COUNT,
   });
@@ -23,11 +21,8 @@ export const notificationCountOptions = (credential: SpaceCredentials) =>
 export const spaceOptions = (credential: SpaceCredentials) =>
   queryOptions({
     queryKey: ["space", credential.spaceKey],
-    queryFn: async () => {
-      const space = await getBacklogApi(credential).getSpace();
-
-      return transformSpace(space);
-    },
+    queryFn: () => getBacklogApi(credential).getSpace(),
+    select: transformSpace,
     staleTime: CACHE_TTL.SPACE,
     gcTime: CACHE_TTL.SPACE,
   });

@@ -47,14 +47,15 @@ export const projectOptions = (currentSpace: CurrentSpace, projectId: number) =>
 export const recentProjectsOptions = (currentSpace: CurrentSpace) =>
   infiniteQueryOptions({
     queryKey: ["recent-viewed", currentSpace.space.spaceKey, "projects"],
-    queryFn: async ({ pageParam }) => {
-      const projects = await currentSpace.api.getRecentlyViewedProjects({
+    queryFn: ({ pageParam }) =>
+      currentSpace.api.getRecentlyViewedProjects({
         count: PER_PAGE,
         offset: pageParam,
-      });
-
-      return projects.map(transformRecentlyViewedProject);
-    },
+      }),
+    select: ({ pages, pageParams }) => ({
+      pageParams,
+      pages: pages.map((page) => page.map(transformRecentlyViewedProject)),
+    }),
     staleTime: CACHE_TTL.RECENT_VIEWED_PROJECTS,
     gcTime: CACHE_TTL.RECENT_VIEWED_PROJECTS,
     initialPageParam: 0,
@@ -64,11 +65,8 @@ export const recentProjectsOptions = (currentSpace: CurrentSpace) =>
 export const projectsOptions = (currentSpace: CurrentSpace, archived = false) =>
   queryOptions({
     queryKey: ["projects", currentSpace.space.spaceKey, archived],
-    queryFn: async () => {
-      const projects = await currentSpace.api.getProjects({ archived });
-
-      return projects.map(transformProject);
-    },
+    queryFn: () => currentSpace.api.getProjects({ archived }),
+    select: (data) => data.map(transformProject),
     staleTime: CACHE_TTL.PROJECT,
     gcTime: CACHE_TTL.PROJECT,
   });

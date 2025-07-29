@@ -9,17 +9,18 @@ const PER_PAGE = 25;
 export const myIssuesOptions = (currentSpace: CurrentSpace, currentUser: CurrentUser, filter: string) =>
   infiniteQueryOptions({
     queryKey: ["my-issues", currentSpace.space.spaceKey, currentUser.id, filter],
-    queryFn: async ({ pageParam }) => {
-      const issues = await currentSpace.api.getIssues({
+    queryFn: ({ pageParam }) =>
+      currentSpace.api.getIssues({
         [filter]: [currentUser.id],
         sort: "updated",
         order: "desc",
         count: PER_PAGE,
         offset: pageParam,
-      });
-
-      return issues.map(transformIssue);
-    },
+      }),
+    select: ({ pages, pageParams }) => ({
+      pageParams,
+      pages: pages.map((page) => page.map(transformIssue)),
+    }),
     staleTime: CACHE_TTL.MY_ISSUES,
     gcTime: CACHE_TTL.MY_ISSUES,
     initialPageParam: 0,
@@ -29,14 +30,15 @@ export const myIssuesOptions = (currentSpace: CurrentSpace, currentUser: Current
 export const recentIssuesOptions = (currentSpace: CurrentSpace) =>
   infiniteQueryOptions({
     queryKey: ["recent-viewed", currentSpace.space.spaceKey, "issues"],
-    queryFn: async ({ pageParam }) => {
-      const issues = await currentSpace.api.getRecentlyViewedIssues({
+    queryFn: ({ pageParam }) =>
+      currentSpace.api.getRecentlyViewedIssues({
         count: PER_PAGE,
         offset: pageParam,
-      });
-
-      return issues.map(transformRecentlyViewedIssue);
-    },
+      }),
+    select: ({ pages, pageParams }) => ({
+      pageParams,
+      pages: pages.map((page) => page.map(transformRecentlyViewedIssue)),
+    }),
     staleTime: CACHE_TTL.RECENT_VIEWED_ISSUES,
     gcTime: CACHE_TTL.RECENT_VIEWED_ISSUES,
     initialPageParam: 0,

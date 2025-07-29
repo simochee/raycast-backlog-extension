@@ -8,14 +8,15 @@ const PER_PAGE = 25;
 export const recentWikisOptions = (currentSpace: CurrentSpace) =>
   infiniteQueryOptions({
     queryKey: ["recent-viewed", currentSpace.space.spaceKey, "wikis"],
-    queryFn: async ({ pageParam }) => {
-      const wikis = await currentSpace.api.getRecentlyViewedWikis({
+    queryFn: ({ pageParam }) =>
+      currentSpace.api.getRecentlyViewedWikis({
         count: PER_PAGE,
         offset: pageParam,
-      });
-
-      return wikis.map(transformRecentlyViewedWiki);
-    },
+      }),
+    select: ({ pages, pageParams }) => ({
+      pageParams,
+      pages: pages.map((page) => page.map(transformRecentlyViewedWiki)),
+    }),
     staleTime: CACHE_TTL.RECENT_VIEWED_WIKIS,
     gcTime: CACHE_TTL.RECENT_VIEWED_WIKIS,
     initialPageParam: 0,
