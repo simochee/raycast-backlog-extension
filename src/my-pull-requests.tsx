@@ -13,8 +13,9 @@ import { useCurrentUser } from "~common/hooks/useCurrentUser";
 import { usePersistentState } from "~common/hooks/usePersistState";
 import { ICONS } from "~common/constants/icon";
 import { indexToShortcut } from "~common/utils/shortcut";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { SearchBarAccessory } from "~space/components/SearchBarAccessory";
+import { searchFromKeyword } from "~common/utils/search";
 
 const FILTER_OPTIONS = [
   { label: "Assigned to me", value: "assigneeId" as const },
@@ -22,6 +23,8 @@ const FILTER_OPTIONS = [
 ];
 
 const Command = () => {
+  const [searchText, setSearchText] = useState("");
+
   const currentUser = useCurrentUser();
   const currentSpace = useCurrentSpace();
   const { currentRepository, selectedRepositories, changeCurrentRepositoryId } = useMyPullRequests();
@@ -50,6 +53,16 @@ const Command = () => {
 
     return `${count} ${target} ${unit} ${suffix}`;
   }, [pullRequests, filter]);
+
+  const filteredData = useMemo(
+    () =>
+      searchFromKeyword(
+        pullRequests || [],
+        (pullRequest) => `#${pullRequest.number} ${pullRequest.summary} ${pullRequest.issue?.issueKey || ""}`,
+        searchText,
+      ),
+    [pullRequests, searchText],
+  );
 
   const commonActions = (
     <>
@@ -125,8 +138,9 @@ const Command = () => {
       searchBarPlaceholder={`Search ${currentRepository.projectKey}/${currentRepository.repositoryName}`}
       navigationTitle={navigationTitle}
       actions={<CommonActionPanel>{commonActions}</CommonActionPanel>}
+      onSearchTextChange={setSearchText}
     >
-      {pullRequests?.map((pullRequest) => {
+      {filteredData.map((pullRequest) => {
         return (
           <List.Item
             key={pullRequest.id}

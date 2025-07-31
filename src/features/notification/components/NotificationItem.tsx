@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Color, Image, List } from "@raycast/api";
+import { Action, ActionPanel, Color, Icon, Image, List } from "@raycast/api";
 import type { Notification } from "~transformer/notification";
 import { useCurrentSpace } from "~space/hooks/useCurrentSpace";
 import { getUserIconUrl } from "~common/utils/image";
@@ -8,6 +8,7 @@ import { ProjectDetail } from "~project/components/ProjectDetail";
 import { PullRequestDetail } from "~pull-request/components/PullRequestDetail";
 import { ICONS } from "~common/constants/icon";
 import { NOTIFICATION_REASON } from "~issue/constants";
+import { useRef } from "react";
 
 type Props = {
   notification: Notification;
@@ -16,9 +17,11 @@ type Props = {
 export const NotificationItem = ({
   notification: { id, sender, issue, reason, resourceAlreadyRead, comment, project, pullRequest, pullRequestComment },
 }: Props) => {
+  const alreadyRead = useRef(resourceAlreadyRead);
   const currentSpace = useCurrentSpace();
 
   const accessories: Array<List.Item.Accessory> = [
+    alreadyRead.current ? {} : { icon: { source: Icon.Dot, tintColor: Color.Red } },
     {
       icon: {
         source: getUserIconUrl(currentSpace.credential, sender.id),
@@ -27,7 +30,16 @@ export const NotificationItem = ({
       tooltip: sender.name,
     },
   ];
-  const tintColor = resourceAlreadyRead ? Color.SecondaryText : Color.Orange;
+  // const tintColor = resourceAlreadyRead ? Color.SecondaryText : Color.Orange;
+  const tintColor = pullRequest ? "#e07b9a" : issue ? "#4caf93" : "#f42858";
+  // issue: #4caf93
+  // wiki: #dc9925
+  // document: #dc9925
+  // files: #ea733b
+  // svn: #868cb7
+  // git: #868cb7
+  // pull-request: #e07b9a
+  // project: #f42858
   const url = currentSpace.toUrl(`/globalbar/notifications/redirect/${id}`);
   const actions = (
     <CommonActionPanel>
