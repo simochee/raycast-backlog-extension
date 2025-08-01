@@ -14,6 +14,7 @@ export const myIssuesOptions = (currentSpace: CurrentSpace, currentUser: Current
         [filter]: [currentUser.id],
         sort: "updated",
         order: "desc",
+        notStatusId: [4],
         count: PER_PAGE,
         offset: pageParam,
       }),
